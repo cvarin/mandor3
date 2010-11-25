@@ -1,0 +1,52 @@
+[units]
+@ 1.0		Positive => works as wavelengh in microns [10^-4 cm].
+		Negative => works as critical electrons' density [cm^-3].
+
+[mesh]
+@ 100		imax: mesh size along X axis
+@ 100		jmax: mesh size along Y axis
+@ 100		kmax: mesh size along Z axis
+@ 15.0		Lx [micron]: domain size along X axis
+@ 15.0		Ly [micron]: domain size along Y axis
+@ 15.0		Lz [micron]: domain size along Z axis
+@ -0.9		tau:  time step
+
+[boundaryConditions]
+@ 2		xMin
+@ 2		xMax
+@ 0		yMin
+@ 0		yMax
+@ 0		zMin
+@ 0		zMax
+
+[focused laser]
+@ 1.0e+22	Poynting vector at the best focus 	{1}
+@ 0.9		Mirror f-number 			{2}
+@ 7.5		Focus X coordinate [micron].
+@ 7.5		Focus Y coordinate [micron].
+@ 7.5		Focus Z coordinate [micron].
+@ 20.0		Pulse duration, [fs] 			{3}
+@ 60.0		Time of arriving of the maximum into the focus [fs] {4}.
+@ 0.0		Phase shift.
+@ 10.0		R to mirror radius ratio, where E_incident = A·exp(-(y²+z²)/R²).
+@ +1		Direction of propagation (positive – along X,
+                                          negative – in opposite direction).
+Footnotes:
+  {1}   Positive means intensity I [W/cm²]; negative means E₀ [e·E/(m·ω·c)].
+  {2}   = F_mirror/D_mirror; the smaller the number, the tighter the focusing.
+        The value has to be greater then 0.25.
+  {3}   Defined as FWHM (Full Width at Half Magnitude) of intensity.
+        Pulse is gaussian.
+  {4}	Pulse leading front offset (leading edge to pulse max delay).
+
+# [focused laser]
+@ 1.0e+22	Poynting vector at the best focus: positive => I [W/cm²] / negative => e*E/(m*ω*c).
+@ 0.9		Mirror f-number (defined as F_mirror/D_mirror; the smaller the number, the tighter the focusing). The value has to be greater then 0.25.
+@ 7.5		Focus X coordinate [micron].
+@ 7.5		Focus Y coordinate [micron].
+@ 7.5		Focus Z coordinate [micron].
+@ 20.0		Pulse duration, [fs] (defined by half of the maximum intensity), the envelope is Gaussian.
+@ 30.0		Pulse leading front offset (leading edge to pulse max delay) [fs].
+@ 0.0		Phase shift
+@ 10.0		Ratio between the radius of the pulse incident onto mirror and radius of the mirror
+@ -1		Direction of propagation (positive -- along X, negative - in opposite direction).

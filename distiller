@@ -1,0 +1,151 @@
+#!/usr/bin/python
+
+"""
+This utility creates special filter to select given subset of particles.
+It generates high-speed C executable, and runs it.
+"""
+
+from __future__ import with_statement
+
+import os
+import sys
+import re
+import subprocess
+import traceback
+
+from optparse import OptionParser
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "source/distiller"))
+import geometry
+
+from geometry import *
+from math     import *
+
+def src_file(*argc):
+    """Returns path to the file as if it is located in the source folder."""
+    return os.path.join(os.path.dirname(geometry.__file__), *argc)
+
+
+def load_filter(cfg, ignore_result=False):
+    """Executes user's config file to generate C-source of filter."""
+    with open(cfg, "rt") as fp:
+        rec0      = re.match("@\s*(\d+).*", fp.readline()).group(1)
+        rec1      = re.match("@\s*(\d+).*", fp.readline()).group(1)
+        step      = re.match("@\s*(\d+).*", fp.readline()).group(1)
+        do_filter = re.match("@\s*(\d+).*", fp.readline()).group(1)
+        funclines = ["def load_plasma ():\n"] + fp.readlines()
+
+    func = "    ".join(funclines)
+    try:
+        res = None
+        exec func
+        res = load_plasma()
+    except:
+        print "Func:"
+        for i, l in enumerate(func.split("\n")):
+            print "%03d: %s" % (i, l)
+        print "\nError:"
+        report = traceback.format_exc().split("\n")
+        print "\n".join(report[3:])
+
+    if res == None and not ignore_result:
+        print "Config file error: no filter (use 'return' to return one)."
+        sys.exit()
+    return (rec0, rec1, step, do_filter, res)
+
+
+def generate_code (filter):
+    """Takes filter and creates C source of the filter."""
+    (const, stack, flag_var) = filter.C("good_marker")
+    with open(src_file("shared.template.c"), "rt") as fp:
+        template = fp.read()
+    return template % {
+                "invariants" : "\n    ".join (const),
+                "tmp_vars"   : "\n        ".join (stack),
+                "final_test" : flag_var,
+            }
+
+# Command line interface: options, user choises.
+parser = OptionParser(usage="""%prog [options] config-file
+
+Default config file is 'distiller.cfg'. First four lines (started with '@')
+declare range of records to scan and optionally disable filtering of particles.
+
+Config-file defines filter of markers using Python (call with '--help-filters'
+to see additional help). All required executables are created, compiled, and
+invoked by this frontend.""")
+
+add_option = parser.add_option
+add_option("-H", "--help-filters", dest="show_filter_man", action="store_true",
+           help="explain filter declaration syntax")
+add_option("-l", "--list-filters", dest="list_filters", action="store_true",
+           help="print list of installed filters and exit")
+add_option("-d", "--dump-core", dest="dump_core", action="store_true",
+           help="print key sections of generated code")
+add_option("-D", "--dump-dll", dest="dump_dll", action="store_true",
+           help="print full source of the generated C library")
+add_option("-s", "--src-only", dest="src_only", action="store_true",
+           help="make source and exit (useful with -D -d options)")
+add_option("-a", "--all-markers", dest="all_markers", action="store_true",
+           help="ignore filter (save all markers)")
+add_option("-r", "--rec", dest="records", metavar="REC", type="string",
+           help="checkpoints to scan, REC=[min]:[max][:step], e.g 2::5")
+
+(options, args) = parser.parse_args()
+
+if options.list_filters:
+    load_filter(src_file("list.input"), ignore_result=True)
+    sys.exit()
+
+if options.show_filter_man:
+    print geometry.__doc__
+    sys.exit()
+
+filter_file = 'distiller.cfg' if not args else args[0]
+(rec0, rec1, step, do_filter, filter) = load_filter(filter_file)
+
+if options.dump_core:
+    (const, stack, flag_var) = filter.C("good_marker")
+    print "\n    ".join (["Loop-invariant constants:"] + const) + "\n"
+    print "\n    ".join (["Intermediate variables:"] + stack) 	+ "\n"
+    print "Variable to hold final answer:\n    " + flag_var 	+ "\n"
+
+# Generates source file.
+code = generate_code(filter)
+
+# Updates code if necessary.
+with open(src_file("dll.c"), "rt") as fp:
+    old_code = fp.read()
+
+if old_code != code:
+  with open(src_file("dll.c"), "wt") as fp:
+      fp.write(code)
+
+if options.dump_dll:
+    print file(src_file("dll.c"), "rt").read()
+
+if options.src_only:
+    sys.exit()
+
+# Checks if user wants to override recordset.
+if options.records:
+    try:
+        (r0, r1, s) = re.match("(\d*):?(\d*):?(\d*)", options.records).group(1, 2, 3)
+        rec0 = str(0)          if not r0 else str(int(r0))
+        rec1 = str(2**31 - 1)  if not r1 else str(int(r1))
+        step = str(1)          if not s  else str(int(s))
+    except:
+        print "Bad record-set, use '-r start:end:step', no spaces around ':'"
+        sys.exit(-1)
+
+# Checks if user want no filters (simple call to get everything in txt).
+if options.all_markers:
+    do_filter = "0"
+
+ret_value = subprocess.call(["make", "-s", "distiller"])
+if ret_value:
+    print "="*40
+    print "ERROR: failed to compile C core."
+    sys.exit(-1)
+
+subprocess.call(["o/distiller.out", rec0, rec1, step, do_filter])

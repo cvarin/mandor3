@@ -1,0 +1,51 @@
+>   Diagnostics 	: Diagnostics to examine simulation results.
+>>  Full energy 	: Shows full energy distribution over degrees of freedom.
+        #!/bin/sh
+        cd visualization
+        alchemist full_energy.alch.zip
+        cd ..
+
+>>  Probes 		: Shows field measured in few points.
+        #!/bin/sh
+        cd visualization
+        alchemist probes.alch.zip
+        cd ..
+
+>>  2D EM field	 	: Shows 2D snapshots of EM field distribution in space.
+        #!/bin/sh
+        cd visualization
+        alchemist EM_2D.alch.zip
+        cd ..
+
+>>  3D EM field	 	: Shows 2D snapshots of EM field distribution in space.
+        #!/bin/sh
+        cd visualization
+        alchemist EM_3D.alch
+        cd ..
+
+>>  Particles	 	: Shows snapshots of EM field distribution in space.
+        #!/bin/sh
+        cd visualization
+        alchemist markers.alch.zip
+        cd ..
+
+>>  Domain decomposition: Shows domain decomposition hierarcy.
+        #!/bin/sh
+        cd visualization
+        alchemist -s regions.alchemist | ./reg_viewer.py ../output/nodes.dat
+        cd ..
+
+>   Make options	: Compilation/cleaning commands.
+>>  Remove data		: Erases every known datafile.
+        #!/bin/sh
+        make cleanAll
+
+>>  Recompile		: Removes object files and recompiles code.
+        #!/bin/sh
+        make clean
+        make
+
+>>  Generate makefile	: Removes object files and regenerates Makefile.
+        #!/bin/sh
+        make clean
+        make depend

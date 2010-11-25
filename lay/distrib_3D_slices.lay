@@ -1,0 +1,840 @@
+#!MC 1000
+$!VarSet |LFDSFN1| = '"../output/distrib.plt"'
+$!VarSet |LFDSVL1| = '"p" "q" "r" "f(p,q)"'
+$!SETSTYLEBASE FACTORY
+$!PAPER 
+  BACKGROUNDCOLOR = WHITE
+  ISTRANSPARENT = YES
+  ORIENTPORTRAIT = NO
+  SHOWGRID = YES
+  SHOWRULER = YES
+  SHOWPAPER = YES
+  PAPERSIZE = LETTER
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    A3
+      {
+      WIDTH = 11.693
+      HEIGHT = 16.535
+      }
+    A4
+      {
+      WIDTH = 8.2677
+      HEIGHT = 11.693
+      }
+    }
+  RULERSPACING = ONEINCH
+  PAPERGRIDSPACING = HALFINCH
+  REGIONINWORKAREA
+    {
+    X1 = -0.05
+    Y1 = -0.05
+    X2 = 11.05
+    Y2 = 8.55
+    }
+$!COLORMAP 
+  CONTOURCOLORMAP = SMRAINBOW
+$!COLORMAPCONTROL RESETTOFACTORY
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|' 
+  INITIALPLOTTYPE = CARTESIAN3D
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL1|' 
+$!REMOVEVAR |LFDSVL1|
+$!REMOVEVAR |LFDSFN1|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 1
+    Y = 0.25
+    }
+  WIDTH = 9
+  HEIGHT = 8
+$!PLOTTYPE  = CARTESIAN3D
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [11]
+$!GLOBALRGB 
+  RANGEMIN = 0
+  RANGEMAX = 1
+$!GLOBALCONTOUR  1
+  VAR = 4
+  DEFNUMLEVELS = 20
+  LABELS
+    {
+    NUMFORMAT
+      {
+      FORMATTING = EXPONENTIAL
+      PRECISION = 1
+      NEGATIVEPREFIX = '' 
+      NEGATIVESUFFIX = '' 
+      ZEROPREFIX = '' 
+      ZEROSUFFIX = '' 
+      }
+    }
+  LEGEND
+    {
+    SHOW = YES
+    XYPOS
+      {
+      X = 99.771
+      Y = 78.274
+      }
+    HEADERTEXTSHAPE
+      {
+      HEIGHT = 3.5
+      }
+    NUMBERTEXTSHAPE
+      {
+      HEIGHT = 3
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      MARGIN = 0
+      }
+    LABELINCREMENT = 1.155E+15
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = 2.8869999754E+15
+    RANGEMAX = 8.66099992619E+15
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1.15479999016E+16
+      }
+    }
+$!CONTOURLEVELS NEW
+  CONTOURGROUP = 1
+  RAWDATA
+20
+1.1707619076E+13
+2.3415238152E+13
+3.5122857228E+13
+4.6830476304E+13
+5.853809538E+13
+7.0245714456E+13
+8.1953333532E+13
+9.3660952608E+13
+1.05368571684E+14
+1.1707619076E+14
+1.28783809836E+14
+1.40491428912E+14
+1.52199047988E+14
+1.63906667064E+14
+1.7561428614E+14
+1.87321905216E+14
+1.99029524292E+14
+2.10737143368E+14
+2.22444762444E+14
+2.3415238152E+14
+$!GLOBALCONTOUR  2
+  VAR = 4
+  LEGEND
+    {
+    LABELINCREMENT = 1.271E+15
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = 3.17774993398E+15
+    RANGEMAX = 9.53324980195E+15
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1.27109997359E+16
+      }
+    }
+$!CONTOURLEVELS NEW
+  CONTOURGROUP = 2
+  RAWDATA
+15
+7.94437483495E+14
+1.58887496699E+15
+2.38331245049E+15
+3.17774993398E+15
+3.97218741748E+15
+4.76662490097E+15
+5.56106238447E+15
+6.35549986796E+15
+7.14993735146E+15
+7.94437483495E+15
+8.73881231845E+15
+9.53324980195E+15
+1.03276872854E+16
+1.11221247689E+16
+1.19165622524E+16
+$!GLOBALCONTOUR  3
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  4
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!BLANKING 
+  VALUE
+    {
+    CONSTRAINT 1
+      {
+      INCLUDE = YES
+      VALUECUTOFF = 0.03
+      VARA = 2
+      }
+    CONSTRAINT 2
+      {
+      INCLUDE = YES
+      RELOP = GREATERTHANOREQUAL
+      VALUECUTOFF = 0.9
+      VARA = 2
+      }
+    CONSTRAINT 3
+      {
+      INCLUDE = YES
+      VALUECUTOFF = 0.03
+      VARA = 3
+      }
+    CONSTRAINT 4
+      {
+      INCLUDE = YES
+      RELOP = GREATERTHANOREQUAL
+      VALUECUTOFF = 0.9
+      VARA = 3
+      VARB = 2
+      }
+    }
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    COLOR = RED
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+$!FIELD  [2]
+  MESH
+    {
+    COLOR = GREEN
+    }
+  CONTOUR
+    {
+    COLOR = GREEN
+    }
+  VECTOR
+    {
+    COLOR = GREEN
+    }
+  SCATTER
+    {
+    COLOR = GREEN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = GREEN
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+$!FIELD  [3]
+  MESH
+    {
+    COLOR = BLUE
+    }
+  CONTOUR
+    {
+    COLOR = BLUE
+    }
+  VECTOR
+    {
+    COLOR = BLUE
+    }
+  SCATTER
+    {
+    COLOR = BLUE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = BLUE
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+$!FIELD  [4]
+  MESH
+    {
+    COLOR = CYAN
+    }
+  CONTOUR
+    {
+    COLOR = CYAN
+    }
+  VECTOR
+    {
+    COLOR = CYAN
+    }
+  SCATTER
+    {
+    COLOR = CYAN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = CYAN
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+$!FIELD  [5]
+  MESH
+    {
+    COLOR = YELLOW
+    }
+  CONTOUR
+    {
+    COLOR = YELLOW
+    }
+  VECTOR
+    {
+    COLOR = YELLOW
+    }
+  SCATTER
+    {
+    COLOR = YELLOW
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = YELLOW
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+$!FIELD  [6]
+  MESH
+    {
+    COLOR = PURPLE
+    }
+  CONTOUR
+    {
+    COLOR = PURPLE
+    }
+  VECTOR
+    {
+    COLOR = PURPLE
+    }
+  SCATTER
+    {
+    COLOR = PURPLE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = PURPLE
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+$!FIELD  [7]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    COLOR = RED
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+$!FIELD  [8]
+  MESH
+    {
+    COLOR = GREEN
+    }
+  CONTOUR
+    {
+    COLOR = GREEN
+    }
+  VECTOR
+    {
+    COLOR = GREEN
+    }
+  SCATTER
+    {
+    COLOR = GREEN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = GREEN
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+$!FIELD  [9]
+  MESH
+    {
+    COLOR = BLUE
+    }
+  CONTOUR
+    {
+    COLOR = BLUE
+    }
+  VECTOR
+    {
+    COLOR = BLUE
+    }
+  SCATTER
+    {
+    COLOR = BLUE
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = BLUE
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+$!FIELD  [10]
+  MESH
+    {
+    COLOR = CYAN
+    }
+  CONTOUR
+    {
+    COLOR = CYAN
+    }
+  VECTOR
+    {
+    COLOR = CYAN
+    }
+  SCATTER
+    {
+    COLOR = CYAN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = CYAN
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+$!FIELD  [11]
+  MESH
+    {
+    COLOR = YELLOW
+    }
+  CONTOUR
+    {
+    COLOR = YELLOW
+    }
+  VECTOR
+    {
+    COLOR = YELLOW
+    }
+  SCATTER
+    {
+    COLOR = YELLOW
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = YELLOW
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+$!THREEDAXIS 
+  XDETAIL
+    {
+    VARNUM = 1
+    }
+  YDETAIL
+    {
+    VARNUM = 2
+    }
+  ZDETAIL
+    {
+    VARNUM = 3
+    }
+$!VIEW FIT
+$!THREEDAXIS 
+  AXISMODE = INDEPENDENT
+  XYDEPXTOYRATIO = 1
+  DEPXTOYRATIO = 12.7500006519
+  DEPXTOZRATIO = 12.7500006519
+  FRAMEAXIS
+    {
+    SHOW = NO
+    }
+$!THREEDAXIS 
+  XDETAIL
+    {
+    RANGEMIN = -0.021999999508261681991
+    RANGEMAX = 0.021999999508261681991
+    GRSPACING = 0.01
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        FONT = COURIER
+        SIZEUNITS = FRAME
+        }
+      }
+    TITLE
+      {
+      TEXTSHAPE
+        {
+        FONT = TIMES
+        SIZEUNITS = FRAME
+        HEIGHT = 6
+        }
+      OFFSET = 5
+      }
+    AXISLINE
+      {
+      EDGE = 2
+      }
+    }
+$!THREEDAXIS 
+  YDETAIL
+    {
+    RANGEMIN = -0.10100000221282244561
+    RANGEMAX = 1.021000030077993781
+    GRSPACING = 0.5
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        FONT = COURIER
+        SIZEUNITS = FRAME
+        }
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 1
+        NEGATIVEPREFIX = '' 
+        NEGATIVESUFFIX = '' 
+        ZEROPREFIX = '' 
+        ZEROSUFFIX = '' 
+        }
+      }
+    TITLE
+      {
+      TEXTSHAPE
+        {
+        FONT = TIMES
+        SIZEUNITS = FRAME
+        HEIGHT = 6
+        }
+      OFFSET = 5
+      }
+    AXISLINE
+      {
+      EDGE = 3
+      }
+    }
+$!THREEDAXIS 
+  ZDETAIL
+    {
+    RANGEMIN = -0.10100000221282243174
+    RANGEMAX = 1.021000030077993781
+    GRSPACING = 0.2
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        FONT = COURIER
+        SIZEUNITS = FRAME
+        }
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 1
+        NEGATIVEPREFIX = '' 
+        NEGATIVESUFFIX = '' 
+        ZEROPREFIX = '' 
+        ZEROSUFFIX = '' 
+        }
+      }
+    TITLE
+      {
+      TEXTSHAPE
+        {
+        FONT = TIMES
+        SIZEUNITS = FRAME
+        HEIGHT = 6
+        }
+      OFFSET = 5
+      }
+    AXISLINE
+      {
+      EDGE = 3
+      }
+    }
+$!GLOBALISOSURFACE 
+  ISOSURFACESELECTION = ALLCONTOURLEVELS
+  ISOVALUE1 = 1000000
+  ISOVALUE2 = 1000000
+  ISOVALUE3 = 9.53324980195E+15
+  SURFACEEFFECTS
+    {
+    LIGHTINGEFFECT = GOURAUD
+    SURFACETRANSLUCENCY = 80
+    USETRANSLUCENCY = YES
+    }
+$!GLOBALSLICE 
+  SHOW = YES
+  SLICESURFACE = YPLANES
+  POSITION1
+    {
+    X = -0.015
+    Y = 0.97000002861
+    Z = 0.97000002861
+    I = 51
+    J = 31
+    K = 31
+    }
+  POSITION2
+    {
+    X = 0.015
+    Y = 0.630000018825
+    Z = 0.88
+    I = 101
+    J = 61
+    K = 61
+    }
+  NUMINTERMEDIATESLICES = 3
+  CONTOUR
+    {
+    USELIGHTINGEFFECT = YES
+    }
+  BOUNDARY
+    {
+    SHOW = NO
+    }
+  SURFACEEFFECTS
+    {
+    LIGHTINGEFFECT = GOURAUD
+    }
+$!GLOBALTHREED 
+  AXISSCALEFACT
+    {
+    X = 2.14358881
+    Y = 0.0784313685387
+    Z = 0.0784313685387
+    }
+  ROTATEORIGIN
+    {
+    X = 0
+    Y = 0.460000013933
+    Z = 0.460000013933
+    }
+  LIGHTSOURCE
+    {
+    XYZDIRECTION
+      {
+      X = 0.203131779277
+      Y = -0.308641975309
+      Z = 0.929234960236
+      }
+    }
+$!THREEDVIEW 
+  PSIANGLE = 77.2987
+  THETAANGLE = -165.067
+  VIEWERPOSITION
+    {
+    X = 0.0893587900291
+    Y = 10.4029561988
+    Z = 2.74102890676
+    }
+  VIEWWIDTH = 0.153554
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWBOUNDARY = NO
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 0.754037740399
+    Y = 95.9605649549
+    }
+  TEXTSHAPE
+    {
+    FONT = TIMES
+    HEIGHT = 24
+    }
+  TEXT = '&(AUXDATASET:planeType)' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 74
+    Y = 95
+    }
+  TEXTSHAPE
+    {
+    FONT = TIMES
+    HEIGHT = 28
+    }
+  TEXT = '&(ZONENAME:11)' 
+$!SETSTYLEBASE CONFIG

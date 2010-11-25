@@ -1,0 +1,41 @@
+# ---------------------------------
+# Passport of the core.out options.
+# ---------------------------------
+# That is mapped regular expression, used to process command line options passed
+# to the 'core.out' (computational kernel of the Mandor2 code). Format is column
+# based, '#' comments the rest of the line, columns are separated by ':'. If one
+# needs character ':' in data field he/she must escape it like '\:'. Line can be
+# continued using '\'. Passport can be used to check options for correctness and
+# so on. Blank lines are ignored, spaces around ':' are ignored, end/start line
+# spaces are ignored.
+#
+# Format of the record is shown below:
+# inner name : short option : long option : reg-exp for argument extraction : \
+#       type : "comment" (surrounding \" are stripped)
+#
+# After line composed only of %% in the beginning, sequence of the examples MUST
+# be presented to properly evaluate all options and they behaviour. Trainer is
+# the same script used to read passport from pipe.
+#
+# Options --filter are reserved to all filters used in the system. Suggested
+# argumets are:
+#   o --filter:debug	prints dump into stderr (to separate it from strin)
+#   o --filter:check	tries filter with examples to evaluate performance of
+#                       new options (creator SHOULD supply enough examples!)
+#
+
+partition->lock : : --partition : lock<(\d+),(\d+),(\d+)> : \
+    vec3i_t : "Disables slicing across choosen axis."
+partition->jitter : -p : --partition : jitter<(\d+),(\d+),(\d+)> : \
+    vec3i_t : "Amplitude of the random displacement for each axis."
+partition->sequence : -p : --partition : sequence<([xyzXYZ\d]*)> : \
+    word : "Direct sequence import."
+
+%%
+
+-p:lock<0,1,0>			# Blocks Y axis.
+
+--partition:jitter<0,7,9>	# Introduces no displacement for X axis and
+				# noise for Y (from -7 to 7) and for Z axises.
+
+--partition:sequence<x2y8z3>	# Direct partitioning of the domain on 48 cpus.

@@ -1,0 +1,45 @@
+[units]
+@ 1.0		Positive => works as wavelengh in microns [10^-4 cm].
+		Negative => works as critical electrons' density [cm^-3].
+
+[mesh]
+@ 50		imax: mesh size along X axis
+@ 0		jmax: mesh size along Y axis
+@ 0		kmax: mesh size along Z axis
+@ 1.42857e0	Lx:   domain size along X axis
+@ 1.42857e0	Ly:   domain size along Y axis
+@ 1.42857e0	Lz:   domain size along Z axis
+@ -0.90		tau:  time step
+
+[boundaryConditions]
+@ 0		xMin
+@ 0		xMax
+@ 0		yMin
+@ 0		yMax
+@ 0		zMin
+@ 0		zMax
+
+  Type of boundary condition is:
+    0 - periodic;
+    1 - mirror;
+    2 - Mur's first order absorbing boundary condition.
+
+[photoDF]
+@ 10		nx
+@ 2		ny
+@ 2		nz 
+@ 7		Number of particles on location
+@ 1		mirror flag (0 - no mirror)
+@ 1		nRotations
+@ 1.0		omegaPe^2
+@ 1.0		q/M
+@ 0.2		V0
+@ 1		Nx (staggered mesh steps).
+@ 1		Ny (staggered mesh steps).
+@ 1		Nz (staggered mesh steps).
+@ 0		1 to have uniform weight of markers, other to have uniform spacing of markers.
+
+[seed:Weibel]
+@ 1e-5		H0
+@ 1		modeX
+@ 0.0		phi0

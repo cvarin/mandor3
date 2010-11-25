@@ -1,0 +1,49 @@
+[units]
+@ 1.0		Positive => works as wavelengh in microns [10^-4 cm].
+		Negative => works as critical electrons' density [cm^-3].
+
+[mesh]
+@ 400		imax: mesh size along X axis
+@ 400		jmax: mesh size along Y axis
+@ 0		kmax: mesh size along Z axis
+@ 40.0e0	Lx:   domain size along X axis
+@ 40.0e0	Ly:   domain size along Y axis
+@ 40.0e0	Lz:   domain size along Z axis
+@ -0.6		tau: positive => unit is femtoseconds;
+                     negative => unit is c/sqrt (1/h1^2 + .. + 1/h3^2)).
+
+[boundaryConditions]
+@ 2		xMin
+@ 2		xMax
+@ 2		yMin
+@ 2		yMax
+@ 0		zMin
+@ 0		zMax
+
+  Type of boundary condition is:
+    0 - periodic;
+    1 - mirror;
+    2 - Mur's first order absorbing boundary condition.
+
+[gaussSpot]
+@ -1.0e-2	positive => I [W/cm^2] / negative => eE/mc\omega.
+@ 1.0		Cyclic frequency [omega_0]. Must be 1 (or you understand what do you do).
+@ 35.0		Focus X coordinate [micron].
+@ 20.0		Focus Y coordinate [micron].
+@ 20.0		Focus Z coordinate [micron].
+@ 1.2		Gauss-spot width (FMHW for laser intensity) [micron].
+@ 15.0		Pulse duration (FMHW for laser intensity) [fs].
+@ 40.0		Pulse front offset [fs].
+> 10.0		Plato duration [fs].
+@ 1		EY != 0
+@ 0		EZ != 0
+> 20.0		TF/SF emitter face position [micron].
+
+[TFSF]
+@ 200		TF/SF interface position (X).
+@ 340		TF/SF interface position (X).
+@ 100		TF/SF interface position (Y).
+@ 300		TF/SF interface position (Y).
+@ 0		TF/SF interface position (Z).
+@ 100		TF/SF interface position (Z).
+@ record	TF/SF interface regime (record, playForward, playBackward).

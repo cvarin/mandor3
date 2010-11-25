@@ -1,0 +1,38 @@
+That is core test of the particle module. 
+
+Testing steps:
+    o charge conservation test activated with predefined keys in Makefile;
+    o you can see if boundary conditions are fine;
+    o you can test charge conservation '∂ρ/∂t + div j = 0';
+    o than you can test Gauss law 'div E = 4πρ'.
+    
+      --------------------------------------------------------------
+        Accuracy always should be NUMERIC, i.e. or order of 1e-14!
+      --------------------------------------------------------------
+    
+    
+Notes on results:
+    o the most usefull are random particles which hit every cell with every
+      angle, but the only usefull outcome is a number;
+    o to show something I ran simulation with 'solid' body with one boundary
+      periodic, one mirror, and one absorbing as shown below.
+      
+
+[boundaryConditions]
+@ 1		xMin
+@ 1		xMax
+@ 0		yMin
+@ 0		yMax
+@ 2		zMin
+@ 2		zMax
+
+[DF:uniform]
+@ 1.0		rho
+@ 1.0e-5	q/M
+@ 0.4		ux	Mirror    boundary: many rebounds
+@ 0.2		uy      Periodic  boundary: few wraps
+@ 0.1		uz      Absorbing boundary: have them all in the end
+@ 0.0		dUx
+@ 0.0		dUy
+@ 0.0		dUz
+      

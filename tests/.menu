@@ -1,0 +1,74 @@
+>   Periodic BC 	: EM-wave in "infinite" space.
+        #!/bin/sh
+        cp 01_periodicBC/*.* ../
+        cp 01_periodicBC/visualization/*.* ../visualization/
+        cd ..
+        ./test_run.sh
+
+>   EM-resonator 	: Standing wave oscillations test.
+        #!/bin/sh
+        cp 02_EM-resonator/*.* ../
+        cp 02_EM-resonator/visualization/*.* ../visualization/
+        cd ..
+        ./test_run.sh
+
+>   Absorbing BC 	: 2D laser pulse hits the absorbing wall.
+        #!/bin/sh
+        cp 03_absorbingBC/*.* ../
+        cp 03_absorbingBC/visualization/*.* ../visualization/
+        cd ..
+        ./test_run.sh
+
+>   Noisy particles 	: 3D brownian particles in cubic domain.
+        #!/bin/sh
+        cp 05_slab/*.* ../
+        cp 05_slab/visualization/*.* ../visualization/
+        cd ..
+        ./test_run.sh
+
+>   Two-stream  	: two-stream instability (electrostatic, 1D).
+        #!/bin/sh
+        cp 06_twoStream/*.* ../
+        cp 06_twoStream/visualization/*.* ../visualization/
+        cd ..
+        ./test_run.sh
+
+>   TFSF interface	: Total Field / Scattered Field demo (point source).
+        #!/bin/sh
+        cp 08_interface/*.* ../
+        cd ..
+        ./test_run.sh
+
+>   laser pulse		: Total Field / Scattered Field demo (focused laser pulse).
+        #!/bin/sh
+        cp 09_laser/*.* ../
+        cd ..
+        ./test_run.sh
+
+>   reflection + self heating		: Total Field / Scattered Field demo (focused laser pulse).
+        #!/bin/sh
+        cp 10_foils/*.* ../
+        cp 10_foils/visualization/*.* ../visualization/
+        cd ..
+        ./test_run.sh
+
+>   two beams		: Total Field / Scattered Field demo (focused laser pulse).
+        #!/bin/sh
+        cp 14_multi-beams/*.* ../
+        cp 14_multi-beams/visualization/*.* ../visualization/
+        cd ..
+        ./test_run.sh
+
+>   Kostya's laser beam	: Demo of injecting focused beam using Stratton-Chu integral.
+        #!/bin/sh
+        cp 15_scpic-laser/*.* ../
+        cp 15_scpic-laser/visualization/*.* ../visualization/
+        cd ..
+        ./test_run.sh
+
+>   complex target	: Composing of complex target using simple piece algebra.
+        #!/bin/sh
+        cp 16_complex_target/*.* ../
+        cp 16_complex_target/visualization/*.* ../visualization/
+        cd ..
+        ./test_run.sh

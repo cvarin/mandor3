@@ -1,0 +1,105 @@
+[units]
+@ 1.0		Positive => works as wavelengh in microns [10^-4 cm].
+		Negative => works as critical electrons' density [cm^-3].
+
+[mesh]
+@ 400		imax: mesh size along X axis
+@ 300		jmax: mesh size along Y axis
+@ 0		kmax: mesh size along Z axis
+@ 40.0e0	Lx[microns]:   domain size along X axis
+@ 30.0e0	Ly[microns]:   domain size along Y axis
+@ 40.0e0	Lz[microns]:   domain size along Z axis
+@ -0.95		tau: positive => unit is femtoseconds;
+                     negative => unit is c/sqrt (1/h1^2 + .. + 1/h3^2)).
+
+[boundaryConditions]
+@ 2		xMin
+@ 2		xMax
+@ 2		yMin
+@ 2		yMax
+@ 0		zMin
+@ 0		zMax
+
+  Type of boundary condition is:
+    0 - periodic;
+    1 - mirror;
+    2 - Mur's first order absorbing boundary condition.
+
+[gaussSpot]
+@ 1.0e22	positive => I [W/cm^2] / negative => eE/mc\omega.
+@ 1.0		Cyclic frequency [omega_0]. Must be 1 (or you understand what do you do).
+@ 1.0		Focus X coordinate [micron].
+@ 15.0		Focus Y coordinate [micron].
+@ 20.0		Focus Z coordinate [micron].
+@ 15.0		Gauss-spot width (FMHW for laser intensity) [micron].
+@ 15.0		Pulse duration (FMHW for laser intensity) [fs].
+@ 40.0		Pulse offset [fs].
+@ 0		EY != 0
+@ 1		EZ != 0
+
+
+[cluster]
+@ 19		x-coordinate of the center [micron]
+@ 15		y-coordinate of the center [micron]
+@ 10		z-coordinate of the center [micron]
+@ 2		Radius [micron]
+@ 1.0		Concentration (negative => [cm^-3], positive => [electrons' critical]).
+@ gaussian	Type of profile (linear or gaussian).
+> 1.0		Scale 'L' in the exp (-r^2/L^2) [micron].
+@ -1		Charge of particle [|e|]
+@ +1		Mass of particle [m_e]
+@ 5		Markers per cell per X direction
+@ 5		Markers per cell per Y direction
+@ 5		Markers per cell per Z direction
+
+  Electron component of the hydrogen cluster.
+
+[cluster]
+@ 19		x-coordinate of the center [micron]
+@ 15		y-coordinate of the center [micron]
+@ 10		z-coordinate of the center [micron]
+@ 2		Radius [micron]
+@ 1.0		Concentration (negative => [cm^-3], positive => [electrons' critical]).
+@ gaussian	Type of profile (linear or gaussian).
+> 1.0		Scale 'L' in the exp (-r^2/L^2) [micron].
+@ +1		Charge of particle [|e|]
+@ +1836		Mass of particle [m_e]
+@ 5		Markers per cell per X direction
+@ 5		Markers per cell per Y direction
+@ 5		Markers per cell per Z direction
+
+  Proton component of the hydrogen cluster.
+
+
+  [cluster]
+@ 19		x-coordinate of the center [micron]
+@ 15		y-coordinate of the center [micron]
+@ 10		z-coordinate of the center [micron]
+@ 2		Radius [micron]
+@ 1.0		Concentration (negative => [cm^-3], positive => [electrons' critical]).
+@ linear	Type of profile (linear or gaussian).
+> 0.2		Concentration (negative => in [cm^-3], positive => in electrons' critical).
+@ +1		Charge of particle [|e|]
+@ +1836		Mass of particle [m_e]
+@ 5		Markers per cell per X direction
+@ 5		Markers per cell per Y direction
+@ 5		Markers per cell per Z direction
+
+  Example of the linear profile.
+  
+  [cluster]
+@ 19		x-coordinate of the center [micron]
+@ 15		y-coordinate of the center [micron]
+@ 10		z-coordinate of the center [micron]
+@ 2		Radius [micron]
+@ 1.0		Concentration (negative => [cm^-3], positive => [electrons' critical]).
+@ gaussian	Type of profile (linear or gaussian).
+> 1.0		Scale 'L' in the exp (-r^2/L^2) [micron].
+@ -1		Charge of particle [|e|]
+@ +1		Mass of particle [m_e]
+@ 5		Markers per cell per X direction
+@ 5		Markers per cell per Y direction
+@ 5		Markers per cell per Z direction
+
+  Example of the gaussian profile.
+  

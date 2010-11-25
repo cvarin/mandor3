@@ -1,0 +1,74 @@
+  This simulation used to check boundary conditions in current density 
+  evaluation procedure. Use it with activated option -DMC_GAUSS_TEST and 
+  others debug checks in Makefile.
+  
+[units]
+@ 1.0		Positive => works as wavelengh in microns [10^-4 cm].
+		Negative => works as critical electrons' density [cm^-3].
+
+[mesh]
+@ 20		imax: mesh size along X axis
+@ 20		jmax: mesh size along Y axis
+@ 20		kmax: mesh size along Z axis
+@ 2.0e0		Lx [micron]:   domain size along X axis
+@ 2.0e0		Ly [micron]:   domain size along Y axis
+@ 2.0e0		Lz [micron]:   domain size along Z axis
+@ -0.95		tau:  time step
+
+[boundaryConditions]
+@ 1		xMin
+@ 1		xMax
+@ 0		yMin
+@ 0		yMax
+@ 0		zMin
+@ 0		zMax
+
+  Type of boundary condition is:
+    0 - periodic;
+    1 - mirror;
+    2 - Mur's first order absorbing boundary condition.
+
+[plasma]
+@ 1		nx.
+@ 1		ny.
+@ 1		nz.
+@ 1		Particles per point (velocity layers).
+@ boxes		Cuts out a small box.
+>   1   1   1	r0		
+> 0.5   0   0	direction 1
+>   0 0.5   0	direction 2
+>   0   0 0.5	direction 3
+
+
+[DF:uniform]
+@ -1.0		rho
+@ -1.0e-5	q/M
+@ 0.0		ux
+@ 0.0		uy
+@ 0.0		uz
+@ 2.0		dUx
+@ 2.0		dUy
+@ 2.0		dUz
+
+
+[plasma]
+@ 1		nx.
+@ 1		ny.
+@ 1		nz.
+@ 1		Particles per point (velocity layers).
+@ boxes		Cuts out a small box.
+>   1   1   1	r0		
+> 0.5   0   0	direction 1
+>   0 0.5   0	direction 2
+>   0   0 0.5	direction 3
+
+
+[DF:uniform]
+@ 1.0		rho
+@ 1.0e-5	q/M
+@ 0.0		ux
+@ 0.0		uy
+@ 0.0		uz
+@ 2.0		dUx
+@ 2.0		dUy
+@ 2.0		dUz

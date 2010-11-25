@@ -1,0 +1,1833 @@
+#!MC 1000
+$!VarSet |LFDSFN1| = '"../output/tecplot3D.plt"'
+$!VarSet |LFDSVL1| = '"x" "y" "z" "E_x" "E_y" "E_z" "H_x" "H_y" "H_z" "j_x" "j_y" "j_z" "E^2" "H^2" "`r"'
+$!SETSTYLEBASE FACTORY
+$!PAPER 
+  BACKGROUNDCOLOR = WHITE
+  ISTRANSPARENT = YES
+  ORIENTPORTRAIT = NO
+  SHOWGRID = YES
+  SHOWRULER = YES
+  SHOWPAPER = YES
+  PAPERSIZE = LETTER
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    A3
+      {
+      WIDTH = 11.693
+      HEIGHT = 16.535
+      }
+    A4
+      {
+      WIDTH = 8.2677
+      HEIGHT = 11.693
+      }
+    }
+  RULERSPACING = ONEINCH
+  PAPERGRIDSPACING = HALFINCH
+  REGIONINWORKAREA
+    {
+    X1 = -0.05
+    Y1 = -0.05
+    X2 = 11.05
+    Y2 = 8.55
+    }
+$!COLORMAP 
+  CONTOURCOLORMAP = SMRAINBOW
+$!COLORMAPCONTROL RESETTOFACTORY
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|' 
+  INITIALPLOTTYPE = CARTESIAN3D
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL1|' 
+$!REMOVEVAR |LFDSVL1|
+$!REMOVEVAR |LFDSFN1|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 1
+    Y = 0.25
+    }
+  WIDTH = 9
+  HEIGHT = 8
+$!PLOTTYPE  = CARTESIAN3D
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [1]
+$!GLOBALRGB 
+  RANGEMIN = 0
+  RANGEMAX = 1
+$!GLOBALCONTOUR  1
+  VAR = 15
+  LABELS
+    {
+    NUMFORMAT
+      {
+      FORMATTING = FIXEDFLOAT
+      PRECISION = 3
+      }
+    }
+  LEGEND
+    {
+    XYPOS
+      {
+      X = 84.217
+      Y = 42.128
+      }
+    ANCHORALIGNMENT = TOPLEFT
+    HEADERTEXTSHAPE
+      {
+      FONT = TIMES
+      HEIGHT = 3
+      }
+    NUMBERTEXTSHAPE
+      {
+      FONT = TIMES
+      HEIGHT = 3
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      }
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = -3.78922498226
+    RANGEMAX = -1.26307499409
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = -5.05229997635
+      CMAX = 0
+      }
+    REVERSECOLORMAP = YES
+    }
+$!CONTOURLEVELS NEW
+  CONTOURGROUP = 1
+  RAWDATA
+9
+-4.5
+-4
+-3.5
+-3
+-2.5
+-2
+-1.5
+-1
+-0.5
+$!GLOBALCONTOUR  2
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  3
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  4
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALTHREEDVECTOR 
+  UVAR = 7
+  VVAR = 8
+  WVAR = 9
+  RELATIVELENGTH = 0.00939647434329
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = BLACK
+    LINEPATTERN = DASHDOT
+    PATTERNLENGTH = 0.8
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    USELIGHTINGEFFECT = YES
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = EXPOSEDCELLFACES
+    }
+  SURFACEEFFECTS
+    {
+    LIGHTINGEFFECT = GOURAUD
+    }
+$!THREEDAXIS 
+  XDETAIL
+    {
+    VARNUM = 1
+    }
+  YDETAIL
+    {
+    VARNUM = 2
+    }
+  ZDETAIL
+    {
+    VARNUM = 3
+    }
+$!VIEW FIT
+$!THREEDAXIS 
+  AXISMODE = XYZDEPENDENT
+  XYDEPXTOYRATIO = 1
+  DEPXTOYRATIO = 1
+  DEPXTOZRATIO = 1
+  FRAMEAXIS
+    {
+    SHOW = NO
+    XYPOS
+      {
+      X = 9.7261
+      Y = 87.898
+      }
+    }
+$!THREEDAXIS 
+  XDETAIL
+    {
+    RANGEMIN = -1.439999961853027477
+    RANGEMAX = 30.239999198913572798
+    GRSPACING = 10
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        FONT = TIMES
+        HEIGHT = 6
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'X [<greek>m</greek>m]' 
+      TEXTSHAPE
+        {
+        FONT = TIMES
+        HEIGHT = 7
+        }
+      }
+    AXISLINE
+      {
+      EDGE = 3
+      }
+    }
+$!THREEDAXIS 
+  YDETAIL
+    {
+    RANGEMIN = -1.4100000381469728339
+    RANGEMAX = 29.610000801086425071
+    GRSPACING = 10
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        FONT = TIMES
+        HEIGHT = 6
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Y [<greek>m</greek>m]' 
+      TEXTSHAPE
+        {
+        FONT = TIMES
+        HEIGHT = 8
+        }
+      PERCENTALONGLINE = 100
+      }
+    AXISLINE
+      {
+      EDGE = 4
+      }
+    }
+$!THREEDAXIS 
+  ZDETAIL
+    {
+    RANGEMIN = -1.0199999809265136719
+    RANGEMAX = 21.419999599456787109
+    GRSPACING = 10
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        FONT = TIMES
+        HEIGHT = 6
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Z[<greek>m</greek>m]' 
+      TEXTSHAPE
+        {
+        FONT = TIMES
+        HEIGHT = 7
+        }
+      }
+    AXISLINE
+      {
+      EDGE = 1
+      }
+    }
+$!GLOBALISOSURFACE 
+  SHOW = YES
+  ISOSURFACESELECTION = ALLCONTOURLEVELS
+  ISOVALUE1 = -3.78922498226
+  ISOVALUE2 = -2.52614998817
+  ISOVALUE3 = -1.26307499409
+  SURFACEEFFECTS
+    {
+    LIGHTINGEFFECT = GOURAUD
+    SURFACETRANSLUCENCY = 90
+    USETRANSLUCENCY = YES
+    }
+$!GLOBALSLICE 
+  SHOW = YES
+  SLICESURFACE = ZPLANES
+  POSITION1
+    {
+    X = 0.333333333333
+    Y = 0.503172851866
+    Z = 10.12
+    I = 8
+    J = 8
+    K = 8
+    }
+  POSITION2
+    {
+    X = 1
+    Y = 0.666666666667
+    Z = 0.666666666667
+    I = 14
+    J = 14
+    K = 14
+    }
+  NUMINTERMEDIATESLICES = 2
+  MESH
+    {
+    LINETHICKNESS = 0.02
+    }
+  VECTOR
+    {
+    SHOW = YES
+    }
+  SHADE
+    {
+    SHOW = YES
+    }
+  BOUNDARY
+    {
+    SHOW = NO
+    LINETHICKNESS = 0.1
+    }
+  SURFACEEFFECTS
+    {
+    LIGHTINGEFFECT = GOURAUD
+    USETRANSLUCENCY = YES
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 0
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 0.0484848484848
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 0.0485333333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 0.0969696969697
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 0.0970666666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 0.145454545455
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 0.1456
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 0.193939393939
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 0.194133333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 0.242424242424
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 0.242666666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 0.290909090909
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 0.2912
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 0.339393939394
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 0.339733333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 0.387878787879
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 0.388266666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 0.436363636364
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 0.4368
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 0.484848484848
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 0.485333333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 0.533333333333
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 0.533866666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 0.581818181818
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 0.5824
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 0.630303030303
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 0.630933333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 0.678787878788
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 0.679466666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 0.727272727273
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 0.728
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 0.775757575758
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 0.776533333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 0.824242424242
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 0.825066666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 0.872727272727
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 0.8736
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 0.921212121212
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 0.922133333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 0.969696969697
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 0.970666666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 1.01818181818
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 1.0192
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 1.06666666667
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 1.06773333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 1.11515151515
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 1.11626666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 1.16363636364
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 1.1648
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 1.21212121212
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 1.21333333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 1.26060606061
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 1.26186666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 1.30909090909
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 1.3104
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 1.35757575758
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 1.35893333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 1.40606060606
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 1.40746666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 1.45454545455
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 1.456
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 1.50303030303
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 1.50453333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 1.55151515152
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 1.55306666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 1.6
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 1.6016
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 1.64848484848
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 1.65013333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 1.69696969697
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 1.69866666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 1.74545454545
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 1.7472
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 1.79393939394
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 1.79573333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 1.84242424242
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 1.84426666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 1.89090909091
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 1.8928
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 1.93939393939
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 1.94133333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 1.98787878788
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 1.98986666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 2.03636363636
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 2.0384
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 2.08484848485
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 2.08693333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 2.13333333333
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 2.13546666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 2.18181818182
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 2.184
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 2.2303030303
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 2.23253333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 2.27878787879
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 2.28106666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 2.32727272727
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 2.3296
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 2.37575757576
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 2.37813333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 2.42424242424
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 2.42666666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 2.47272727273
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 2.4752
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 2.52121212121
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 2.52373333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 2.5696969697
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 2.57226666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 2.61818181818
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 2.6208
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 2.66666666667
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 2.66933333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 2.71515151515
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 2.71786666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 2.76363636364
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 2.7664
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 2.81212121212
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 2.81493333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 2.86060606061
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 2.86346666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 2.90909090909
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 2.912
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 2.95757575758
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 2.96053333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 3.00606060606
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 3.00906666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 3.05454545455
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 3.0576
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 3.10303030303
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 3.10613333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 3.15151515152
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 3.15466666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 3.2
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 3.2032
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 3.24848484848
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 3.25173333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 3.29696969697
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 3.30026666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 3.34545454545
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 3.3488
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 3.39393939394
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 3.39733333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 3.44242424242
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 3.44586666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 3.49090909091
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 3.4944
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 3.53939393939
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 3.54293333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 3.58787878788
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 3.59146666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 3.63636363636
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 3.64
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 3.68484848485
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 3.68853333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 3.73333333333
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 3.73706666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 3.78181818182
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 3.7856
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 3.8303030303
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 3.83413333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 3.87878787879
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 3.88266666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 3.92727272727
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 3.9312
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 3.97575757576
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 3.97973333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 4.02424242424
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 4.02826666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 4.07272727273
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 4.0768
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 4.12121212121
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 4.12533333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 4.1696969697
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 4.17386666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 4.21818181818
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 4.2224
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 4.26666666667
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 4.27093333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 4.31515151515
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 4.31946666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 4.36363636364
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 4.368
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 4.41212121212
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 4.41653333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 4.46060606061
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 4.46506666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 4.50909090909
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 4.5136
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 4.55757575758
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 4.56213333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 4.60606060606
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 4.61066666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 4.65454545455
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 4.6592
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 4.70303030303
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 4.70773333333
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 4.75151515152
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 4.75626666667
+    Y = 0.5
+    Z = 0.5
+    }
+$!STREAMTRACE ADD
+  STREAMTYPE = VOLUMELINE
+  STARTPOS
+    {
+    X = 4.8
+    Y = 0.5
+    Z = 0.5
+    }
+  ALTSTARTPOS
+    {
+    X = 4.8048
+    Y = 0.5
+    Z = 0.5
+    }
+$!GLOBALSTREAM 
+  SHOW = NO
+  STREAMTIMING
+    {
+    DELTATIME = 0.0560309706127
+    }
+  MAXSTEPS = 4
+$!GLOBALTHREED 
+  AXISSCALEFACT
+    {
+    X = 1
+    Y = 1
+    Z = 1
+    }
+  ROTATEORIGIN
+    {
+    X = 14.3999996185
+    Y = 14.1000003815
+    Z = 10.1999998093
+    }
+  LIGHTSOURCE
+    {
+    INTENSITY = 75
+    BACKGROUNDLIGHT = 30
+    }
+  LINELIFTFRACTION = 0.2
+  SYMBOLLIFTFRACTION = 0.6
+  VECTORLIFTFRACTION = 0.7
+$!THREEDVIEW 
+  PSIANGLE = 36.0872
+  THETAANGLE = 125.315
+  ALPHAANGLE = -120
+  VIEWERPOSITION
+    {
+    X = -142.218787234
+    Y = 124.262186824
+    Z = 275.851870797
+    }
+  VIEWWIDTH = 51.0821
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWBOUNDARY = NO
+$!ATTACHGEOM 
+  ANCHORPOS
+    {
+    X = -12.3802680449
+    Y = -3.40951788452
+    }
+  COLOR = RED
+  LINETHICKNESS = 0.4
+  ARROWHEADATTACHMENT = ATEND
+  RAWDATA
+1
+2
+-5.20062499731E-08 1.34914131422E-07 
+13.6756095886 2.30877327919 
+$!SETSTYLEBASE CONFIG

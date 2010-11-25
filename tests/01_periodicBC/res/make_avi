@@ -1,0 +1,10 @@
+#!/bin/sh
+
+fps=5
+bitrate=4000
+
+for f in $1_*.png ; do convert -quality 100 $f `basename $f png`jpg; done 
+
+ffmpeg -r $fps -b $bitrate -i $1_%03d.jpg $1.mp4
+
+rm -f *.jpg

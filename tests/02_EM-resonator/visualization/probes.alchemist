@@ -1,0 +1,15 @@
+Alchemist scientific visualization session.
+Only NumPy and custom classes elements are saved.
+scene rendering script:
+    'projection_push (axisTime, axisField, dummyZ)\n\nfor p in probes.values ()[:3]:\n    draw_line (p["time"], p["Ex"], color = (1, 0, 0, 0))\nprojection_pop ()'
+scene rendering environment:
+    'import Numeric as Num\nfrom Numeric import ArrayType, array\t# To support evaluation of \'array ([..])\'.\nfrom types import FunctionType\n\ncall ("probes.py")\t\t\t\t\t# Loads data on start.'
+Axis
+axisField
+[('direction', 'Y'), ('length', 1.0), ('origin', array([ 0. ,  0. ,  0.5])), ('min', -0.5), ('max', 0.5), ('step', 0.20000000000000001), ('anchor', 0.0), ('ticksN', 4), ('XMIN', 0.02), ('XMAX', 0.0), ('YMIN', 0.0), ('YMAX', 0.0), ('ZMIN', 0.0), ('ZMAX', 0.0), ('xmin', 0.01), ('xmax', 0.0), ('ymin', 0.0), ('ymax', 0.0), ('zmin', 0.0), ('zmax', 0.0), ('color', '0x000000'), ('font', '/usr/X11R6/lib/X11/fonts/truetype/DejaVuSans.ttf'), ('resolution', 20), ('labelOrient', 'X'), ('labelHeight', array([ 0.  ,  0.04,  0.  ])), ('labelCompress', 0.80000000000000004), ('labelFormat', '%.2e'), ('labelOffset', array([-0.134, -0.01 ,  0.   ]))]
+Axis
+axisTime
+[('direction', 'X'), ('length', 1.0), ('origin', array([ 0. ,  0. ,  0.5])), ('min', 0.0), ('max', 8.0), ('step', 2.0), ('anchor', 0.0), ('ticksN', 4), ('XMIN', 0.0), ('XMAX', 0.0), ('YMIN', 0.0), ('YMAX', 0.02), ('ZMIN', 0.0), ('ZMAX', 0.0), ('xmin', 0.0), ('xmax', 0.0), ('ymin', 0.0), ('ymax', 0.01), ('zmin', 0.0), ('zmax', 0.0), ('color', '0x000000'), ('font', '/usr/X11R6/lib/X11/fonts/truetype/DejaVuSans.ttf'), ('resolution', 20), ('labelOrient', 'X'), ('labelHeight', array([ 0.  ,  0.04,  0.  ])), ('labelCompress', 0.80000000000000004), ('labelFormat', '%.2e'), ('labelOffset', array([-0.05, -0.05,  0.  ]))]
+Axis
+dummyZ
+[('direction', 'Z'), ('length', 0.0), ('origin', array([ 0. ,  0. ,  0.5])), ('min', 0.0), ('max', 1.0), ('step', 0.20000000000000001), ('anchor', 0.0), ('ticksN', 4), ('XMIN', 0.0), ('XMAX', 0.0), ('YMIN', 0.0), ('YMAX', 0.02), ('ZMIN', 0.0), ('ZMAX', 0.0), ('xmin', 0.0), ('xmax', 0.0), ('ymin', 0.0), ('ymax', 0.01), ('zmin', 0.0), ('zmax', 0.0), ('color', '0x000000'), ('font', '/usr/X11R6/lib/X11/fonts/truetype/DejaVuSans.ttf'), ('resolution', 20), ('labelOrient', 'Y'), ('labelHeight', array([ 0.  ,  0.05,  0.  ])), ('labelCompress', 0.80000000000000004), ('labelFormat', '%.2e'), ('labelOffset', array([-0.05, -0.05,  0.  ]))]

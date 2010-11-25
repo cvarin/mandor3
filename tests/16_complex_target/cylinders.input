@@ -1,0 +1,70 @@
+[units]
+@ 1.0		Positive => works as wavelengh in microns [10^-4 cm].
+		Negative => works as critical electrons' density [cm^-3].
+
+[mesh]
+@ 100		imax: mesh size along X axis
+@ 100		jmax: mesh size along Y axis
+@ 100		kmax: mesh size along Z axis
+@ 2.0		Lx [micron]: domain size along X axis
+@ 2.0		Ly [micron]: domain size along Y axis
+@ 2.0		Lz [micron]: domain size along Z axis
+@ -0.9		tau:  time step
+
+[boundaryConditions]
+@ 2		xMin
+@ 2		xMax
+@ 0		yMin
+@ 0		yMax
+@ 0		zMin
+@ 0		zMax
+
+[plasma]
+@ 3		nx.
+@ 3		ny.
+@ 3		nz.
+@ 1		Particles per point (velocity layers).
+@ planes	Cuts out a layer.
+>  1 1 1	Center.
+>  -1 0 0	Normal.  Bottom face.
+>  0.3		Shift.
+
+>  1 1 1	Center.
+>  1 0 0	Normal.  Bottom face.
+>  0.3		Shift.
+
+@ cylinders
+>  1 1 1	Center.
+>  1 0 0	Direction.
+>  0.98		Radius.
+
+>  0 1.0 1.0	Center.
+>  1 0 0	Direction.
+>  -0.25	Radius.
+
+>  0 0.5 0.5	Center.
+>  1 0 0	Direction.
+>  -0.25	Radius.
+
+>  0 1.5 0.5	Center.
+>  1 0 0	Direction.
+>  -0.25	Radius.
+
+>  0 0.5 1.5	Center.
+>  1 0 0	Direction.
+>  -0.25	Radius.
+
+>  0 1.5 1.5	Center.
+>  1 0 0	Direction.
+>  -0.25	Radius.
+
+
+[DF:uniform]
+@ -1.0		Charge density in ρ_critical for electrons.
+@ -1.0		q/M
+@ 0.0		ux
+@ 0.0		uy
+@ 0.0		uz
+@ 0.0		dUx
+@ 0.0		dUy
+@ 0.0		dUz

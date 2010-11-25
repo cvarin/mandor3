@@ -1,0 +1,38 @@
+That is code blocks I took from ScPIC, Canadian fork of early Mandor code, made
+by Konstantin Popov [http://www.phys.ualberta.ca/~kpopov/scpic.html]. 
+
+Changes, becides obvious rerefactoring and restyling, are heavy. The most
+important are:
+
+1) Twice faster Stratton-Chu integration due to simultaneous computing of
+   real and imaginary parts of the integral (reuses ALL heavy functions).
+
+2) Calibration of Ey amplitude in focal spot is done ANALITICALLY. Details
+   are on site [XXX], but key idea is simple --- 'Ey' depends on 'tau'
+   (phase shift) as 'exp(i*tau)' [proof on site]. So we easily derive
+   both amplitude and phase shift analytically from one call to 'focused_ey'.
+   It saves about nine seconds of run time, with bonus numerical accuracy.
+
+
+CREDITS AND OTHER CRAP
+======================
+Just in case you can have both codes, and want to start working with both.
+
+The MK code and it's descendant ScPIC is Mandor after:
+  + stripped MPI parallelization
+  + extreamly heavy refactoring to produce the single compact executable 
+  + heavy refactoring of all IO and user interfaces
+  + completely independent implementation (by Kostya) of 
+     * OpenMP parallelization
+     * moving window
+     * soft source corresponding to laser beam focused by parabolic mirror,
+       to paraxial source, and to a plane wave.
+     * ionization (didn't test ionization for now, though, cannot say anything)
+
+Messaging subsystem, mesh subsystem, and core algorythms
+  + Yee solver
+  + current distribution with exact charge conservation
+  + Boris solver
+  + VSP balancing?
+are only restyled.
+

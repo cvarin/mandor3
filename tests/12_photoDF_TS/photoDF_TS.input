@@ -1,0 +1,51 @@
+[units]
+@ 1.0		Positive => works as wavelengh in microns [10^-4 cm].
+		Negative => works as critical electrons' density [cm^-3].
+
+[mesh]
+@ 0		imax: mesh size along X axis
+@ 0		jmax: mesh size along Y axis
+@ 60		kmax: mesh size along Z axis
+@ 4.88e-1	Lx:   domain size along X axis
+@ 4.88e-1	Ly:   domain size along Y axis
+@ 1.44e-1	Lz:   domain size along Z axis
+@ -0.8		tau:  time step
+
+[boundaryConditions]
+@ 0		xMin
+@ 0		xMax
+@ 0		yMin
+@ 0		yMax
+@ 0		zMin
+@ 0		zMax
+
+  Type of boundary condition is:
+    0 - periodic;
+    1 - mirror;
+    2 - Mur's first order absorbing boundary condition.
+
+[photoDF]
+@ 1 		number of particles per mesh step along X.
+@ 1 		number of particles per mesh step along Y.
+@ 20 		number of particles per mesh step along Z. 
+@ 20		number of particles in sub-node (to model thermal spread).
+@ 1		mirror symmetrizator flag (0 - no mirror).
+@ 1		axial symmetrizator (nRotations) (0 - no rotations).
+@ 1.0e0		charge density:	positive => means (omega_pe/omega_0)^2, negative => density [cm^-3]
+@ -1.0		q/M [e/m]: charge to mass ratio.
+@ 0.1		thermal parameter: positive => V0 [c], negative => energy [eV].
+@ 1		staggered mesh steps along X.
+@ 1		staggered mesh steps along Y.
+@ 1		staggered mesh steps along Z.
+@ 0		1 to have uniform weight of markers, other to have uniform spacing of markers.
+
+[seed:two-stream]
+@ 2.00e-06	amplitude of the electric field perturbation.
+@ 1		start m_z wave number.
+@ 1		stop m_z wave number.
+@ 0.05		cut-off of the spectrum with respect to gamma (for this instability max gamma ~ 0.3)
+@ +0.0e0	phase shift type:
+                  [0, 2.0) => direct setting of phase's value in [pi]
+		  < 0      => random phase (white noise)
+
+  Spectrum of the electrostatic unstable mode(s) for two-stream instability simulation.

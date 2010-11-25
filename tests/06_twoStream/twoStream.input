@@ -1,0 +1,46 @@
+  During the test of parallel/serial part please make sure problem
+  is well defined. Starting simulation from noise is NOT a well defined
+  simulation because of application/compiler do not care about round-off
+  mistakes and stuff like that.
+
+[units]
+@ 1.0		Positive => works as wavelengh in microns [10^-4 cm].
+		Negative => works as critical electrons' density [cm^-3].
+
+[mesh]
+@ 120		imax: mesh size along X axis
+@ 0		jmax: mesh size along Y axis
+@ 0		kmax: mesh size along Z axis
+@ 6.0e0		Lx:   domain size along X axis
+@ 6.0e0		Ly:   domain size along Y axis
+@ 6.0e0		Lz:   domain size along Z axis
+@ -0.90		tau:  time step
+
+[boundaryConditions]
+@ 0		xMin
+@ 0		xMax
+@ 0		yMin
+@ 0		yMax
+@ 0		zMin
+@ 0		zMax
+
+  Type of boundary condition is:
+    0 - periodic;
+    1 - mirror;
+    2 - Mur's first order absorbing boundary condition.
+
+[DF:two-stream]
+@ 1.0e-1	gamma_WE (growth rate of the electrostatic field energy) = \sqrt {rho*q/M}
+@ -1.0		q/M (parameter to pin-point charge density)
+@ 1200		Nx
+@ 1		Ny Number of particles (total one!)
+@ 1		Nz
+@ 1		mx 
+@ 0		my  Wave numbers of the desired mode (affect speed of beam and direction)
+@ 0		mz 
+
+[plasmaWave]
+@ 1		Wave number along X.
+@ 0		Wave number along Y.
+@ 0		Wave number along Z.
+@ 1.0e-10	Amplitude of the velocity perturbation.

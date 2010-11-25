@@ -1,0 +1,394 @@
+#!MC 1000
+$!VarSet |LFDSFN1| = '"../output/eJet2.plt"'
+$!VarSet |LFDSVL1| = '"p" "q" "f(p,q)"'
+$!SETSTYLEBASE FACTORY
+$!PAPER 
+  BACKGROUNDCOLOR = WHITE
+  ISTRANSPARENT = YES
+  ORIENTPORTRAIT = NO
+  SHOWGRID = YES
+  SHOWRULER = YES
+  SHOWPAPER = YES
+  PAPERSIZE = LETTER
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    A3
+      {
+      WIDTH = 11.693
+      HEIGHT = 16.535
+      }
+    A4
+      {
+      WIDTH = 8.2677
+      HEIGHT = 11.693
+      }
+    }
+  RULERSPACING = ONEINCH
+  PAPERGRIDSPACING = HALFINCH
+  REGIONINWORKAREA
+    {
+    X1 = -0.05
+    Y1 = -0.05
+    X2 = 11.05
+    Y2 = 8.55
+    }
+$!COLORMAP 
+  CONTOURCOLORMAP = SMRAINBOW
+$!COLORMAPCONTROL RESETTOFACTORY
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|' 
+  INITIALPLOTTYPE = CARTESIAN2D
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  RESETSTYLE = NO
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL1|' 
+$!REMOVEVAR |LFDSVL1|
+$!REMOVEVAR |LFDSFN1|
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 1
+    Y = 0.25
+    }
+  WIDTH = 6.6511
+  HEIGHT = 8
+$!PLOTTYPE  = CARTESIAN2D
+$!FRAMENAME  = 'Frame 001' 
+$!ACTIVEFIELDZONES  =  [2]
+$!GLOBALRGB 
+  RANGEMIN = 0
+  RANGEMAX = 1
+$!GLOBALCONTOUR  1
+  VAR = 3
+  LABELS
+    {
+    NUMFORMAT
+      {
+      FORMATTING = EXPONENTIAL
+      PRECISION = 1
+      NEGATIVEPREFIX = '' 
+      NEGATIVESUFFIX = '' 
+      ZEROPREFIX = '' 
+      ZEROSUFFIX = '' 
+      }
+    }
+  LEGEND
+    {
+    SHOW = YES
+    XYPOS
+      {
+      X = 94.846
+      Y = 80.161
+      }
+    HEADERTEXTSHAPE
+      {
+      FONT = TIMES
+      HEIGHT = 4
+      }
+    NUMBERTEXTSHAPE
+      {
+      FONT = TIMES
+      HEIGHT = 3
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      MARGIN = 5
+      }
+    LABELINCREMENT = 1.842E+11
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = 460624986112
+    RANGEMAX = 1.38187495834E+12
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1.84249994445E+12
+      }
+    }
+$!CONTOURLEVELS NEW
+  CONTOURGROUP = 1
+  RAWDATA
+15
+0
+2142.85714286
+4285.71428571
+6428.57142857
+8571.42857143
+10714.2857143
+12857.1428571
+15000
+17142.8571429
+19285.7142857
+21428.5714286
+23571.4285714
+25714.2857143
+27857.1428571
+30000
+$!GLOBALCONTOUR  2
+  VAR = 3
+  DEFNUMLEVELS = 10
+  LEGEND
+    {
+    LABELINCREMENT = 9.91E+10
+    }
+  COLORCUTOFF
+    {
+    RANGEMIN = 247740006400
+    RANGEMAX = 743220019200
+    }
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 990960025600
+      }
+    }
+$!CONTOURLEVELS NEW
+  CONTOURGROUP = 2
+  RAWDATA
+10
+89515455581.1
+179030911162
+268546366743
+358061822324
+447577277905
+537092733487
+626608189068
+716123644649
+805639100230
+895154555811
+$!GLOBALCONTOUR  3
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!GLOBALCONTOUR  4
+  COLORMAPFILTER
+    {
+    CONTINUOUSCOLOR
+      {
+      CMIN = 0
+      CMAX = 1
+      }
+    }
+$!FIELD  [1]
+  MESH
+    {
+    COLOR = RED
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = RED
+    }
+  VECTOR
+    {
+    COLOR = RED
+    }
+  SCATTER
+    {
+    COLOR = RED
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = RED
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    }
+$!FIELD  [2]
+  MESH
+    {
+    COLOR = GREEN
+    }
+  CONTOUR
+    {
+    CONTOURTYPE = FLOOD
+    COLOR = GREEN
+    }
+  VECTOR
+    {
+    COLOR = GREEN
+    }
+  SCATTER
+    {
+    COLOR = GREEN
+    }
+  SHADE
+    {
+    COLOR = WHITE
+    }
+  BOUNDARY
+    {
+    SHOW = YES
+    COLOR = GREEN
+    }
+  POINTS
+    {
+    POINTSTOPLOT = SURFACENODES
+    }
+  SURFACES
+    {
+    SURFACESTOPLOT = KPLANES
+    }
+  VOLUMEMODE
+    {
+    VOLUMEOBJECTSTOPLOT
+      {
+      SHOWISOSURFACES = NO
+      SHOWSLICES = NO
+      SHOWSTREAMTRACES = NO
+      }
+    }
+$!TWODAXIS 
+  XDETAIL
+    {
+    VARNUM = 1
+    }
+  YDETAIL
+    {
+    VARNUM = 2
+    }
+$!VIEW FIT
+$!TWODAXIS 
+  DEPXTOYRATIO = 1
+  VIEWPORTPOSITION
+    {
+    X1 = 13.117
+    Y1 = 9.4416
+    X2 = 73.756
+    Y2 = 96.076
+    }
+  VIEWPORTTOPSNAPTARGET = 96.0761321588
+$!TWODAXIS 
+  XDETAIL
+    {
+    RANGEMIN = -0.30000001192092895508
+    RANGEMAX = 0.39838005707327067695
+    GRSPACING = 0.2
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        FONT = TIMES
+        HEIGHT = 6
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = '' 
+      TEXTSHAPE
+        {
+        FONT = TIMES
+        HEIGHT = 8
+        }
+      OFFSET = 0.01
+      PERCENTALONGLINE = 100
+      }
+    }
+$!TWODAXIS 
+  YDETAIL
+    {
+    RANGEMIN = -0.60000002384185791016
+    RANGEMAX = 0.60012002384662632704
+    AUTOGRID = NO
+    GRSPACING = 0.2
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        FONT = TIMES
+        HEIGHT = 6
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'v<sub>z</sub>[c]' 
+      TEXTSHAPE
+        {
+        FONT = TIMES
+        HEIGHT = 8
+        }
+      }
+    }
+$!GLOBALISOSURFACE 
+  ISOVALUE1 = 460624986112
+  ISOVALUE2 = 921249972224
+  ISOVALUE3 = 1.38187495834E+12
+$!GLOBALSLICE 
+  BOUNDARY
+    {
+    SHOW = NO
+    }
+$!FIELDLAYERS 
+  SHOWMESH = NO
+  SHOWCONTOUR = YES
+  SHOWBOUNDARY = NO
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 66.0953438639
+    Y = 3.61188570416
+    }
+  TEXTSHAPE
+    {
+    FONT = TIMES
+    HEIGHT = 43
+    }
+  TEXT = 'v<sub>y</sub>[c]' 
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 67.2806586526
+    Y = 95
+    }
+  TEXTSHAPE
+    {
+    FONT = TIMES
+    HEIGHT = 28
+    }
+  TEXT = '&(ZONENAME:2)' 
+$!SETSTYLEBASE CONFIG

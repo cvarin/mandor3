@@ -1,0 +1,71 @@
+[units]
+@ 1.0		Positive => works as wavelengh in microns [10^-4 cm].
+		Negative => works as critical electrons' density [cm^-3].
+
+[mesh]
+@ 100		imax: mesh size along X axis
+@ 100		jmax: mesh size along Y axis
+@ 100		kmax: mesh size along Z axis
+@ 15.0		Lx [micron]: domain size along X axis
+@ 15.0		Ly [micron]: domain size along Y axis
+@ 15.0		Lz [micron]: domain size along Z axis
+@ -0.9		tau:  time step
+
+[boundaryConditions]
+@ 2		xMin
+@ 2		xMax
+@ 0		yMin
+@ 0		yMax
+@ 0		zMin
+@ 0		zMax
+
+[focused laser]
+@ 1.0e+12	Poynting vector at the best focus 	{1}
+@ 3.0		Mirror f-number 			{2}
+@ 7.5		Focus X coordinate [micron].
+@ 7.5		Focus Y coordinate [micron].
+@ 7.5		Focus Z coordinate [micron].
+@ 200.0		Pulse duration, [fs] 			{3}
+@ 60.0		Time of arriving of the maximum into the focus [fs] {4}.
+@ 0.0		Phase shift.
+@ 10.0		R to mirror radius ratio, where E_incident = A·exp(-(y²+z²)/R²).
+@ +1		Direction of propagation (positive – along X,
+                                          negative – in opposite direction).
+Footnotes:
+  {1}   Positive means intensity I [W/cm²]; negative means E₀ [e·E/(m·ω·c)].
+  {2}   = F_mirror/D_mirror; the smaller the number, the tighter the focusing.
+        The value has to be greater then 0.25.
+  {3}   Defined as FWHM (Full Width at Half Magnitude) of intensity.
+        Pulse is gaussian.
+  {4}	Pulse leading front offset (leading edge to pulse max delay).
+
+
+[plasma]
+@ 3		nx.
+@ 3		ny.
+@ 3		nz.
+@ 1		Particles per point (velocity layers).
+@ planes	Cuts out a layer.
+>  7.5 7.5 7.5	Center.
+>  -1 0 0	Normal.  Bottom face.
+>  2		Shift.
+
+>  7.5 7.5 7.5	Center.
+>  1 0 0	Normal.  Bottom face.
+>  2		Shift.
+
+@ cylinders
+>  7.5 7.5 7.5	Center.
+>  1 0 0	Direction.
+>  5		Radius.
+
+
+[DF:uniform]
+@ -1.5		rho
+@ -1.0		q/M
+@ 0.0		ux
+@ 0.0		uy
+@ 0.0		uz
+@ 0.0		dUx
+@ 0.0		dUy
+@ 0.0		dUz

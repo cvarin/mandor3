@@ -1,0 +1,42 @@
+#!/usr/bin/python
+
+"""
+Created batch/config files to prepare complex laser source (many beams, time
+shifts, etc) with several 'record + TFSFdefrag' passes.
+"""
+
+from __future__ import with_statement
+
+import os, sys, re, subprocess, traceback
+
+from optparse import OptionParser
+
+sys.path.append (os.path.join (os.path.dirname (__file__), "source/recorder"))
+
+import tags
+
+# Command line interface: options, user choises.
+parser = OptionParser (usage = """%prog [options] config-file
+
+Default config file is 'recorder.cfg'.
+
+Script computes how many steps you should make to properly record few laser
+beams with given TFSF interface and focal planes/durations of each. It creates
+all intermediate config files for the recorder and setup script.
+
+You can double check them to adjust the result.
+""")
+
+parser.add_option ("-r", "--run",
+                   dest   = "run",
+                   action = "store_true",
+                   help   = "run all record sessions")
+
+(options, args) = parser.parse_args ()
+
+filter_file = 'recorder.cfg' if not args else args[0]
+
+with open (filter_file, "rt") as fp:
+    input_config = fp.read ()
+
+tags.make_all (input_config)

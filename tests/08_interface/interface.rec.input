@@ -1,0 +1,49 @@
+[units]
+@ 2.0		Positive => works as wavelengh in microns [10^-4 cm].
+		Negative => works as critical electrons' density [cm^-3].
+
+[mesh]
+@ 70		imax: mesh size along X axis
+@ 70		jmax: mesh size along Y axis
+@ 70		kmax: mesh size along Z axis
+@ 10.0e0	Lx:   domain size along X axis
+@ 10.0e0	Ly:   domain size along Y axis
+@ 10.0e0	Lz:   domain size along Z axis
+@ -0.95		tau:  time step (if negative that means [t] = 1/sqrt (1/h1^2 + .. + 1/h3^2))
+
+[boundaryConditions]
+@ 2		xMin
+@ 2		xMax
+@ 2		yMin
+@ 2		yMax
+@ 2		zMin
+@ 2		zMax
+
+  Type of boundary condition is:
+    0 - periodic;
+    1 - mirror;
+    2 - Mur's first order absorbing boundary condition.
+
+[point]
+@ 10		Ex
+@ 10		Ey
+@ 10		Ez
+@ 0		Hx
+@ 0		Hy
+@ 0		Hz
+@ 5.0		x
+@ 5.0		y
+@ 4.1		z
+
+  Places point perturbation into the domain.
+
+[TFSF]
+@ 7		TF/SF interface position (X).
+@ 42		TF/SF interface position (X).
+@ 7		TF/SF interface position (Y).
+@ 63		TF/SF interface position (Y).
+@ 35		TF/SF interface position (Z).
+@ 63		TF/SF interface position (Z).
+@ record	TF/SF interface regime (record, playForward, playBackward)
+
+  Memo: TF/SF stands for Total Field/Scattered Field (interface).

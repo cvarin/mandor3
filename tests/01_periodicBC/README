@@ -1,0 +1,7 @@
+Simple electromagnetic wave running in infinite box (boundary conditions
+are periodic).
+
+To note:
+    o one can select real (physical) wave or exact discrete solution
+    o exact solution has constant energy, but W_E ≠ W_H
+    o examples of the output are in './res' folder

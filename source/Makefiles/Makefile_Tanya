@@ -1,0 +1,607 @@
+.POSIX:
+
+#
+# IBM blade cluster Tanya works on. Goal is to plug in xlc compiler.
+#
+
+CCOMPILER = mpcc
+COMMON = -Isource -DIBM -qstrict -qlanglvl=stdc99 -q64 
+
+OPTIMIZE= -O5		# The best optimization possible
+
+LFLAGS= $(OPTIMIZE) $(COMMON)
+CFLAGS= $(LFLAGS) -c
+VPATH = source:o
+
+# MPI library linkage details.
+#LINKWITH= -lm -L/usr/global/mpe64/lib -llmpe -lmpe -lmpi	# MPI logging.
+LINKWITH=-lfftw3 -lm						# Usual set of libraries (math, MPI, etc).
+
+all: core.out setup.out tecplot.out dxFilters.out dxSlicer.out dxScalarMinMax.out spectr.out phasedot.out distrib.out probe2tec.out dxProbe_list.out test.out TFSFdefrag.out 
+	@echo ;
+	@echo "  All files are compiled using '$(CCOMPILER) $(CFLAGS)'."
+	@echo ;
+	@echo "  Use 'make help' to get some hints on avaliable operations."
+	@echo ;
+
+
+#
+# Information for project dependency scanner.
+#
+
+# [megamake] [folders] (src: source) (compiled: o)
+
+# [megamake] [scan] @$(CCOMPILER) -M -qsyntaxonly $(CFLAGS) $< 2>/dev/null
+# [megamake] [scan] @cat `echo "$<" | sed 's/\.c$$/.u/' | sed 's/.*\///'`
+# [megamake] [scan] @rm -f `echo "$<" | sed 's/\.c$$/.u/' | sed 's/.*\///'`
+# [megamake] [compile] @echo "Compiling $@..."
+# [megamake] [compile] @$(CCOMPILER) $(CFLAGS) $< -o $@
+# [megamake] [link] @echo "  Linking $@..."
+# [megamake] [link] @$(CCOMPILER) $(LFLAGS) $^ -o $@ $(LINKWITH) ___libs___
+# [megamake] [link] @echo "  Executable $@ is ready."
+# [megamake] [link] @echo ""
+# [megamake] [all] @echo ;
+# [megamake] [all] @echo "All files are compiled using '$(CCOMPILER) $(CFLAGS)'."
+# [megamake] [all] @echo ;
+
+# [megamake] [header only] (source/misc_PIC.h) (source/misc_MPItags.h) \
+#   (source/misc_pi.h) (source/misc_definedKeys.h) (source/type_particle.h) \
+#   (source/timer.h) (source/mf_vector.h) (source/frame.h) \
+#   (source/type_particle.h) (source/probe.h) (source/types.h)
+
+# [megamake] [project] (root: source/core/main.c) (exec: core.out) (libs: -lfftw3)
+# [megamake] [project] (root: source/setup/main.c) (exec: setup.out) (libs: -lfftw3)
+# [megamake] [project] (root: source/tecplot/main.c) (exec: tecplot.out)
+# [megamake] [project] (root: source/tecplot/dxFilters.c) (exec: dxFilters.out)
+# [megamake] [project] (root: source/tecplot/dxSlicer.c) (exec: dxSlicer.out)
+# [megamake] [project] (root: source/tecplot/dxScalarMinMax.c) (exec: dxScalarMinMax.out)
+# [megamake] [project] (root: source/spectr/main.c) (exec: spectr.out) (libs: -lfftw3)
+# [megamake] [project] (root: source/phasedot/main.c) (exec: phasedot.out)
+# [megamake] [project] (root: source/distrib/main.c) (exec: distrib.out)
+# [megamake] [project] (root: source/probe2tec/main.c) (exec: probe2tec.out) (libs: -lfftw3)
+# [megamake] [project] (root: source/probe2tec/dxProbe_list.c) (exec: dxProbe_list.out)
+# [megamake] [project] (root: source/test/main_test.c) (exec: test.out) (libs: -lrt)
+# [megamake] [project] (root: source/TFSFdefrag/main.c) (exec: TFSFdefrag.out) (libs: -lrt)
+
+# Clean up. Wipes everything.
+.PHONY: help DEPEND cleanTFSF cleanData cleanAll doc
+
+help:
+	@echo 'That is "Mandor" makefile rules for you:'
+	@echo '  o make depend - refreshes dependency information.'
+	@echo '  o make all - compiles all executable.'
+	@echo '  o make clean - removes compiled objects files and'
+	@echo '                 executables (data files are safe!).'
+	@echo '  o make cleanTFSF - removes TFSF written data.'
+	@echo '  o make cleanData - removes written data files, error messages, etc.'
+	@echo '  o make cleanAll - removes EVERYTHING but sources.'
+	@echo ;
+
+depend:
+	@echo "Making dependencies ..."
+	@megamake.pl Makefile --verbose --make:gmake
+	@echo "Done."
+
+cleanTFSF:
+	@echo "Cleaning 'Total field / scattering field' interface data..."
+	@rm -f ./.TFSF/[^CVS]*
+
+# File list might be too long for command line, so one erases files one by one.
+cleanData:
+	@echo "Cleaning ./tmp folder ..."
+	@find ./tmp -name "*" | grep -v CVS | while read f ; do if [ -f $$f ] ; then rm -f $$f ; fi ; done
+	@echo "Cleaning ./output folder ..."
+	@find ./output -name "*" | grep -v CVS | while read f ; do if [ -f $$f ] ; then rm -f $$f ; fi ; done
+	@echo "Cleaning ./binData folder ..."
+	@find ./binData -name "*" | grep -v CVS | while read f ; do if [ -f $$f ] ; then rm -f $$f ; fi ; done
+	@echo "Cleaning created files in the project folder ..."
+	@rm -f core.[0-9]* .gaussSpot.cfg errors.*
+
+# File list might be too long for command line, so erase files one by one.
+cleanAll: clean cleanTFSF cleanData
+	@echo "Cleaning ./doc folder ..."
+	@find ./doc -name "*" | grep -v CVS | while read f ; do if [ -f $$f ] ; then rm -f $$f ; fi ; done
+	@rm -f ./o/dependSignalFile
+	@echo "Everything but distribution is wiped out."
+
+# Builds documentation in doc folder.
+doc:
+	doxygen .Doxyfile.setup
+	doxygen .Doxyfile.core
+	doxygen .Doxyfile.probes
+	doxygen .Doxyfile.distrib
+	doxygen .Doxyfile.spectr
+	@echo ;
+	@echo "Documentation is ready. Please examine your doc folder."
+	@echo ;
+
+# [megamake] [end of header]
+
+
+
+########################################################################
+#
+# This part is AUTOMATICALLY generated by '/home/dromanov/bin/Mandor2/megaMake/megamake.pl' perl script.
+# IT WILL BE REMOVED WITHOUT ANY WARNING AFTER THE NEXT CALL TO SCRIPT.
+# ADD YOUR VARIABLES/COMMANDS/STUFF IN THE HEADER PART IF YOU NEED IT.
+# Date: Mon Dec 12 16:44:49 MST 2005
+# Project(s) folder: /scratch_large/dromanov/ibm/simpleTest
+#
+########################################################################
+
+
+
+o/setup/tag_jBalancer.o: source/setup/tag_jBalancer.c source/type_marker.h source/misc_pi.h source/quit.h source/misc_sysLog.h source/misc_cfgReader.h source/misc_parameters.h source/frame.h source/setup/setup_markerCache.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/misc_ranmar.o: source/misc_ranmar.c source/quit.h source/misc_sysLog.h source/misc_ranmar.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_meanVNoise.o: source/setup/tag_meanVNoise.c source/misc_pi.h source/misc_PIC.h source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/misc_sysLog.h source/misc_cfgReader.h source/misc_markerPlacer.h source/setup/main.h source/setup/setup_markerCache.h source/type_marker.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_foil.o: source/setup/tag_foil.c source/type_marker.h source/misc_pi.h source/quit.h source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/setup/main.h source/setup/setup_markerCache.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag.o: source/setup/tag.c source/setup/tag.h source/setup/tag_mesh.h source/setup/tag_foil.h source/setup/tag_TFSF.h source/setup/tag_units.h source/setup/tag_point.h source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/setup/tag_EMWave.h source/setup/tag_ringDF.h source/setup/tag_vShift.h source/setup/tag_rotate.h source/setup/tag_buneman.h source/setup/tag_photoDF.h source/setup/tag_boundary.h source/setup/tag_jBalancer.h source/setup/tag_gaussSpot.h source/setup/tag_biMaxwell.h source/setup/tag_plasmaSlab.h source/setup/tag_planePulse.h source/setup/tag_plasmaWave.h source/setup/tag_TFSFFaces.h source/setup/tag_EMResonator.h source/setup/tag_cacheFilter.h source/setup/tag_meanVNoise.h source/setup/tag_seedWeibel.h source/setup/tag_seed2Stream.h source/setup/tag_cluster.h source/setup/tag_alignedFoil.h source/setup/tag_scales.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/tecplot/dxFilters.o: source/tecplot/dxFilters.c source/quit.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/spectr/spectr_process.o: source/spectr/spectr_process.c source/IO_mesh.h source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/IO_fileMap.h source/IO_names.h source/type_mesh2.h source/type_CFile.h source/misc_sysLog.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_vShift.o: source/setup/tag_vShift.c source/misc_pi.h source/quit.h source/misc_sysLog.h source/misc_cfgReader.h source/misc_parameters.h source/frame.h source/setup/setup_markerCache.h source/type_marker.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_scales.o: source/setup/tag_scales.c source/misc_units.h source/quit.h source/misc_sysLog.h source/misc_cfgReader.h source/misc_parameters.h source/frame.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/IO_mesh.o: source/IO_mesh.c source/IO_mesh.h source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/IO_fileMap.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_mesh.o: source/setup/tag_mesh.c source/quit.h source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h source/misc_parameters.h source/frame.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/core/main.o: source/core/main.c source/timer.h source/type_reg.h source/type_marker.h source/test_mesh.h source/misc_pi.h source/misc_units.h source/misc_sysLog.h source/misc_MPItags.h source/misc_cfgReader.h source/misc_definedKeys.h source/IO_sys.h source/type_mesh.h source/quit.h source/misc_partition.h source/misc_parameters.h source/frame.h source/IO_tecplot.h source/IO_fileMap.h source/profiler.h source/spectr_dump.h source/core/em.h source/core/plasma.h source/core/diag_probe.h source/probe.h source/core/diag_WDensity.h source/core/plasma_VSP.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_plasmaWave.o: source/setup/tag_plasmaWave.c source/type_marker.h source/setup/setup_markerCache.h source/quit.h source/misc_pi.h source/misc_sysLog.h source/misc_cfgReader.h source/misc_parameters.h source/frame.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/spectr/main.o: source/spectr/main.c source/frame.h source/type_reg.h source/type_CFile.h source/quit.h source/timer.h source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h source/spectr/spectr_process.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/IO_markers.o: source/IO_markers.c source/IO_names.h source/IO_fileMap.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/IO_markers.h source/type_marker.h source/quit.h source/misc_sysLog.h source/misc_MPItags.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/misc_markerPacker.o: source/misc_markerPacker.c source/quit.h source/misc_sysLog.h source/misc_markerPacker.h source/type_marker.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/core/plasma_VSP.o: source/core/plasma_VSP.c source/core/plasma_VSP.h source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/misc_sysLog.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/core/em_caps.o: source/core/em_caps.c source/core/em_TFSF.h source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/misc_sysLog.h source/parr_meshes.h source/misc_socket.h source/misc_MPItags.h source/parr_regLists.h source/parr_ghostCells.h source/core/emCap_Mur.c source/core/emCap_mirror.c source/core/emCap_periodic.c source/core/emCap_decomposition.c  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/type_reg.o: source/type_reg.c source/type_reg.h source/misc_sysLog.h source/misc_parameters.h source/frame.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/test/main_test.o: source/test/main_test.c source/misc_units.h source/misc_parameters.h source/frame.h source/quit.h source/type_CFile.h source/misc_sysLog.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/test_mesh.o: source/test_mesh.c source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/misc_sysLog.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/type_mesh.o: source/type_mesh.c source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/misc_sysLog.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/misc_cfgReader.o: source/misc_cfgReader.c source/quit.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_seed2Stream.o: source/setup/tag_seed2Stream.c source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h source/setup/main.h source/setup/tag_photoDF.h source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/setup/setup_markerCache.h source/type_marker.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/tecplot/main.o: source/tecplot/main.c source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/type_CFile.h source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h source/IO_tecplot.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/core/em.o: source/core/em.c source/profiler.h source/misc_sysLog.h source/core/em.h source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/core/em_caps.h source/core/em_TFSF.h source/core/em_gaussSpot.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_gaussSpot.o: source/setup/tag_gaussSpot.c source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/misc_pi.h source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_boundary.o: source/setup/tag_boundary.c source/misc_cfgReader.h source/misc_parameters.h source/frame.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_photoDF.o: source/setup/tag_photoDF.c source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h source/setup/main.h source/setup/tag_photoDF.h source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/setup/setup_denavit.h source/setup/setup_markerCache.h source/type_marker.h source/setup/setup_distrMapper.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_rotate.o: source/setup/tag_rotate.c source/type_marker.h source/quit.h source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h source/misc_markerPlacer.h source/setup/main.h source/setup/setup_markerCache.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/setup_markerCache.o: source/setup/setup_markerCache.c source/type_marker.h source/quit.h source/misc_parameters.h source/frame.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/TFSFdefrag/main.o: source/TFSFdefrag/main.c source/type_reg.h source/quit.h source/misc_sysLog.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/parr_regLists.o: source/parr_regLists.c source/quit.h source/misc_MPItags.h source/type_reg.h source/misc_parameters.h source/frame.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_TFSF.o: source/setup/tag_TFSF.c source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/core/em_TFSF.h source/setup/main.h source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/type_mesh2.o: source/type_mesh2.c source/type_mesh2.h source/misc_parameters.h source/frame.h source/type_reg.h source/type_mesh.h source/quit.h source/misc_partition.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_planePulse.o: source/setup/tag_planePulse.c source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/misc_pi.h source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_buneman.o: source/setup/tag_buneman.c source/type_marker.h source/misc_pi.h source/quit.h source/misc_sysLog.h source/misc_cfgReader.h source/misc_parameters.h source/frame.h source/setup/main.h source/setup/setup_markerCache.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_TFSFFaces.o: source/setup/tag_TFSFFaces.c source/quit.h source/misc_sysLog.h source/misc_cfgReader.h source/misc_parameters.h source/frame.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/IO_names.o: source/IO_names.c source/quit.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/core/em_gaussSpot.o: source/core/em_gaussSpot.c source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/misc_pi.h source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/core/diag_WDensity.o: source/core/diag_WDensity.c source/quit.h source/misc_sysLog.h source/misc_MPItags.h source/misc_cfgReader.h source/misc_parameters.h source/frame.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/core/diag_probe.o: source/core/diag_probe.c source/core/diag_probe.h source/probe.h source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/misc_PIC.h source/misc_units.h source/misc_sysLog.h source/misc_MPItags.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/IO_fileMap.o: source/IO_fileMap.c source/IO_names.h source/IO_fileMap.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/quit.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_alignedFoil.o: source/setup/tag_alignedFoil.c source/type_marker.h source/misc_pi.h source/quit.h source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/setup/main.h source/setup/setup_markerCache.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_cacheFilter.o: source/setup/tag_cacheFilter.c source/setup/setup_markerCache.h source/type_marker.h source/quit.h source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/distrib/main.o: source/distrib/main.c source/quit.h source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h source/misc_parameters.h source/frame.h source/IO_sys.h source/type_mesh.h source/misc_partition.h source/type_reg.h source/IO_names.h source/IO_markers.h source/type_marker.h source/IO_fileMap.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/misc_partition.o: source/misc_partition.c source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/misc_sysLog.h source/misc_cfgReader.h source/misc_partitionApply.c source/misc_partitionPack.c source/misc_partitionMisc.c  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/profiler.o: source/profiler.c source/timer.h source/profiler.h source/quit.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/misc_sysLog.o: source/misc_sysLog.c source/quit.h source/timer.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_units.o: source/setup/tag_units.c source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_EMWave.o: source/setup/tag_EMWave.c source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/mf_vector.h source/setup/main.h source/misc_pi.h source/misc_sysLog.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/phasedot/main.o: source/phasedot/main.c source/type_marker.h source/quit.h source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h source/misc_parameters.h source/frame.h source/IO_sys.h source/type_mesh.h source/misc_partition.h source/type_reg.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/type_marker.o: source/type_marker.c source/type_marker.h source/quit.h source/misc_sysLog.h source/misc_MPItags.h source/misc_parameters.h source/frame.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_EMResonator.o: source/setup/tag_EMResonator.c source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/mf_vector.h source/setup/main.h source/misc_pi.h source/misc_sysLog.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/core/plasma.o: source/core/plasma.c source/type_marker.h source/misc_PIC.h source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/misc_sysLog.h source/misc_cfgReader.h source/misc_markerPlacer.h source/timer.h source/core/plasma.h source/profiler.h source/parr_meshes.h source/misc_socket.h source/misc_MPItags.h source/core/plasma_VSP.h source/core/plasma_walls.c source/reg_openDX.h source/misc_markerPacker.h source/core/plasma_currentWalls.c source/misc_definedKeys.h source/core/plasma_currentKernel.c source/core/plasma_rho.c source/core/plasma_check.c  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/probe2tec/main.o: source/probe2tec/main.c source/quit.h source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h source/misc_parameters.h source/frame.h source/core/diag_probe.h source/probe.h source/type_mesh.h source/misc_partition.h source/type_reg.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_cluster.o: source/setup/tag_cluster.c source/quit.h source/type_mesh.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/type_marker.h source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h source/setup/main.h source/setup/tag_cluster.h source/setup/setup_markerCache.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/core/em_TFSF.o: source/core/em_TFSF.c source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h source/misc_definedKeys.h source/reg_openDX.h source/type_reg.h source/core/em_TFSF.h source/type_mesh.h source/quit.h source/misc_partition.h source/misc_parameters.h source/frame.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/setup_denavit.o: source/setup/setup_denavit.c source/misc_pi.h source/quit.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_seedWeibel.o: source/setup/tag_seedWeibel.c source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/type_marker.h source/misc_pi.h source/misc_sysLog.h source/misc_cfgReader.h source/setup/tag_photoDF.h source/setup/main.h source/setup/setup_markerCache.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/reg_openDX.o: source/reg_openDX.c source/reg_openDX.h source/type_reg.h source/quit.h source/misc_sysLog.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_ringDF.o: source/setup/tag_ringDF.c source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/type_marker.h source/misc_pi.h source/misc_sysLog.h source/misc_cfgReader.h source/setup/main.h source/setup/setup_markerCache.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/IO_sys.o: source/IO_sys.c source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/type_marker.h source/IO_sys.h source/IO_mesh.h source/IO_fileMap.h source/IO_names.h source/IO_markers.h source/misc_sysLog.h source/misc_all2all.h source/misc_socket.h source/misc_MPItags.h source/misc_markerPacker.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/misc_socket.o: source/misc_socket.c source/quit.h source/misc_sysLog.h source/misc_socket.h source/misc_MPItags.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/type_CFile.o: source/type_CFile.c source/quit.h source/type_CFile.h source/misc_sysLog.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_point.o: source/setup/tag_point.c source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_plasmaSlab.o: source/setup/tag_plasmaSlab.c source/type_marker.h source/misc_pi.h source/quit.h source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/setup/main.h source/setup/setup_markerCache.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/probe2tec/dxProbe_list.o: source/probe2tec/dxProbe_list.c source/quit.h source/probe.h source/misc_sysLog.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/misc_all2all.o: source/misc_all2all.c source/quit.h source/misc_sysLog.h source/misc_all2all.h source/misc_socket.h source/misc_MPItags.h source/misc_markerPacker.h source/type_marker.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/parr_ghostCells.o: source/parr_ghostCells.c source/misc_sysLog.h source/parr_meshes.h source/type_reg.h source/misc_socket.h source/misc_MPItags.h source/core/em_caps.h source/type_mesh.h source/quit.h source/misc_partition.h source/misc_parameters.h source/frame.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/tecplot/dxSlicer.o: source/tecplot/dxSlicer.c source/quit.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/main.o: source/setup/main.c source/type_marker.h source/misc_pi.h source/misc_ranmar.h source/misc_sysLog.h source/misc_cfgReader.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/misc_markerPlacer.h source/quit.h source/core/plasma.h source/type_mesh.h source/IO_sys.h source/IO_tecplot.h source/IO_fileMap.h source/setup/tag.h source/setup/tag_mesh.h source/setup/tag_foil.h source/setup/tag_TFSF.h source/setup/tag_units.h source/setup/tag_point.h source/setup/tag_EMWave.h source/setup/tag_ringDF.h source/setup/tag_vShift.h source/setup/tag_rotate.h source/setup/tag_buneman.h source/setup/tag_photoDF.h source/setup/tag_boundary.h source/setup/tag_jBalancer.h source/setup/tag_gaussSpot.h source/setup/tag_biMaxwell.h source/setup/tag_plasmaSlab.h source/setup/tag_planePulse.h source/setup/tag_plasmaWave.h source/setup/tag_TFSFFaces.h source/setup/tag_EMResonator.h source/setup/tag_cacheFilter.h source/setup/tag_meanVNoise.h source/setup/tag_seedWeibel.h source/setup/tag_seed2Stream.h source/setup/tag_cluster.h source/setup/tag_alignedFoil.h source/setup/tag_scales.h source/setup/setup_markerCache.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/misc_parameters.o: source/misc_parameters.c source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/misc_sysLog.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/tecplot/dxScalarMinMax.o: source/tecplot/dxScalarMinMax.c source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h source/IO_names.h source/IO_tecplot.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/IO_tecplot.o: source/IO_tecplot.c source/IO_mesh.h source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/IO_fileMap.h source/IO_names.h source/IO_unroll.c source/misc_sysLog.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/misc_markerPlacer.o: source/misc_markerPlacer.c source/misc_PIC.h source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/misc_sysLog.h source/misc_all2all.h source/misc_socket.h source/misc_MPItags.h source/misc_markerPacker.h source/type_marker.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/misc_units.o: source/misc_units.c source/quit.h source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h source/misc_parameters.h source/frame.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/tag_biMaxwell.o: source/setup/tag_biMaxwell.c source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/misc_pi.h source/misc_units.h source/misc_sysLog.h source/misc_cfgReader.h source/setup/main.h source/setup/setup_denavit.h source/setup/setup_markerCache.h source/type_marker.h source/setup/setup_distrMapper.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/quit.o: source/quit.c  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/parr_meshes.o: source/parr_meshes.c source/type_mesh.h source/quit.h source/misc_partition.h source/type_reg.h source/misc_parameters.h source/frame.h source/misc_sysLog.h source/parr_meshes.h source/misc_socket.h source/misc_MPItags.h source/parr_regLists.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/setup/setup_distrMapper.o: source/setup/setup_distrMapper.c source/quit.h source/misc_sysLog.h source/setup/setup_distrMapper.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+o/spectr_dump.o: source/spectr_dump.c source/type_mesh2.h source/misc_parameters.h source/frame.h source/type_reg.h source/type_mesh.h source/quit.h source/misc_partition.h source/type_CFile.h source/misc_sysLog.h source/misc_cfgReader.h  Makefile
+	@echo "Compiling $@..."
+	@$(CCOMPILER) $(CFLAGS) $< -o $@
+
+
+core.out: o/core/main.o o/type_reg.o o/type_marker.o o/test_mesh.o o/misc_units.o o/misc_sysLog.o o/misc_cfgReader.o o/IO_sys.o o/IO_mesh.o o/IO_names.o o/IO_markers.o o/misc_all2all.o o/misc_socket.o o/misc_markerPacker.o o/type_mesh.o o/quit.o o/misc_partition.o o/misc_parameters.o o/IO_tecplot.o o/IO_fileMap.o o/profiler.o o/spectr_dump.o o/type_mesh2.o o/type_CFile.o o/core/em.o o/core/em_caps.o o/parr_meshes.o o/parr_regLists.o o/parr_ghostCells.o o/core/em_TFSF.o o/reg_openDX.o o/core/em_gaussSpot.o o/core/plasma.o o/misc_markerPlacer.o o/core/diag_probe.o o/core/diag_WDensity.o o/core/plasma_VSP.o 
+	@echo "  Linking $@..."
+	@$(CCOMPILER) $(LFLAGS) $^ -o $@ $(LINKWITH) -lfftw3
+	@echo "  Executable $@ is ready."
+	@echo ""
+
+.PHONY: autoCleanByMegaMake_core.out
+autoCleanByMegaMake_core.out:
+	@echo "Removing compiled files for project core.out ..."
+	@rm -f core.out o/core/main.o o/type_reg.o o/type_marker.o o/test_mesh.o o/misc_units.o o/misc_sysLog.o o/misc_cfgReader.o o/IO_sys.o o/IO_mesh.o o/IO_names.o o/IO_markers.o o/misc_all2all.o o/misc_socket.o o/misc_markerPacker.o o/type_mesh.o o/quit.o o/misc_partition.o o/misc_parameters.o o/IO_tecplot.o o/IO_fileMap.o o/profiler.o o/spectr_dump.o o/type_mesh2.o o/type_CFile.o o/core/em.o o/core/em_caps.o o/parr_meshes.o o/parr_regLists.o o/parr_ghostCells.o o/core/em_TFSF.o o/reg_openDX.o o/core/em_gaussSpot.o o/core/plasma.o o/misc_markerPlacer.o o/core/diag_probe.o o/core/diag_WDensity.o o/core/plasma_VSP.o
+
+setup.out: o/setup/main.o o/type_marker.o o/misc_ranmar.o o/misc_sysLog.o o/misc_cfgReader.o o/misc_partition.o o/type_reg.o o/misc_parameters.o o/misc_markerPlacer.o o/misc_all2all.o o/misc_socket.o o/misc_markerPacker.o o/quit.o o/core/plasma.o o/profiler.o o/parr_meshes.o o/parr_regLists.o o/core/plasma_VSP.o o/reg_openDX.o o/type_mesh.o o/IO_sys.o o/IO_mesh.o o/IO_names.o o/IO_markers.o o/IO_tecplot.o o/IO_fileMap.o o/setup/tag.o o/setup/tag_mesh.o o/misc_units.o o/setup/tag_foil.o o/setup/main.o o/setup/tag_TFSF.o o/core/em_TFSF.o o/setup/tag_units.o o/setup/tag_point.o o/setup/tag_EMWave.o o/setup/tag_ringDF.o o/setup/tag_vShift.o o/setup/tag_rotate.o o/setup/tag_buneman.o o/setup/tag_photoDF.o o/setup/setup_denavit.o o/setup/setup_distrMapper.o o/setup/tag_boundary.o o/setup/tag_jBalancer.o o/setup/tag_gaussSpot.o o/setup/tag_biMaxwell.o o/setup/tag_plasmaSlab.o o/setup/tag_planePulse.o o/setup/tag_plasmaWave.o o/setup/tag_TFSFFaces.o o/setup/tag_EMResonator.o o/setup/tag_cacheFilter.o o/setup/tag_meanVNoise.o o/setup/tag_seedWeibel.o o/setup/tag_seed2Stream.o o/setup/tag_cluster.o o/setup/tag_alignedFoil.o o/setup/tag_scales.o o/setup/setup_markerCache.o 
+	@echo "  Linking $@..."
+	@$(CCOMPILER) $(LFLAGS) $^ -o $@ $(LINKWITH) -lfftw3
+	@echo "  Executable $@ is ready."
+	@echo ""
+
+.PHONY: autoCleanByMegaMake_setup.out
+autoCleanByMegaMake_setup.out:
+	@echo "Removing compiled files for project setup.out ..."
+	@rm -f setup.out o/setup/main.o o/type_marker.o o/misc_ranmar.o o/misc_sysLog.o o/misc_cfgReader.o o/misc_partition.o o/type_reg.o o/misc_parameters.o o/misc_markerPlacer.o o/misc_all2all.o o/misc_socket.o o/misc_markerPacker.o o/quit.o o/core/plasma.o o/profiler.o o/parr_meshes.o o/parr_regLists.o o/core/plasma_VSP.o o/reg_openDX.o o/type_mesh.o o/IO_sys.o o/IO_mesh.o o/IO_names.o o/IO_markers.o o/IO_tecplot.o o/IO_fileMap.o o/setup/tag.o o/setup/tag_mesh.o o/misc_units.o o/setup/tag_foil.o o/setup/main.o o/setup/tag_TFSF.o o/core/em_TFSF.o o/setup/tag_units.o o/setup/tag_point.o o/setup/tag_EMWave.o o/setup/tag_ringDF.o o/setup/tag_vShift.o o/setup/tag_rotate.o o/setup/tag_buneman.o o/setup/tag_photoDF.o o/setup/setup_denavit.o o/setup/setup_distrMapper.o o/setup/tag_boundary.o o/setup/tag_jBalancer.o o/setup/tag_gaussSpot.o o/setup/tag_biMaxwell.o o/setup/tag_plasmaSlab.o o/setup/tag_planePulse.o o/setup/tag_plasmaWave.o o/setup/tag_TFSFFaces.o o/setup/tag_EMResonator.o o/setup/tag_cacheFilter.o o/setup/tag_meanVNoise.o o/setup/tag_seedWeibel.o o/setup/tag_seed2Stream.o o/setup/tag_cluster.o o/setup/tag_alignedFoil.o o/setup/tag_scales.o o/setup/setup_markerCache.o
+
+tecplot.out: o/tecplot/main.o o/type_mesh.o o/quit.o o/misc_partition.o o/type_reg.o o/misc_parameters.o o/type_CFile.o o/misc_units.o o/misc_sysLog.o o/misc_cfgReader.o o/IO_tecplot.o o/IO_mesh.o o/IO_fileMap.o o/IO_names.o 
+	@echo "  Linking $@..."
+	@$(CCOMPILER) $(LFLAGS) $^ -o $@ $(LINKWITH) 
+	@echo "  Executable $@ is ready."
+	@echo ""
+
+.PHONY: autoCleanByMegaMake_tecplot.out
+autoCleanByMegaMake_tecplot.out:
+	@echo "Removing compiled files for project tecplot.out ..."
+	@rm -f tecplot.out o/tecplot/main.o o/type_mesh.o o/quit.o o/misc_partition.o o/type_reg.o o/misc_parameters.o o/type_CFile.o o/misc_units.o o/misc_sysLog.o o/misc_cfgReader.o o/IO_tecplot.o o/IO_mesh.o o/IO_fileMap.o o/IO_names.o
+
+dxFilters.out: o/tecplot/dxFilters.o o/quit.o 
+	@echo "  Linking $@..."
+	@$(CCOMPILER) $(LFLAGS) $^ -o $@ $(LINKWITH) 
+	@echo "  Executable $@ is ready."
+	@echo ""
+
+.PHONY: autoCleanByMegaMake_dxFilters.out
+autoCleanByMegaMake_dxFilters.out:
+	@echo "Removing compiled files for project dxFilters.out ..."
+	@rm -f dxFilters.out o/tecplot/dxFilters.o o/quit.o
+
+dxSlicer.out: o/tecplot/dxSlicer.o o/quit.o 
+	@echo "  Linking $@..."
+	@$(CCOMPILER) $(LFLAGS) $^ -o $@ $(LINKWITH) 
+	@echo "  Executable $@ is ready."
+	@echo ""
+
+.PHONY: autoCleanByMegaMake_dxSlicer.out
+autoCleanByMegaMake_dxSlicer.out:
+	@echo "Removing compiled files for project dxSlicer.out ..."
+	@rm -f dxSlicer.out o/tecplot/dxSlicer.o o/quit.o
+
+dxScalarMinMax.out: o/tecplot/dxScalarMinMax.o o/type_mesh.o o/quit.o o/misc_partition.o o/type_reg.o o/misc_parameters.o o/misc_units.o o/misc_sysLog.o o/misc_cfgReader.o o/IO_names.o o/IO_tecplot.o o/IO_mesh.o o/IO_fileMap.o 
+	@echo "  Linking $@..."
+	@$(CCOMPILER) $(LFLAGS) $^ -o $@ $(LINKWITH) 
+	@echo "  Executable $@ is ready."
+	@echo ""
+
+.PHONY: autoCleanByMegaMake_dxScalarMinMax.out
+autoCleanByMegaMake_dxScalarMinMax.out:
+	@echo "Removing compiled files for project dxScalarMinMax.out ..."
+	@rm -f dxScalarMinMax.out o/tecplot/dxScalarMinMax.o o/type_mesh.o o/quit.o o/misc_partition.o o/type_reg.o o/misc_parameters.o o/misc_units.o o/misc_sysLog.o o/misc_cfgReader.o o/IO_names.o o/IO_tecplot.o o/IO_mesh.o o/IO_fileMap.o
+
+spectr.out: o/spectr/main.o o/type_reg.o o/misc_parameters.o o/type_mesh.o o/misc_partition.o o/type_CFile.o o/quit.o o/misc_units.o o/misc_sysLog.o o/misc_cfgReader.o o/spectr/spectr_process.o o/IO_mesh.o o/IO_fileMap.o o/IO_names.o o/type_mesh2.o 
+	@echo "  Linking $@..."
+	@$(CCOMPILER) $(LFLAGS) $^ -o $@ $(LINKWITH) -lfftw3
+	@echo "  Executable $@ is ready."
+	@echo ""
+
+.PHONY: autoCleanByMegaMake_spectr.out
+autoCleanByMegaMake_spectr.out:
+	@echo "Removing compiled files for project spectr.out ..."
+	@rm -f spectr.out o/spectr/main.o o/type_reg.o o/misc_parameters.o o/type_mesh.o o/misc_partition.o o/type_CFile.o o/quit.o o/misc_units.o o/misc_sysLog.o o/misc_cfgReader.o o/spectr/spectr_process.o o/IO_mesh.o o/IO_fileMap.o o/IO_names.o o/type_mesh2.o
+
+phasedot.out: o/phasedot/main.o o/type_marker.o o/quit.o o/misc_units.o o/misc_sysLog.o o/misc_cfgReader.o o/misc_parameters.o o/IO_sys.o o/IO_mesh.o o/IO_fileMap.o o/IO_names.o o/IO_markers.o o/misc_all2all.o o/misc_socket.o o/misc_markerPacker.o o/type_mesh.o o/misc_partition.o o/type_reg.o 
+	@echo "  Linking $@..."
+	@$(CCOMPILER) $(LFLAGS) $^ -o $@ $(LINKWITH) 
+	@echo "  Executable $@ is ready."
+	@echo ""
+
+.PHONY: autoCleanByMegaMake_phasedot.out
+autoCleanByMegaMake_phasedot.out:
+	@echo "Removing compiled files for project phasedot.out ..."
+	@rm -f phasedot.out o/phasedot/main.o o/type_marker.o o/quit.o o/misc_units.o o/misc_sysLog.o o/misc_cfgReader.o o/misc_parameters.o o/IO_sys.o o/IO_mesh.o o/IO_fileMap.o o/IO_names.o o/IO_markers.o o/misc_all2all.o o/misc_socket.o o/misc_markerPacker.o o/type_mesh.o o/misc_partition.o o/type_reg.o
+
+distrib.out: o/distrib/main.o o/quit.o o/misc_units.o o/misc_sysLog.o o/misc_cfgReader.o o/misc_parameters.o o/IO_sys.o o/IO_mesh.o o/misc_all2all.o o/misc_socket.o o/misc_markerPacker.o o/type_mesh.o o/misc_partition.o o/type_reg.o o/IO_names.o o/IO_markers.o o/type_marker.o o/IO_fileMap.o 
+	@echo "  Linking $@..."
+	@$(CCOMPILER) $(LFLAGS) $^ -o $@ $(LINKWITH) 
+	@echo "  Executable $@ is ready."
+	@echo ""
+
+.PHONY: autoCleanByMegaMake_distrib.out
+autoCleanByMegaMake_distrib.out:
+	@echo "Removing compiled files for project distrib.out ..."
+	@rm -f distrib.out o/distrib/main.o o/quit.o o/misc_units.o o/misc_sysLog.o o/misc_cfgReader.o o/misc_parameters.o o/IO_sys.o o/IO_mesh.o o/misc_all2all.o o/misc_socket.o o/misc_markerPacker.o o/type_mesh.o o/misc_partition.o o/type_reg.o o/IO_names.o o/IO_markers.o o/type_marker.o o/IO_fileMap.o
+
+probe2tec.out: o/probe2tec/main.o o/quit.o o/misc_units.o o/misc_sysLog.o o/misc_cfgReader.o o/misc_parameters.o o/core/diag_probe.o o/type_mesh.o o/misc_partition.o o/type_reg.o 
+	@echo "  Linking $@..."
+	@$(CCOMPILER) $(LFLAGS) $^ -o $@ $(LINKWITH) -lfftw3
+	@echo "  Executable $@ is ready."
+	@echo ""
+
+.PHONY: autoCleanByMegaMake_probe2tec.out
+autoCleanByMegaMake_probe2tec.out:
+	@echo "Removing compiled files for project probe2tec.out ..."
+	@rm -f probe2tec.out o/probe2tec/main.o o/quit.o o/misc_units.o o/misc_sysLog.o o/misc_cfgReader.o o/misc_parameters.o o/core/diag_probe.o o/type_mesh.o o/misc_partition.o o/type_reg.o
+
+dxProbe_list.out: o/probe2tec/dxProbe_list.o o/quit.o o/misc_sysLog.o o/misc_cfgReader.o 
+	@echo "  Linking $@..."
+	@$(CCOMPILER) $(LFLAGS) $^ -o $@ $(LINKWITH) 
+	@echo "  Executable $@ is ready."
+	@echo ""
+
+.PHONY: autoCleanByMegaMake_dxProbe_list.out
+autoCleanByMegaMake_dxProbe_list.out:
+	@echo "Removing compiled files for project dxProbe_list.out ..."
+	@rm -f dxProbe_list.out o/probe2tec/dxProbe_list.o o/quit.o o/misc_sysLog.o o/misc_cfgReader.o
+
+test.out: o/test/main_test.o o/misc_units.o o/misc_cfgReader.o o/misc_parameters.o o/type_mesh.o o/misc_partition.o o/type_reg.o o/quit.o o/type_CFile.o o/misc_sysLog.o 
+	@echo "  Linking $@..."
+	@$(CCOMPILER) $(LFLAGS) $^ -o $@ $(LINKWITH) -lrt
+	@echo "  Executable $@ is ready."
+	@echo ""
+
+.PHONY: autoCleanByMegaMake_test.out
+autoCleanByMegaMake_test.out:
+	@echo "Removing compiled files for project test.out ..."
+	@rm -f test.out o/test/main_test.o o/misc_units.o o/misc_cfgReader.o o/misc_parameters.o o/type_mesh.o o/misc_partition.o o/type_reg.o o/quit.o o/type_CFile.o o/misc_sysLog.o
+
+TFSFdefrag.out: o/TFSFdefrag/main.o o/type_reg.o o/misc_parameters.o o/type_mesh.o o/misc_partition.o o/quit.o o/misc_sysLog.o o/misc_cfgReader.o 
+	@echo "  Linking $@..."
+	@$(CCOMPILER) $(LFLAGS) $^ -o $@ $(LINKWITH) -lrt
+	@echo "  Executable $@ is ready."
+	@echo ""
+
+.PHONY: autoCleanByMegaMake_TFSFdefrag.out
+autoCleanByMegaMake_TFSFdefrag.out:
+	@echo "Removing compiled files for project TFSFdefrag.out ..."
+	@rm -f TFSFdefrag.out o/TFSFdefrag/main.o o/type_reg.o o/misc_parameters.o o/type_mesh.o o/misc_partition.o o/quit.o o/misc_sysLog.o o/misc_cfgReader.o
+
+.PHONY: clean
+clean: autoCleanByMegaMake_core.out autoCleanByMegaMake_setup.out autoCleanByMegaMake_tecplot.out autoCleanByMegaMake_dxFilters.out autoCleanByMegaMake_dxSlicer.out autoCleanByMegaMake_dxScalarMinMax.out autoCleanByMegaMake_spectr.out autoCleanByMegaMake_phasedot.out autoCleanByMegaMake_distrib.out autoCleanByMegaMake_probe2tec.out autoCleanByMegaMake_dxProbe_list.out autoCleanByMegaMake_test.out autoCleanByMegaMake_TFSFdefrag.out 

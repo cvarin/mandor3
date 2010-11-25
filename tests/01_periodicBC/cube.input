@@ -1,0 +1,47 @@
+[units]
+@ 1.0		Positive => works as wavelengh in microns [10^-4 cm].
+		Negative => works as critical electrons' density [cm^-3].
+
+[mesh]
+@ 20		imax: mesh size along X axis
+@ 30		jmax: mesh size along Y axis
+@ 20		kmax: mesh size along Z axis
+@ 1.00e0	Lx:   domain size along X axis
+@ 1.50e0	Ly:   domain size along Y axis
+@ 1.00e0	Lz:   domain size along Z axis
+@ -0.8		tau:  time step (negative means that unit is the marginally stable time step).
+
+[boundaryConditions]
+@ 0		xMin
+@ 0		xMax
+@ 0		yMin
+@ 0		yMax
+@ 0		zMin
+@ 0		zMax
+
+  Type of boundary condition is:
+    0 - periodic;
+    1 - mirror.
+    2 - Mur's first order absorbing boundary condition.
+
+[EMWave]
+@ Yee_2nd_order	Type of the initialization (physical or Yee_2nd_order).
+@ +1		mx = k_x*L_x/2pi.
+@ +0		my = k_y*L_y/2pi.
+@ +0		mz = k_z*L_z/2pi.
+@ 5.0		|E| --- initial field strenght
+@ -1.0e0	nx:
+@ -1.0e0	ny:  \vec n: (E,[n,k]) = 0
+@ +0.0e0	nz:
+@ right		Polarization of the wave (plane, left or right).
+
+[EMWave]
+@ Yee_2nd_order	Type of the initialization (physical or Yee_2nd_order).
+@ +0		mx = k_x*L_x/2pi.
+@ +1		my = k_y*L_y/2pi.
+@ -2		mz = k_z*L_z/2pi.
+@ 5.0		|E| --- initial field strenght
+@ -1.0e0	nx:
+@ -1.0e0	ny:  \vec n: (E,[n,k]) = 0
+@ +0.0e0	nz:
+@ plane		Polarization of the wave (plane, left or right).

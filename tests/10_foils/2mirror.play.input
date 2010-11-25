@@ -1,0 +1,67 @@
+[units]
+@ 1.0		Positive => works as wavelengh in microns [10^-4 cm].
+		Negative => works as critical electrons' density [cm^-3].
+
+[mesh]
+@ 400		imax: mesh size along X axis
+@ 400		jmax: mesh size along Y axis
+@ 0		kmax: mesh size along Z axis
+@ 40.0e0	Lx:   domain size along X axis
+@ 40.0e0	Ly:   domain size along Y axis
+@ 40.0e0	Lz:   domain size along Z axis
+@ -0.6		tau: positive => unit is femtoseconds;
+                     negative => unit is c/sqrt (1/h1^2 + .. + 1/h3^2)).
+
+[boundaryConditions]
+@ 2		xMin
+@ 2		xMax
+@ 2		yMin
+@ 2		yMax
+@ 0		zMin
+@ 0		zMax
+
+  Type of boundary condition is:
+    0 - periodic;
+    1 - mirror;
+    2 - Mur's first order absorbing boundary condition.
+
+[TFSF]
+@ 60		TF/SF interface position (X).
+@ 200		TF/SF interface position (X).
+@ 100		TF/SF interface position (Y).
+@ 300		TF/SF interface position (Y).
+@ 0		TF/SF interface position (Z).
+@ 100		TF/SF interface position (Z).
+@ playBackward	TF/SF interface regime (record, playForward, playBackward).
+
+[TFSF: open faces]
+> xMax 		Removes xMax face.
+> yMin 		Removes yMin face.
+> yMax 		Removes yMax face.
+
+  Helps to remove one or more faces without doing some cut-plane manipulations.
+
+[DF:foil]
+@ 30.0		X coordinate of the center [micron].
+@ 20.0		Y coordinate of the center [micron].
+@ 20.0		Z coordinate of the center [micron].
+@ -0.96592583	x component of the foil normal.
+@ +0.25881905	y component of the foil normal.
+@ 0.0		z component of the foil normal.
+@ 2.0           Width of the foil [micron].
+@ linear	type of the profile: 'linear' or 'exponential'
+@ -0.8e+0	begin concentration (positive => [cm^-3];  negative => [n_cr for electrons]).
+@ -2.0e+0	end   concentration (positive => [cm^-3];  negative => [n_cr for electrons]).
+@ -1.0		charge of particle [e].
+@ +1.0		mass of particle [m].
+@ 4		nx: number of particles along X (positive => per cell; negative => total).
+@ 4		ny: number of particles along Y (positive => per cell; negative => total).
+@ 1		nz: number of particles along Z (positive => per cell; negative => total).
+
+  Cold preplasma/foil.
+
+# [show scales]
+@ self-heating	Shows all plasma scales and restrictions.
+> 0.1e0		Minimum of n_cr.
+> 5.0e0		Maximum of n_cr.
+> 10		10 steps.

@@ -1,0 +1,127 @@
+{
+   <lam-mpi>
+   Memcheck:Param
+   socketcall.sendto(msg)
+   fun:send
+   fun:get_mapping
+   fun:__nscd_get_map_ref
+   fun:nscd_getpw_r
+   fun:__nscd_getpwuid_r
+   fun:getpwuid_r@@GLIBC_2.2.5
+   fun:getpwuid
+   fun:lam_tmpdir_init_opt
+   fun:_cio_init
+   fun:_cipc_init
+   fun:kinit
+   fun:kenter
+}
+
+{
+   <lam-mpi>
+   Memcheck:Param
+   write(buf)
+   fun:__write_nocancel
+   fun:mwrite
+   fun:_cio_kreq
+   fun:kattach
+   fun:kinit
+   fun:kenter
+   fun:lam_linit
+   fun:lam_mpi_init
+   fun:MPI_Init
+}
+
+{
+   <lam-mpi>
+   Memcheck:Param
+   write(buf)
+   fun:__write_nocancel
+   fun:mwrite
+   fun:_cio_kreq
+   fun:_cipc_ksend
+   fun:ksend
+   fun:dsend
+   fun:nsend
+   fun:lpattach
+   fun:lam_linit
+   fun:lam_mpi_init
+   fun:MPI_Init
+}
+
+{
+   <lam-mpi>
+   Memcheck:Param
+   writev(vector[...])
+   fun:do_writev
+   fun:mwritev
+   fun:_cio_send
+   fun:_cipc_ksend
+   fun:ksend
+   fun:dsend
+   fun:nsend
+   fun:lpattach
+   fun:lam_linit
+   fun:lam_mpi_init
+   fun:MPI_Init
+}
+
+{
+   <lam-mpi>
+   Memcheck:Param
+   write(buf)
+   fun:__write_nocancel
+   fun:mwrite
+   fun:_cio_kreqfront
+   fun:_cipc_ksrfront
+   fun:ksr
+   fun:dsfr
+   fun:getnodes
+   fun:getnodeid
+   fun:lam_linit
+   fun:lam_mpi_init
+   fun:MPI_Init
+}
+
+{
+   <lam-mpi>
+   Memcheck:Param
+   writev(vector[...])
+   fun:do_writev
+   fun:mwritev
+   fun:_cio_send
+   fun:_cipc_ksrfront
+   fun:ksr
+   fun:dsfr
+   fun:getnodes
+   fun:getnodeid
+   fun:lam_linit
+   fun:lam_mpi_init
+   fun:MPI_Init
+}
+
+{
+   <lam-mpi>
+   Memcheck:Param
+   write(buf)
+   fun:__write_nocancel
+   fun:mwrite
+   fun:_cio_kreqfront
+   fun:kdetach
+   fun:lam_kexit
+   fun:MPI_Finalize
+}
+
+{
+   <lam-mpi>
+   Memcheck:Param
+   writev(vector)
+   fun:do_writev
+   fun:mwritev
+   fun:_cio_send
+   fun:_cipc_ksend
+   fun:ksend
+   fun:dsend
+   fun:nsend
+   fun:lam_rtrnamesweep
+   fun:MPI_Finalize
+}

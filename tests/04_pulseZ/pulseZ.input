@@ -1,0 +1,33 @@
+[units]
+@ 1.0		Positive => works as wavelengh in microns [10^-4 cm].
+		Negative => works as critical electrons' density [cm^-3].
+
+[mesh]
+@ 0		imax: mesh size along X axis
+@ 0		jmax: mesh size along Y axis
+@ 300		kmax: mesh size along Z axis
+@ 5.0e0		Lx:	  domain size along X axis
+@ 5.0e0		Ly:	  domain size along Y axis
+@ 5.0e0		Lz:	  domain size along Z axis
+@ -0.9		tau:  time step
+
+[boundaryConditions]
+@ 0		xMin
+@ 0		xMax
+@ 0		yMin
+@ 0		yMax
+@ 1		zMin
+@ 1		zMax
+
+  Type of boundary condition is:
+    0 - periodic;
+    1 - mirror;
+    2 - Mur's first order absorbing boundary condition.
+
+[planePulse]
+@ 2		axis (0 - X, 1 - Y, 2 - Z)
+@ 0.5		initial coordinate
+@ 3.5		final coordinate
+@ 1.0		|E| amplitude of the field (if it is negative propagation directed is negative)
+@ 2		p:   polarization of the wave (0 - plane, 1 - S, 2 - P)
+ 

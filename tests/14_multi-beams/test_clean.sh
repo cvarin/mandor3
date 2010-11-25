@@ -1,0 +1,16 @@
+#!/bin/sh
+
+mn_workArea.sh 
+
+if [ -e Makefile ]
+then
+  make cleanAll
+  rm -f cube.input test_run.sh test_clean.sh
+else
+  echo "In this folder Makefile does not exist."
+  echo "Probably you run command in the test folder (which is not wise)."
+fi
+
+make cleanAll
+rm -f laser_*.rec.input laser_*.run_mandor.cfg laser.play.input \
+      laser.rec_all.sh test_clean.sh test_run.sh

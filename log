@@ -1,0 +1,94 @@
+#!/usr/bin/python
+
+"""
+This utility helps to navigate and browse user's log file(s).
+
+It can filter out unnecessary messages and strip line prefixes.
+More complex stuff should still delegated to grep and others.
+
+Please report your wished at http://www.mandor.ru/blaze
+"""
+
+from __future__ import with_statement
+
+import os, sys, re, subprocess, glob
+
+from optparse import OptionParser
+
+LOG_DIR = "./output/logs/"
+
+def parse_command_line ():
+    '''Extracts options and parameters from command line.'''
+    parser = OptionParser (usage = """%prog [options] logfile_mask
+
+All files which match 'mask*' will be shown. For example,
+'%prog set' will show the content of a 'setup.log', 'settings.log', etc.""")
+
+    parser.add_option ("-s", "--show-status",
+                      dest   = "status",
+                      action = "store_true",
+                      help   = "show all progress-bar messages")
+
+    (options, args) = parser.parse_args ()
+
+    return (options, args)
+
+
+def show_log (filename, skip_status_updates = True):
+    '''Filters logfile and shows it on screen.'''
+    ANSII_CURSOR_UP  = "\033[A"
+    ANSII_ERASE_LINE = "\033[2K"
+    IGNORE_IN_STATUS = [ANSII_CURSOR_UP, ANSII_ERASE_LINE]
+
+    PREFIX = { "DEB: " : ("\033[32m",      "\033[0m"),
+               "INF: " : ("",              ""        ),
+               "   : " : ("\033[36m",      "\033[0m"),
+               "WRN: " : ("\033[1;31m",    "\033[0m"),
+               "ERR: " : ("\033[1;41;37m", "\033[0m") }
+
+    STATUS_KEY = "   : "
+    
+    assert min (map (len, PREFIX.keys ())) == max (map (len, PREFIX.keys ())),\
+           "all prefixes should have the same length to strip them nicely"
+	   
+    # Main output/coloring cycle.
+    write = sys.stdout.write
+    fp    = open (filename, "rt")
+    for line in fp:
+        pref = line[:len (STATUS_KEY)]
+        line = line[len (STATUS_KEY):]
+        (start, end) = PREFIX[pref]
+
+        if pref == STATUS_KEY and skip_status_updates:
+            continue
+        else:
+            for i in IGNORE_IN_STATUS:
+                line = line.replace (i, "")
+
+        write (start)
+        write (line)
+        write (end)
+
+
+(options, args) = parse_command_line ()
+
+if not args:
+    bold  = "\033[1m"
+    reset = "\033[0m"
+    print "%s%s%s:%s" % (bold, LOG_DIR, reset, bold)
+    for l in glob.glob (os.path.join (LOG_DIR, "./*")):
+        print "   ", os.path.basename (l)
+    print reset, "\nCall with -h option to see how to use it."
+    sys.exit ()
+
+for arg in args:
+    files = glob.glob (os.path.join (LOG_DIR, "./" + arg + "*"))
+
+    separator = None
+    if len (files) > 1:
+        separator = "---------------------< %s >---------------------"
+
+    for f in files:
+        if separator:
+            print separator % os.path.basename (f)
+        show_log (f, skip_status_updates = not options.status)

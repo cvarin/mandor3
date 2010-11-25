@@ -1,0 +1,12 @@
+Distiller is particles diagnostic.
+
+Frontend is Python script 'distiller' located together with other
+compiled executables (../../ from here). It takes input file and
+generates './distiller.c' to be compiled as shared library (dll).
+
+Usage of Python simplifies interaction with user (nice command line
+interface, flexibility of input file syntax, and so on).
+
+Dll is experimental solution - later I may change it to complete
+generation of few C files and recompilation of the setup/distiller
+executable.

@@ -1,0 +1,16 @@
+That is nice test to show some weak spots of the naive PIC methods.
+
+Original wave has TM polarization (E field parallel to surface and is
+perpendicular to the plane of simulation), so wave is reflected nicely
+w/o dispacing a particles.
+
+
+Additional simulation shows that for the case of TE polarization we have
+much worse situation – perturbation moves into the foil, reaches rear
+surface and triggers SELF-HEATING ISNTABILITY there. 
+
+In order to show that the main cause is the sharp gradient of the charge
+density I added few different slabs of plasma to make gradient smooth,
+and observed much smaller nonconservation of energy.
+
+You can uncomment different rear foils to see for yourself.

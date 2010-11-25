@@ -1,0 +1,38 @@
+Multiple beams are created by writing them all in separate passes and
+than joining corresponding TFSF sources. 
+
+It includes many boring computations, so Python script is written to
+automate stuff and to let you use multiple input units (for example, you
+can set time in microns or length in femtoseconds).
+
+Basic recording steps:
+
+    o create 'record.cfg' with the setup of final run: 
+        + all sources
+	+ position of TF/SF interface
+    o run 'recorder' script and examine input files for each source
+    o run 'laser.rec_all.sh' script to record all sources (number of CPUs to 
+      use can be set in the script)
+    o run the actual simulation using laser.play.input as a base to create
+      the complete setup (you will have to add foils and so on)
+
+   =============================================================      
+   WARNING: each call to 'recorder' OVERWRITES ALL CONFIG FILES!
+            All your changes WILL BE LOST!
+   =============================================================      
+   
+There are two ways to handle this inconvinience:
+
+1) Write complete setup in 'recorder.cfg' file, so even if you will call
+   recorder accidentally, nothing will be lost. It also keeps everything
+   in just on file.
+   
+   Remember to remove all extra tags from the generated files used to write
+   the sources!
+   
+2) Do not use 'laser.play.input' directly, only copy the generated info from
+   the one into the real file.
+   
+Everything could be scripted trivially, so there are no point to
+disscuss it anymore.
+	    

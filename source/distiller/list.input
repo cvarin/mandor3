@@ -1,0 +1,11 @@
+@ 0		Start record
+@ 10000		End record
+@ 1		Step
+@ 0		Use filter
+
+# =======================================================
+#                   KEEP THIS FILE *AS IS*!
+#   That is special file used by distiller.py frontend.
+# =======================================================
+
+list_filters ()

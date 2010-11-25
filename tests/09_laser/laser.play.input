@@ -1,0 +1,63 @@
+[units]
+@ 1.0		Positive => works as wavelengh in microns [10^-4 cm].
+		Negative => works as critical electrons' density [cm^-3].
+
+[mesh]
+@ 450		imax: mesh size along X axis
+@ 400		jmax: mesh size along Y axis
+@ 0		kmax: mesh size along Z axis
+@ 45.0e0	Lx[microns]:   domain size along X axis
+@ 40.0e0	Ly[microns]:   domain size along Y axis
+@ 40.0e0	Lz[microns]:   domain size along Z axis
+@ -0.95		tau: positive => unit is femtoseconds;
+                     negative => unit is c/sqrt (1/h1^2 + .. + 1/h3^2)).
+
+[boundaryConditions]
+@ 2		xMin
+@ 2		xMax
+@ 2		yMin
+@ 2		yMax
+@ 0		zMin
+@ 0		zMax
+
+  Type of boundary condition is:
+    0 - periodic;
+    1 - mirror;
+    2 - Mur's first order absorbing boundary condition.
+
+[TFSF]
+@ 10		TF/SF interface position (Imin).
+@ 340		TF/SF interface position (Imax).
+@ 10		TF/SF interface position (Jmin).
+@ 390		TF/SF interface position (Jmax).
+@ 00		TF/SF interface position (Kmin).
+@ 90		TF/SF interface position (Kmax).
+@ playBackward	TF/SF interface regime (record, playForward, playBackward).
+
+[TFSF: open faces]
+> xMax
+> yMin
+> yMax
+
+  Removes selected faces.
+
+[foil]
+@ 30.0		X coordinate of the center [micron].
+@ 20.0		Y coordinate of the center [micron].
+@ 20.0		Z coordinate of the center [micron].
+@ 10.0		Dx/2 half-size along X [micron].
+@ 16.0		Dy/2 half-size along Y [micron].
+@ 20.0		Dz/2 half-size along Z [micron].
+@ 0		fit to cells' boundary (0 - no fit, <> 0 - do fit).
+@ 1		type of the profile (0: n = (n_start + n_end)/2 = const; 1: linear; 2: exponential)
+@ 0		direction of gradient (0 - X, 1 - Y, 2 - Z)
+@ -1.0e-5	begin concentration (positive => [cm^-3];  negative => [n_cr for electrons]).
+@ -2.0e+0	end   concentration (positive => [cm^-3];  negative => [n_cr for electrons]).
+@ -1.0		charge of particle [e].
+@ +1.0		mass of particle [m].
+@ 5		nx: number of particles along X (positive => per cell; negative => total).
+@ 4		ny: number of particles along Y (positive => per cell; negative => total).
+@ 1		nz: number of particles along Z (positive => per cell; negative => total).
+
+  Cold preplasma/foil.
+

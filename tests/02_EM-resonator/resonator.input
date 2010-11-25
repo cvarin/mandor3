@@ -1,0 +1,33 @@
+[units]
+@ 1.0		Positive => works as wavelengh in microns [10^-4 cm].
+		Negative => works as critical electrons' density [cm^-3].
+
+[mesh]
+@ 30		imax: mesh size along X axis
+@ 30		jmax: mesh size along Y axis
+@ 30		kmax: mesh size along Z axis
+@ 3.0e0		Lx [microns]:	domain size along X axis
+@ 3.0e0		Ly [microns]:	domain size along Y axis
+@ 3.0e0		Lz [microns]:	domain size along Z axis
+@ -0.9		tau:  time step
+
+[boundaryConditions]
+@ 1		xMin
+@ 1		xMax
+@ 1		yMin
+@ 1		yMax
+@ 1		zMin
+@ 1		zMax
+
+  Type of boundary condition is:
+    0 - periodic;
+    1 - mirror;
+    2 - Mur's first order absorbing boundary condition.
+
+[EMResonator]
+@ Yee_2nd_order	Type of the dispersion equation ('physical' or 'Yee_2nd_order').
+@ +1		mx = k_x*L_x/pi.
+@ +1		my = k_y*L_y/pi.
+@ +1		mz = k_z*L_z/pi.
+@ Ex		Polarization of the wave (non-zero component of the electric field).
+@ 5.0		E0 (electric field amplitude).
