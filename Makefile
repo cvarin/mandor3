@@ -28,11 +28,12 @@ CCOMPILER=mpicc
 
 # Apply it like 'TEST = -DMC_FILL_MESH_WITH_NAN -DMC_NO_MPI_ALLOC_MEM'.
 
-TESTS = -DMC_FILL_MESH_WITH_NAN
+TESTS = -DMC_FILL_MESH_WITH_NAN -DMC_NO_MPI_ALLOC_MEM -D__need_timespec
         #-DMC_GAUSS_TEST
         #-DMC_CURRENT_KERNEL_RANGE_TEST
         #-DMC_FORCE_FILE_FLUSHES
 COMMON = -Isource -Wuninitialized -Wunused -pedantic -std=gnu99 -DLINUX -pipe $(TESTS)
+COMMON = -Isource -std=c99 -DLINUX -pipe $(TESTS)
 
 # Debug options
   OPTIMIZE = -O1 -g -Wall -Wno-unknown-pragmas
@@ -44,7 +45,9 @@ COMMON = -Isource -Wuninitialized -Wunused -pedantic -std=gnu99 -DLINUX -pipe $(
   OPTIMIZE = -O2 -g -Wall -Wno-unknown-pragmas -ffast-math -fno-math-errno -funsafe-math-optimizations -fno-trapping-math
 
 # Performance options
-  OPTIMIZE = -O4 -g0 -march=native -mtune=native  -ffast-math -fno-math-errno -funsafe-math-optimizations -fno-trapping-math		# Speed options' set
+#  OPTIMIZE = -O4 -g0 -march=native -mtune=native  -ffast-math -fno-math-errno -funsafe-math-optimizations -fno-trapping-math		# Speed options' set
+  OPTIMIZE = -O3 -g0 -ipo -fno-math-errno
+
 
 LFLAGS = $(OPTIMIZE) $(COMMON)
 CFLAGS = -c $(LFLAGS)
