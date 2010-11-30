@@ -221,7 +221,11 @@ main (int argc, char *argv[])
 
    main_memReport ();								// Reports the memory consuming.
 
+#ifndef MC_DISABLE_ANSII_ESCAPE_SEQUENCES
    char *ansiEraseLine = "\033[2K", *ansiLineUp = "\033[A";
+#else
+   char *ansiEraseLine = "", *ansiLineUp = "";
+#endif
    if (!memEstimateOnly) {							// Reports memory usage and quits.
       say ("Evaluating charge density...");				// Charge density (for visualization).
       plasma_rho (&rho);

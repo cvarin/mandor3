@@ -26,9 +26,13 @@ CCOMPILER=mpicc
 # MC_FORCE_FILE_FLUSHES: forces to flush log-file after each logged message
 # (to catch messages issued just before the code crushes).
 
+# MC_DISABLE_ANSII_ESCAPE_SEQUENCES: disables ansii escape sequences that
+# interfere with calculations on SKIF MSU "Chebyshev"
+
+
 # Apply it like 'TEST = -DMC_FILL_MESH_WITH_NAN -DMC_NO_MPI_ALLOC_MEM'.
 
-TESTS = -DMC_FILL_MESH_WITH_NAN -DMC_NO_MPI_ALLOC_MEM -D__need_timespec
+TESTS = -DMC_FILL_MESH_WITH_NAN -DMC_NO_MPI_ALLOC_MEM -D__need_timespec -DMC_DISABLE_ANSII_ESCAPE_SEQUENCES
         #-DMC_GAUSS_TEST
         #-DMC_CURRENT_KERNEL_RANGE_TEST
         #-DMC_FORCE_FILE_FLUSHES

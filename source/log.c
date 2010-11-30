@@ -24,8 +24,14 @@
 #include "log.h"
 
 /// ANSI terminals support this escape-sequence commands.
+#ifndef MC_DISABLE_ANSII_ESCAPE_SEQUENCES
 #define ANSII_CURSOR_UP		"\033[A"
 #define ANSII_ERASE_LINE	"\033[2K"
+#else
+#define ANSII_CURSOR_UP         ""
+#define ANSII_ERASE_LINE       ""
+#endif
+
 
 #define BUF_SIZE  	200
 #define KEEP_MSG_POWER  8	// '_' keeps (2<<KEEP_MSG_POWER) messages.
