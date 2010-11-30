@@ -1,0 +1,295 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.6	//
+APPEND_PLT	plot.c	207;"	d	file:
+ARRAYS_OUB_CHECK	matrix.c	10;"	d	file:
+BOUNDS	processor.c	348;"	d	file:
+BOUNDS_F	plot.c	302;"	d	file:
+BUFFER_SIZE	params.h	13;"	d
+CFG_COMMON	params.h	16;"	d
+CFG_DF	params.h	20;"	d
+CFG_MCUTS	params.h	18;"	d
+CFG_MDATA	params.h	17;"	d
+CFG_PS	params.h	19;"	d
+CFG_ST	params.h	21;"	d
+CHECK	processor.c	68;"	d	file:
+COARSEN	processor.c	132;"	d	file:
+CPU_64_BIT	params.h	6;"	d
+FUNCTION	utils.h	10;"	d
+GET_MAX_MINS	plot.c	44;"	d	file:
+HEADER_SIZE	data_loader.c	130;"	d	file:
+I	types.h	/^		int I;$/;"	m	struct:__anon9
+Lx	types.h	/^		double Lx;$/;"	m	struct:__anon7
+Ly	types.h	/^		double Ly;$/;"	m	struct:__anon7
+Lz	types.h	/^		double Lz;$/;"	m	struct:__anon7
+MATRIX_H_DEFINED	matrix.h	5;"	d
+MAXSTRLEN	params.h	3;"	d
+MAX_Q_DIV_M	params.h	8;"	d
+MKLABEL	plot.c	144;"	d	file:
+N	types.h	/^		int N;$/;"	m	struct:__anon12
+N	types.h	/^		int N;$/;"	m	struct:__anon3
+N	types.h	/^		int N;$/;"	m	struct:__anon4
+OPEN_FILE	utils.h	12;"	d
+OPEN_FILE_FIELD	processor.c	986;"	d	file:
+PI	params.h	11;"	d
+PLOT_COMPONENT	plot.c	267;"	d	file:
+PL_APPEND_PLT_1D	plot.c	226;"	d	file:
+PL_APPEND_PLT_2D	plot.c	227;"	d	file:
+PROBE_IND	processor.c	981;"	d	file:
+REPORT_AXIS	report.c	147;"	d	file:
+REPORT_AXIS_INTERVAL	report.c	178;"	d	file:
+SAVE_1D	processor.c	308;"	d	file:
+SAVE_2D	processor.c	307;"	d	file:
+SAVE_3D	processor.c	306;"	d	file:
+SET_PLANES	processor.c	383;"	d	file:
+SMALL_VALUE	params.h	10;"	d
+SMART_READING	params.h	7;"	d
+STRLEN	params.h	4;"	d
+TYPES_LOADED	types.h	4;"	d
+VERT_EXTRA	params.h	5;"	d
+VERY_SMALL_VALUE	params.h	9;"	d
+WE	types.h	/^		int WE;$/;"	m	struct:__anon18
+WEAKEN_COARSENING	params.h	12;"	d
+WM	types.h	/^		int WM;$/;"	m	struct:__anon18
+WS	types.h	/^		int WS;$/;"	m	struct:__anon18
+WT_perp	types.h	/^		int WT_perp;$/;"	m	struct:__anon18
+WTx	types.h	/^		int WTx;$/;"	m	struct:__anon18
+WTy	types.h	/^		int WTy;$/;"	m	struct:__anon18
+WTz	types.h	/^		int WTz;$/;"	m	struct:__anon18
+W_kin	types.h	/^		int W_kin;$/;"	m	struct:__anon18
+aa_1D	types.h	/^		int aa_1D;	\/\/active axis for 1D: 1 -- X, 2 -- Y, 3 -- Z$/;"	m	struct:__anon7
+allocated	matrix.h	/^		char allocated;$/;"	m	struct:__anon1
+allocated	matrix.h	/^		char allocated;$/;"	m	struct:__anon2
+any	types.h	/^		int any;	\/\/shows if there is at least one nonzero$/;"	m	struct:__anon10
+any	types.h	/^		int any;	\/\/shows if there is at least one nonzero$/;"	m	struct:__anon9
+any	types.h	/^		int any;$/;"	m	struct:__anon15
+any	types.h	/^		int any;$/;"	m	struct:__anon16
+arr2d	matrix.h	/^	} arr2d;$/;"	t	typeref:struct:__anon1
+arr2d_allocate	matrix.c	/^void arr2d_allocate(arr2d *A, int Ni, int Nj){$/;"	f
+arr2d_char	matrix.h	/^	} arr2d_char;$/;"	t	typeref:struct:__anon2
+arr2d_char_allocate	matrix.c	/^void arr2d_char_allocate(arr2d_char *A, int Ni, int Nj){$/;"	f
+arr2d_char_create	matrix.c	/^arr2d_char arr2d_char_create(int Ni, int Nj){$/;"	f
+arr2d_char_destroy	matrix.c	/^void arr2d_char_destroy(arr2d_char A){$/;"	f
+arr2d_char_ij	matrix.c	/^double arr2d_char_ij(arr2d_char A, int i, int j){$/;"	f
+arr2d_char_set_ij	matrix.c	/^void arr2d_char_set_ij(char A_ij, arr2d_char *A, int i, int j){$/;"	f
+arr2d_cpy	matrix.c	/^void arr2d_cpy(arr2d A, arr2d B){$/;"	f
+arr2d_create	matrix.c	/^arr2d arr2d_create(int Ni, int Nj){$/;"	f
+arr2d_destroy	matrix.c	/^void arr2d_destroy(arr2d A){$/;"	f
+arr2d_ij	matrix.c	/^double arr2d_ij(arr2d A, int i, int j){$/;"	f
+arr2d_print	matrix.c	/^void arr2d_print(arr2d A){$/;"	f
+arr2d_set_ij	matrix.c	/^void arr2d_set_ij(double A_ij, arr2d *A, int i, int j){$/;"	f
+auto_slice	processor.c	/^void auto_slice(subdomain subdmn, int_array *mcuts, int mmain_plane){$/;"	f
+calc_cut_size	processor.c	/^void calc_cut_size(domain dmn, int mmain_plane, int_array mcuts, subdomain subdmn, int_vector coarse_factor, int *nx, int *ny){$/;"	f
+calc_theta	processor.c	/^double calc_theta(double r, double x){$/;"	f
+carray_fill	processor.c	/^void carray_fill(arr2d_char *A, domain dmn, subdomain subdmn, phase_space_task pt, double qm, marker *m, long int N, long int *n){$/;"	f
+cfg_read_double	io_utils.c	/^double cfg_read_double(char *keyword, char *cfgfile){$/;"	f
+cfg_read_int	io_utils.c	/^int cfg_read_int(char *keyword, char *cfgfile){$/;"	f
+cfg_read_str	io_utils.c	/^void cfg_read_str(char *keyword, char* value, char *cfgfile){$/;"	f
+charges_task	types.h	/^	} charges_task;$/;"	t	typeref:struct:__anon10
+check_slicing	processor.c	/^void check_slicing(int_array mcuts, int mmain_plane, subdomain subdmn){$/;"	f
+coarsen	types.h	/^		int coarsen;$/;"	m	struct:__anon15
+correct_subdomain	processor.c	/^void correct_subdomain(domain dmn, subdomain *subdmn){$/;"	f
+cpudmn	types.h	/^	} cpudmn;$/;"	t	typeref:struct:__anon11
+data	types.h	/^		double *data;$/;"	m	struct:__anon4
+data	types.h	/^		int *data;$/;"	m	struct:__anon3
+df_extract_param	processor.c	/^double df_extract_param(marker m, distrib_function_task dt, int n){$/;"	f
+df_plot	plot.c	/^void df_plot(distrib_function_task dt, arr2d df, int hor_pic_size, int vert_pic_size, int num, double time, FILE *plt){$/;"	f
+df_report	report.c	/^void df_report(distrib_function_task *dt, int max){$/;"	f
+dim	types.h	/^		int dim;$/;"	m	struct:__anon7
+distrib_function_task	types.h	/^	} distrib_function_task;$/;"	t	typeref:struct:__anon16
+domain	types.h	/^	} domain;$/;"	t	typeref:struct:__anon7
+double_array	types.h	/^	} double_array;$/;"	t	typeref:struct:__anon4
+dpx	types.h	/^		interval dpx;$/;"	m	struct:__anon15
+dpy	types.h	/^		interval dpy;$/;"	m	struct:__anon15
+dpz	types.h	/^		interval dpz;$/;"	m	struct:__anon15
+e_diag	types.h	/^		int e_diag;$/;"	m	struct:__anon18
+ef	types.h	/^		interval ef;$/;"	m	struct:__anon15
+ef	types.h	/^		interval ef;$/;"	m	struct:__anon16
+enable_intervals	types.h	/^		int enable_intervals;		\/\/whether the fourier components inside some explicitly specified interval is to be visualized or just inside the natural interval = [0; 1\/h]$/;"	m	struct:__anon18
+enabled	types.h	/^		int enabled;$/;"	m	struct:__anon8
+energy_density	processor.c	/^double energy_density(vector E, vector H){$/;"	f
+energy_filter	types.h	/^		int energy_filter;$/;"	m	struct:__anon15
+energy_filter	types.h	/^		int energy_filter;$/;"	m	struct:__anon16
+error	utils.c	/^void error(char *source, char *errmsg, ...){$/;"	f
+ex	types.h	/^		int ex;$/;"	m	struct:__anon9
+extract_val	processor.c	/^double extract_val(marker m, phase_space_task pt, int index){$/;"	f
+ey	types.h	/^		int ey;$/;"	m	struct:__anon9
+ez	types.h	/^		int ez;$/;"	m	struct:__anon9
+fields_task	types.h	/^	} fields_task;$/;"	t	typeref:struct:__anon9
+find_local_qm	processor.c	/^void find_local_qm(marker *m, long int N, double_array *a, domain dmn, subdomain subdmn, phase_space_task ps_task){$/;"	f
+float_vector	types.h	/^	} float_vector;$/;"	t	typeref:struct:__anon6
+free_int_array	utils.c	/^void free_int_array(int_array *array){$/;"	f
+gamma	types.h	/^		int gamma;$/;"	m	struct:__anon16
+get_checkpoints_num	data_loader.c	/^int get_checkpoints_num(char *bin_data_dir, char *suffix){$/;"	f
+get_coarse_factors	processor.c	/^void get_coarse_factors(int_vector *cf, int enable, domain dmn, int  mmain_plane, subdomain subdmn, int hor_pic_size, int vert_pic_size){$/;"	f
+get_cut_num	processor.c	/^int get_cut_num(int i, int j, int k, int mmain_plane, int_array mcuts){$/;"	f
+get_markers_num	processor.c	/^long int get_markers_num(char *bin_data_dir, int num, int cpu){$/;"	f
+get_sorted_indices	plot.c	/^void get_sorted_indices(int *indices, int n, double *vals){$/;"	f
+h1	types.h	/^		double h1;$/;"	m	struct:__anon7
+h2	types.h	/^		double h2;$/;"	m	struct:__anon7
+h3	types.h	/^		double h3;$/;"	m	struct:__anon7
+hx	types.h	/^		int hx;$/;"	m	struct:__anon9
+hy	types.h	/^		int hy;$/;"	m	struct:__anon9
+hz	types.h	/^		int hz;$/;"	m	struct:__anon9
+i	types.h	/^		int i;$/;"	m	struct:__anon5
+i1	types.h	/^		interval i1;$/;"	m	struct:__anon16
+i2	types.h	/^		interval i2;$/;"	m	struct:__anon16
+imax	types.h	/^		int imax;$/;"	m	struct:__anon11
+imax	types.h	/^		int imax;$/;"	m	struct:__anon7
+imax	types.h	/^		int imax;$/;"	m	struct:__anon8
+imin	types.h	/^		int imin;$/;"	m	struct:__anon11
+imin	types.h	/^		int imin;$/;"	m	struct:__anon7
+imin	types.h	/^		int imin;$/;"	m	struct:__anon8
+in	utils.c	/^int in(double x, double xmin, double xmax){$/;"	f
+inside_cpu_subdomain	data_loader.c	/^int inside_cpu_subdomain(int i, int j, int k, partition p, int cpu){$/;"	f
+inside_subdomain	processor.c	/^int inside_subdomain(int i, int j, int k, subdomain subdmn){$/;"	f
+int_array	types.h	/^	} int_array;$/;"	t	typeref:struct:__anon3
+int_vector	types.h	/^	} int_vector;$/;"	t	typeref:struct:__anon5
+intensity	processor.c	/^double intensity(vector E, vector H){$/;"	f
+interval	types.h	/^	} interval;$/;"	t	typeref:struct:__anon14
+ix	types.h	/^		interval ix;			\/\/the intervals$/;"	m	struct:__anon18
+iy	types.h	/^		interval iy;$/;"	m	struct:__anon18
+iz	types.h	/^		interval iz;$/;"	m	struct:__anon18
+j	types.h	/^		int j;$/;"	m	struct:__anon5
+jmax	types.h	/^		int jmax;$/;"	m	struct:__anon11
+jmax	types.h	/^		int jmax;$/;"	m	struct:__anon7
+jmax	types.h	/^		int jmax;$/;"	m	struct:__anon8
+jmin	types.h	/^		int jmin;$/;"	m	struct:__anon11
+jmin	types.h	/^		int jmin;$/;"	m	struct:__anon7
+jmin	types.h	/^		int jmin;$/;"	m	struct:__anon8
+jx	types.h	/^		int jx;$/;"	m	struct:__anon10
+jy	types.h	/^		int jy;$/;"	m	struct:__anon10
+jz	types.h	/^		int jz;$/;"	m	struct:__anon10
+k	types.h	/^		int k;$/;"	m	struct:__anon5
+kmax	types.h	/^		int kmax;$/;"	m	struct:__anon11
+kmax	types.h	/^		int kmax;$/;"	m	struct:__anon7
+kmax	types.h	/^		int kmax;$/;"	m	struct:__anon8
+kmin	types.h	/^		int kmin;$/;"	m	struct:__anon11
+kmin	types.h	/^		int kmin;$/;"	m	struct:__anon7
+kmin	types.h	/^		int kmin;$/;"	m	struct:__anon8
+load_domain_info	data_loader.c	/^void load_domain_info(domain *dmn, char *bin_data_dir){$/;"	f
+load_partition_info	data_loader.c	/^partition load_partition_info(char *bin_data_dir, int num, char *spec, double *time){$/;"	f
+load_plasma	data_loader.c	/^void load_plasma(marker *m, char *bin_data_dir, int num, int cpu){$/;"	f
+log_distr	types.h	/^		int log_distr;$/;"	m	struct:__anon16
+main	main.c	/^int main(){$/;"	f
+marker	types.h	/^	} marker;$/;"	t	typeref:struct:__anon17
+marker_inside_subdomain	processor.c	/^int marker_inside_subdomain(marker m, domain dmn, subdomain subdmn){$/;"	f
+marker_is_filtered_by_ef	processor.c	/^int marker_is_filtered_by_ef(marker m, int ef, interval i){$/;"	f
+markers_get_interval	processor.c	/^void markers_get_interval(domain dmn, subdomain subdmn, phase_space_task pt, int ind, interval *i){$/;"	f
+markers_get_vert_pic_size	plot.c	/^int markers_get_vert_pic_size(phase_space_task pt, domain dmn, subdomain subdmn, int hor_pic_size){$/;"	f
+markers_update_plt	plot.c	/^void markers_update_plt(phase_space_task pt, domain dmn, subdomain subdmn, int hor_pic_size, int vert_pic_size, int num, double_array qm, double time, FILE *plt){$/;"	f
+max	types.h	/^		double max;$/;"	m	struct:__anon14
+min	types.h	/^		double min;$/;"	m	struct:__anon14
+mp_2D	types.h	/^		int mp_2D;	\/\/main plane for 2D: 1 -- XY, 2 -- YZ, 3 -- XZ$/;"	m	struct:__anon7
+nhist1	types.h	/^		int nhist1;$/;"	m	struct:__anon16
+nhist2	types.h	/^		int nhist2;$/;"	m	struct:__anon16
+nodes	types.h	/^		cpudmn *nodes;$/;"	m	struct:__anon12
+nx	matrix.h	/^		int nx;$/;"	m	struct:__anon1
+nx	matrix.h	/^		int nx;$/;"	m	struct:__anon2
+ny	matrix.h	/^		int ny;$/;"	m	struct:__anon1
+ny	matrix.h	/^		int ny;$/;"	m	struct:__anon2
+open_mesh_binary_files	data_loader.c	/^void open_mesh_binary_files(char *bin_data_dir, char *source_spec, char *target_spec, int num, FILE **fs, int N){$/;"	f
+partition	types.h	/^	} partition;$/;"	t	typeref:struct:__anon12
+partiton_erase	utils.c	/^void partiton_erase(partition prtn){$/;"	f
+perform_fourier_transform	processor.c	/^void perform_fourier_transform(arr2d in, arr2d *out){$/;"	f
+phase_point_inside_bounds	processor.c	/^int phase_point_inside_bounds(marker m, domain dmn, subdomain subdmn, phase_space_task pt){$/;"	f
+phase_space_task	types.h	/^	} phase_space_task;$/;"	t	typeref:struct:__anon15
+phi_mom_xy	types.h	/^		int phi_mom_xy;			\/\/phi_mom_plane is the angle between the momentum of the particles and its projection onto the plane$/;"	m	struct:__anon16
+phi_mom_xz	types.h	/^		int phi_mom_xz;$/;"	m	struct:__anon16
+phi_mom_yz	types.h	/^		int phi_mom_yz;$/;"	m	struct:__anon16
+phi_pos_xy	types.h	/^		int phi_pos_xy;			\/\/phi_pos_plane is the angle between the radius-vector of the particles and its projection onto the plane$/;"	m	struct:__anon16
+phi_pos_xz	types.h	/^		int phi_pos_xz;$/;"	m	struct:__anon16
+phi_pos_yz	types.h	/^		int phi_pos_yz;$/;"	m	struct:__anon16
+plot_energy_diag	plot.c	/^void plot_energy_diag(special_task st, int hor_pic_size, FILE *plt){$/;"	f
+plot_fourier_transform	plot.c	/^void plot_fourier_transform(domain dmn, special_task st, int mmain_plane, int_array mcuts, arr2d A, int i_slice, int num, FILE *plt, int hor_pic_size, int vert_pic_size, double time){$/;"	f
+plot_init	plot.c	/^int plot_init(FILE **plt, int hor_pic_size, domain dmn, subdomain subdmn, int mmain_plane){$/;"	f
+plot_probe_locations	plot.c	/^void plot_probe_locations(domain dmn, FILE *plt, int hor_pic_size, int vert_pic_size){$/;"	f
+plot_probes_data	plot.c	/^void plot_probes_data(special_task st, int hor_pic_size, FILE *plt){$/;"	f
+point_kind	processor.c	/^int point_kind(int i, int j, int k, domain dmn, int mmain_plane, int_array mcuts, subdomain subdmn, int_vector coarse_factor){$/;"	f
+preparefolders	io_utils.c	/^void preparefolders(){$/;"	f
+probe_Ex	types.h	/^		int probe_Ex;			\/\/components of the field to visualize$/;"	m	struct:__anon18
+probe_Ey	types.h	/^		int probe_Ey;$/;"	m	struct:__anon18
+probe_Ez	types.h	/^		int probe_Ez;$/;"	m	struct:__anon18
+probe_Hx	types.h	/^		int probe_Hx;$/;"	m	struct:__anon18
+probe_Hy	types.h	/^		int probe_Hy;$/;"	m	struct:__anon18
+probe_Hz	types.h	/^		int probe_Hz;$/;"	m	struct:__anon18
+probe_is_inside_domain	cfgreader.c	/^int probe_is_inside_domain(char *probe, domain dmn){$/;"	f
+probe_locations	types.h	/^		float_vector *probe_locations;	\/\/locations of the probes inside the entire domain$/;"	m	struct:__anon18
+probes	types.h	/^		int_array probes;		\/\/array containing probes numbers for visualization$/;"	m	struct:__anon18
+probes_num_domain	types.h	/^		int probes_num_domain;		\/\/total number of probes in the domain$/;"	m	struct:__anon18
+process_energy_diagnostic	processor.c	/^void process_energy_diagnostic(char *bin_data_dir, special_task st, FILE *plt, int hor_pic_size){$/;"	f
+process_fields	processor.c	/^void process_fields(char *bin_data_dir, int num, domain dmn, subdomain subdmn, int mmain_plane, int_array mcuts, char *source_spec, FILE *plt, int hor_pic_size, int vert_pic_size, fields_task f_task, int_vector coarse_factor, special_task st){$/;"	f
+process_markers	processor.c	/^void process_markers(char *bin_data_dir, int num, domain dmn, subdomain subdmn, phase_space_task ps_task, distrib_function_task df_task, int hor_pic_size, int vert_pic_size, long int *n, int *n_species, int *df_success, FILE *plt){$/;"	f
+process_mplasma	processor.c	/^void process_mplasma(char *bin_data_dir, int num, domain dmn, subdomain subdmn, int mmain_plane, int_array mcuts, char *source_spec, FILE *plt, charges_task c_task, int_vector coarse_factor){$/;"	f
+px	types.h	/^		int px;$/;"	m	struct:__anon15
+px	types.h	/^		int px;$/;"	m	struct:__anon16
+px	types.h	/^	        double px;$/;"	m	struct:__anon17
+py	types.h	/^		int py;$/;"	m	struct:__anon15
+py	types.h	/^		int py;$/;"	m	struct:__anon16
+py	types.h	/^	        double py;$/;"	m	struct:__anon17
+pz	types.h	/^		int pz;$/;"	m	struct:__anon15
+pz	types.h	/^		int pz;$/;"	m	struct:__anon16
+pz	types.h	/^	        double pz;$/;"	m	struct:__anon17
+q_div_m	types.h	/^		double q_div_m;$/;"	m	struct:__anon15
+q_div_m	types.h	/^		double q_div_m;$/;"	m	struct:__anon16
+q_div_m	types.h	/^	        float q_div_m;$/;"	m	struct:__anon17
+read_cfg_common	cfgreader.c	/^void read_cfg_common(char *bin_data_dir, int_array *checkpoints_list, int_array *snapshots_list, int *hor_pic_size, subdomain *subdmn, int *coarsen_data){$/;"	f
+read_cfg_distrib	cfgreader.c	/^void read_cfg_distrib(distrib_function_task *df_task){$/;"	f
+read_cfg_markers	cfgreader.c	/^void read_cfg_markers(phase_space_task *ps_task){$/;"	f
+read_cfg_mdata	cfgreader.c	/^void read_cfg_mdata(int *fs, fields_task *f_task, charges_task *c_task){$/;"	f
+read_cfg_mslicing	cfgreader.c	/^void read_cfg_mslicing(int *mp, int *cm, int_array *cuts){$/;"	f
+read_cfg_special_task	cfgreader.c	/^void read_cfg_special_task(char *bin_data_dir, special_task *st, domain dmn){$/;"	f
+read_double_point	data_loader.c	/^double read_double_point(int i, int j, int k, partition p, FILE **fs){$/;"	f
+read_vector_point	data_loader.c	/^vector read_vector_point(int i, int j, int k, partition p, FILE **fs){$/;"	f
+report_domain	report.c	/^void report_domain(domain dmn){$/;"	f
+report_mcoarsening	report.c	/^void report_mcoarsening(int_vector *cf){$/;"	f
+report_mesh_slicing	report.c	/^void report_mesh_slicing(int_array mcuts, int main_plane, domain dmn){$/;"	f
+report_phase_space	report.c	/^void report_phase_space(phase_space_task *pt){$/;"	f
+report_subdomain	report.c	/^void report_subdomain(domain dmn, subdomain subdmn){$/;"	f
+report_what_to_be_processed	report.c	/^void report_what_to_be_processed(int_array *checkpoints_list, int_array *snapshots_list){$/;"	f
+rho	types.h	/^		int rho;$/;"	m	struct:__anon10
+rho	types.h	/^	        float rho;$/;"	m	struct:__anon17
+save_dat_file	processor.c	/^void save_dat_file(arr2d A, char *fn, int dim, double xmin, double ymin, double xmax, double ymax, int mp, double z, char *spec, int num, int cut, FILE *plt, double time){$/;"	f
+save_dat_files	processor.c	/^void save_dat_files(domain dmn, subdomain subdmn, int mmain_plane, int_array mcuts, arr2d *A, int num, char *spec, FILE *plt, double time){$/;"	f
+save_markers_coarsened	processor.c	/^void save_markers_coarsened(arr2d_char A, int num, int specie, domain dmn, subdomain subdmn, phase_space_task pt){$/;"	f
+save_markers_direct	processor.c	/^void save_markers_direct(marker *m, long int N, int num, domain dmn, subdomain subdmn, long int *n, double_array qm, phase_space_task ps_task){$/;"	f
+savepoint	processor.c	/^void savepoint(double val, int i, int j, int k, domain dmn, subdomain subdmn, int mmain_plane, int_array mcuts, int_vector cf, arr2d *A){$/;"	f
+special_task	types.h	/^	} special_task;$/;"	t	typeref:struct:__anon18
+st_report	report.c	/^void st_report(special_task *st){$/;"	f
+storage	matrix.h	/^		char *storage;$/;"	m	struct:__anon2
+storage	matrix.h	/^		double *storage;$/;"	m	struct:__anon1
+subdomain	types.h	/^	} subdomain;$/;"	t	typeref:struct:__anon8
+sum	types.h	/^		int sum;			\/\/dimensionality of the histogram to be created$/;"	m	struct:__anon16
+tau	types.h	/^		double tau;$/;"	m	struct:__anon7
+theta_mom_x	types.h	/^		int theta_mom_x;		\/\/theta_mom_axis is the angle between the axis and the momentum of the particles$/;"	m	struct:__anon16
+theta_mom_y	types.h	/^		int theta_mom_y;$/;"	m	struct:__anon16
+theta_mom_z	types.h	/^		int theta_mom_z;$/;"	m	struct:__anon16
+theta_pos_x	types.h	/^		int theta_pos_x;		\/\/theta_pos_axis is the angle between the axis and the radius-vector of the particles$/;"	m	struct:__anon16
+theta_pos_y	types.h	/^		int theta_pos_y;$/;"	m	struct:__anon16
+theta_pos_z	types.h	/^		int theta_pos_z;$/;"	m	struct:__anon16
+update_df	processor.c	/^void update_df(marker *m, long int N, arr2d df, distrib_function_task dt, domain dmn, subdomain subdmn){$/;"	f
+update_global_qm	processor.c	/^void update_global_qm(double_array local, double_array *global){$/;"	f
+vector	types.h	/^	} vector;$/;"	t	typeref:struct:__anon13
+vis_fourier	types.h	/^		int vis_fourier;		\/\/flag turning the fourier diagnostic on$/;"	m	struct:__anon18
+vis_probe_locations	processor.c	/^void vis_probe_locations(domain dmn, special_task st, FILE *plt, int hor_pic_size, int vert_pic_size){$/;"	f
+vis_probe_locations	types.h	/^		int vis_probe_locations;	\/\/whether visualize locations or not$/;"	m	struct:__anon18
+vis_probes	processor.c	/^void vis_probes(domain dmn, special_task st, int hor_pic_size, FILE *plt, char *bin_data_dir){$/;"	f
+vis_probes	types.h	/^		int vis_probes;			\/\/flag turning on the diagnostic$/;"	m	struct:__anon18
+x	types.h	/^		double x;$/;"	m	struct:__anon13
+x	types.h	/^		float x;$/;"	m	struct:__anon6
+x	types.h	/^		int x;$/;"	m	struct:__anon15
+x	types.h	/^		int x;$/;"	m	struct:__anon16
+x	types.h	/^	        double x;$/;"	m	struct:__anon17
+y	types.h	/^		double y;$/;"	m	struct:__anon13
+y	types.h	/^		float y;$/;"	m	struct:__anon6
+y	types.h	/^		int y;$/;"	m	struct:__anon15
+y	types.h	/^		int y;$/;"	m	struct:__anon16
+y	types.h	/^	        double y;$/;"	m	struct:__anon17
+z	types.h	/^		double z;$/;"	m	struct:__anon13
+z	types.h	/^		float z;$/;"	m	struct:__anon6
+z	types.h	/^		int z;$/;"	m	struct:__anon15
+z	types.h	/^		int z;$/;"	m	struct:__anon16
+z	types.h	/^	        double z;$/;"	m	struct:__anon17
