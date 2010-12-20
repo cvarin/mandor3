@@ -40,6 +40,8 @@
 #include "setup/tag_scales.h"
 #include "setup/tag_trianglePrizm.h"
 
+#include "setup/tag_gradient.h"
+
 // Bunch of unique IDs for switch statement in 'setup/main.c'.
 
 enum {
@@ -77,6 +79,8 @@ enum {
 
     TAG_SCALES,			///< Prints scales of the simulation: tag_scales.h.
     TAG_SCISSORS,		///< Sets subregion where plasma must be created: tag_scissors.h.
+
+    TAG_GRADIENT,
 
     TAG_TOTAL_NUM,		///< Total number of tags (used as array size in tag.c).
     TAG_EOF         = -1,	///< Return code to signal the end of file.

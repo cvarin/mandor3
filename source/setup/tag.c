@@ -49,6 +49,8 @@ static const char* tags[TAG_TOTAL_NUM] =
 
     [TAG_SCALES]           = "show scales",
     [TAG_SCISSORS]         = "scissors",
+
+    [TAG_GRADIENT]         = "gradient",
 };
 
 // Incoming buffer.

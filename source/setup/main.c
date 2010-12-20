@@ -205,6 +205,8 @@ main (int argc, char *argv[])
          case TAG_MEAN_V_NOISE:		tag_meanVNoise (fp);					break;
          case TAG_SCALES:		tag_scales (fp);					break;
          case TAG_SCISSORS:		tag_scissors (fp);					break;
+         case TAG_GRADIENT:		tag_gradient (fp);					break;
+
 
          case TAG_EOF:		// End of file is reached, no tags found.
          break;
