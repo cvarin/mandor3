@@ -106,20 +106,13 @@ int main(){
 		if((s_task.vis_probe_locations)&&(s_task.probes_num_domain > 0)) vis_probe_locations(dmn, s_task, plt, hor_pic_size, vert_pic_size);
 	}
 
-#ifdef HUI
-	if (s_task.vis_gamma) { // TEMP
+	//if (s_task.vis_gamma) { // TEMP
 		double time;
 		double deltaN[100];
-		double deltaN_plus[100];
 		double gamma[100];
-		double gamma_plus[100];
-		double total[100];
-		double total_plus[100];
 		char name[300];
 		double tmp, tmp2;
 		FILE *fp;
-
-		for (int i = 0; i < 100; i++) total_plus[i] = total[i] = 0.0;
 
 		for (int i = 0; i < checkpoints_list.N; i++) {
 			int num = checkpoints_list.data[i];
@@ -128,18 +121,15 @@ int main(){
 			
 			partition p = load_partition_info(bin_data_dir, num, "sys", &time);
 			
-			for (int j = 0; j < 100; j++) deltaN_plus[j] = deltaN[j] = 0.0;
+			for (int j = 0; j < 100; j++) deltaN[j] = 0.0;
 
 			for (int j = 0; j < p.N; j++) {
 				sprintf(name, "%sgamma_%06d_%03d.bin", bin_data_dir, num, j);
 				fp = fopen(name, "rt");
 				
 				for (int k = 0; k < 100; k++) {
-					fscanf(fp, "%lg %*lg %lg %lg", &gamma[k], &tmp, &tmp2);
+					fscanf(fp, "%lg %lg", &gamma[k], &tmp);
 					deltaN[k] += tmp;
-					total[k] += tmp;
-					deltaN_plus[k] += tmp2;
-					total_plus[k] += tmp2;
 				}
 
 				fclose(fp);
@@ -151,19 +141,11 @@ int main(){
 			for (int j = 0; j < 100; j++) fprintf(fp, "%e %e\n", gamma[j], log(1 + deltaN[j]));
 
 			fclose(fp);
-/*
-			sprintf(name, "dat/gamma_plus_%06d.dat", num);
-			fp = fopen(name, "wt");
-
-			for (int j = 0; j < 100; j++) fprintf(fp, "%e %e\n", gamma[j], log(1 + deltaN_plus[j]));
-
-			fclose(fp);
-			*/
 			
 			fprintf(plt, "set output 'pics/gamma_%06d.png'\n", num);
 			fprintf(plt, "set title 'gamma: time = %.2f waveperiods'\n", time);
 			fprintf(plt, "set ylabel 'ln (1 + delta N)'\n");
-			fprintf(plt, "set xlabel 'gamma'\n");
+			fprintf(plt, "set xlabel 'energy, MeV'\n");
 			fprintf(plt, "set grid\n");
 			fprintf(plt, "set size square\n");
 			fprintf(plt, "plot '%s' w l notitle\n", name);
@@ -171,27 +153,7 @@ int main(){
 
 		}
 
-		fp = fopen("dat/gamma_total.dat", "wt");
-		
-		for (int i = 0; i < 100; i++) fprintf(fp, "%e %e\n", gamma[i], log(1 + total[i]));
-
-		fclose(fp);
-		
-		fprintf(plt, "set output 'pics/gamma_total.png'\n");
-		fprintf(plt, "set title 'total gamma'\n");
-		fprintf(plt, "set ylabel 'ln (1 + delta N)'\n");
-		fprintf(plt, "set xlabel 'gamma'\n");
-		fprintf(plt, "set grid\n");
-		fprintf(plt, "plot 'dat/gamma_total.dat' w l notitle\n");
-		fprintf(plt, "unset grid\n");
-
-		fp = fopen("dat/gamma_plus_total.dat", "wt");
-		
-		for (int i = 0; i < 100; i++) fprintf(fp, "%e %e\n", gamma[i], log(1 + total_plus[i]));
-
-		fclose(fp);
-	} // TEMP
-#endif
+//	} // TEMP
 
 	free_int_array(&checkpoints_list);
 	free_int_array(&snapshots_list);

@@ -45,6 +45,34 @@
 #include "core/diag_probe.h"
 #include "core/diag_WDensity.h"
 
+// TEMP
+static double tmp_gamma[100];
+const double tmp_max_gamma = 2.0;
+
+void tmp_update_gamma(int start, int finish) {
+  for (int i = start; i < finish; i++) if (plasma[i].qDivM < 0) {
+    marker_t *p = &plasma[i];
+    const double gamma = sqrt(1.0 + p->vx*p->vx + p->vy*p->vy + p->vz*p->vz);
+    const j = (int)(100.0 * (gamma - 1.0) / (tmp_max_gamma - 1.0));
+    if (j < 100) tmp_gamma[j] -= p->rho;
+  }
+}
+
+void tmp_save_gamma(int record, int cpu) {
+  char name[256];
+  sprintf(name, "binData/gamma_%06d_%03d.bin", record, cpu);
+
+  FILE *fp = fopen(name, "wt");
+  ENSURE(fp, "Cannot open file '%s' for writing.", name);
+
+  for (int i = 0; i < 100; i++) {
+    fprintf(fp, "%lg %lg\n", 0.511 * double(i) * (tmp_max_gamma - 1.0) / 100.0, tmp_gamma[i]);
+    tmp_gamma[i] = 0.0;
+  }
+}
+
+// END TEMP
+
 
 // Variables for non-blocking check of the stop requests/timeouts.
 static timeTick_t  stopFlag_startTime;		///< Simulation start time (to check timeouts).
@@ -313,6 +341,8 @@ main (int argc, char **argv)
    em_init      (&E, &H);
    plasma_init  ();
 
+   for (int tmp = 0; tmp < 100; tmp++) tmp_gamma[tmp] = 0.0; // TEMP
+
    say ("System is initialized successfully.");
 
    // Total time of the work stage - starts here.
@@ -406,8 +436,13 @@ main (int argc, char **argv)
       // Updates time after successful time step.
       parameter_setTime (Time + tau);
 
+      tmp_update_gamma(countCore, countAll); // TEMP
+      tmp_update_gamma(0, countShell); // TEMP
+
       // System check-point.
       if (t && t%chPoint_full == 0) {
+        tmp_save_gamma(sysNum, cpu_here); // TEMP
+
          timeTick_t startWrite;
          time_get (&startWrite);
          say_doing ("writing check-point...");
