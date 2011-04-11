@@ -8,9 +8,9 @@
   *            rho[-1][?][?] = rho[?][-1][?] = rho[?][?][-1] = 0
   *        explicitly.
   *
-  * XXX Consider removing plasma_multistep for 1D/2D - never will happen and so
-  * this big piece of code may be removed safely at compile time to make
-  * optimizer happy.
+  * \TODO Consider removing plasma_multistep for 1D/2D - never will happen and
+  * so this big piece of code may be removed safely at compile time (to make
+  * optimizer happy).
   */
 
 #include <math.h>
@@ -47,13 +47,20 @@ static double shellX1, shellX2, shellY1, shellY2, shellZ1, shellZ2;
 static double coreX1,  coreX2,  coreY1,  coreY2,  coreZ1,  coreZ2;
 
 /// Kinetic energies of the particles.
-static double plasmaWx = NAN,
-              plasmaWy = NAN,
-              plasmaWz = NAN;
+static double       plasmaWx = NAN,
+                    plasmaWy = NAN,
+                    plasmaWz = NAN;
 
-static meshVec_p plasma_J;
+/// Connection for current density.
+static connection_t connectionJ = mf_connection_init (TAG_PLASMA_J, "plasma:J");
+static meshVec_p    plasma_J;
 
-static connection_t connectionJ   = mf_connection_init (TAG_PLASMA_J, "plasma:J");		///< Connection for current density.
+/// Simple 'enum' to remove magic numbers in calls to 'plasma_timestep'.
+enum stage_e {DOING_CORE = 0, DOING_SHELL = 1};
+
+#if defined(ACTIVATE_TRACER) && ACTIVATE_TRACER
+static FILE *tracer = NULL;
+#endif
 
 #include "plasma_walls.c"
 #include "plasma_currentWalls.c"
@@ -68,7 +75,8 @@ static connection_t connectionJ   = mf_connection_init (TAG_PLASMA_J, "plasma:J"
  */
 
 /*
- * Here I import plasmaCurrents_kernel - routine to evaluate current density using initial and final positions.
+ * Here I import plasmaCurrents_kernel - routine to evaluate current density
+ * using initial and final positions.
  */
 #include "plasma_currentKernel.c"
 
@@ -84,20 +92,27 @@ static connection_t connectionJ   = mf_connection_init (TAG_PLASMA_J, "plasma:J"
 /// Plasma time step (external iterator 'p' is set by client and used by routers ).
 // ---------------------------------------------------------------------------
 static void
-plasma_timestep (const int shellScan, long int N,
+plasma_timestep (enum stage_e doing_shell, long int N,
                  meshVec_RO_p E, meshVec_RO_p H, meshVec_p J)
 {
-   marker_t *p = plasma + ((shellScan) ? 0 : countAll - N);
-
    profiler_endBegin (mc_prof_plasma_mainLoop);
+   marker_t *p = plasma + (doing_shell ? 0 : countAll - N);
    for ( ; N > 0 ; ) {
       marker_t *shell = plasma + countShell,
                *core  = plasma + countCore;
       // Performs timestep for 'page' particles between parallel tests.
-      long int page = (N < MC_CHECK_FREQ || shellScan) ? N : MC_CHECK_FREQ;
+      long int page = (N < MC_CHECK_FREQ || doing_shell) ? N : MC_CHECK_FREQ;
       N -= page;
       for ( ; page > 0 ; --page, ++p) {
-         // '_' corresponds to indices, shifted by -1/2.
+#if defined(ACTIVATE_TRACER) && ACTIVATE_TRACER
+         // TODO: "buffer with given size + flushes"?
+         //       proc: smaller number of calls to 'fwrite'
+         //       proc: streamed write
+         //       cons: additional logic (about 7 lines of code)
+         if (p->id < 0)
+	    fwrite (p, sizeof(marker_t), 1, tracer);
+#endif
+         // '_' corresponds to indices, shifted by '-1/2'.
          int i, j, k, i_, j_, k_;
          int i2, j2, k2, di, dj, dk;
          const double x1 = p->x, y1 = p->y, z1 = p->z;
@@ -167,8 +182,8 @@ plasma_timestep (const int shellScan, long int N,
 
          // Due to very rare round-off error it is possible to get y1 = y2
          // and dj = 1 inconsistency. Chanses are negligible but it is
-         // possible so this protection is added against any noise-triggered
-         // jumps of this type (see example at arsenal/341/save#06).
+         // possible, so this protection is added against any noise-triggered
+         // jumps of this type (see example at 'arsenal/341/save#06').
          // It may be a consequence of adding and subtracting shift in
          // MF_DBL_TO_INT to avoid the changing of rounding direction for
          // negative x/y/z.
@@ -222,16 +237,16 @@ plasma_timestep (const int shellScan, long int N,
          p->z = z2;
 #endif
          // Checks if particle is in core region.
-         if (mc_have_x*(x2 - coreX1)*(coreX2 - x2) >= 0 &&
-            mc_have_y*(y2 - coreY1)*(coreY2 - y2) >= 0 &&
-            mc_have_z*(z2 - coreZ1)*(coreZ2 - z2) >= 0) {
-            if (shellScan) {
+         if (mc_have_x*(x2 - coreX1)*(coreX2 - x2) >= 0
+          && mc_have_y*(y2 - coreY1)*(coreY2 - y2) >= 0
+          && mc_have_z*(z2 - coreZ1)*(coreZ2 - z2) >= 0) {
+            if (doing_shell) {
                *(--core) = *p;	// Sends particle to core.
                *p = *(--shell);	// Replaces by unprocessed particle.
                --p;		// Decrements counter to process new marker.
             }
          } else {
-            if (!shellScan)	{
+            if (!doing_shell) {
                *(shell++) = *p; // Sends particle to shell.
                *p = *(core++);  // Fills emptied cell by particle from tail.
             }
@@ -241,8 +256,8 @@ plasma_timestep (const int shellScan, long int N,
       countShell = shell - plasma;
       countCore  = core  - plasma;
 
-      // Tests inboxes while we are doing core.
-      if (!shellScan)
+      // Tests inboxes while we are doing (massive) core.
+      if (!doing_shell)
          comm_plasma_test_inbox ();
    }
 }
@@ -258,9 +273,13 @@ plasma_move (meshVec_RO_p E, meshVec_RO_p H, meshVec_p J)
    mf_mesh_clean (plasma_J);
    plasmaWx = plasmaWy = plasmaWz = 0;
 
+#if defined(ACTIVATE_TRACER) && ACTIVATE_TRACER
+   fwrite (&Time, sizeof(Time), 1, tracer);
+#endif
+
    // Remembers initial core size and makes shell timestep.
    long int unprocessedCore = countCore;
-   plasma_timestep (1, countShell, E, H, J);
+   plasma_timestep (DOING_SHELL, countShell, E, H, J);
 
    // Applies local boundary conditions.
    profiler_endBegin (mc_prof_plasma_pbcPop);
@@ -275,7 +294,12 @@ plasma_move (meshVec_RO_p E, meshVec_RO_p H, meshVec_p J)
    jbc_start (mcast_meshVec (plasma_J));
 
    // Final timestep (unprocessed core particles).
-   plasma_timestep (0, countAll - unprocessedCore, E, H, J);
+   plasma_timestep (DOING_CORE, countAll - unprocessedCore, E, H, J);
+
+#if defined(ACTIVATE_TRACER) && ACTIVATE_TRACER
+   marker_t p = {.id = 0};
+   fwrite (&p, sizeof(p), 1, tracer);
+#endif
 
    profiler_end ();
 }
@@ -304,6 +328,14 @@ plasma_rho (meshDouble_p rho)
    plasmaRho_finishExchange (rho);
 }
 
+#if defined(ACTIVATE_TRACER) && ACTIVATE_TRACER
+static void
+close_tracer_file (void)
+{
+   fclose (tracer);
+}
+#endif
+
 // ---------------------------------------------------------------------------
 /// Plasma module initialization.
 // ---------------------------------------------------------------------------
@@ -322,11 +354,18 @@ plasma_init (void)
            MF_DBL_TO_INT (dmn_min[2] - 5.1) < dmn_min[2] - 5.1,
            "broken MF_DBL_TO_INT");
 
+#if defined(ACTIVATE_TRACER) && ACTIVATE_TRACER
+   SAY_WARNING ("tracer activated (additional field is added to each marker)");
+   char *mode = (Time > 0.9*tau) ? "ab" : "wb";
+   tracer = cfg_open (_("binData/tracer_%03d.bin", cpu_here), mode, __func__);
+   ENSURE(!atexit(close_tracer_file), "cannot submit tracer file finalizator");
+#endif
+
    // Sets all || exchange infrastructure.
    plasma_setupConnections    ();
    plasmaRho_setupConnections ();
 
-   // XXX  placer_exchange ();		// Forces all particles to the hosts' cpus.
+   // XXX  placer_exchange ();	// Forces all particles to the hosts' cpus.
    MPI_Barrier (MPI_COMM_WORLD);
 
    // Sets size of the core region.
@@ -360,7 +399,7 @@ plasma_init (void)
               plasma, plasma + countAll, countShell + countAll - countCore,
               countCore - countShell);
 
-   // XXX: make reg_t constructor and use reg_inside () tester to test
+   // XXX: make reg_t constructor and use 'reg_inside ()' tester to test
    // condition in one line.
    ENSURE (cpu_max[0] - cpu_min[0] >= 7*mc_have_x &&
            cpu_max[1] - cpu_min[1] >= 7*mc_have_y &&
@@ -370,7 +409,7 @@ plasma_init (void)
    // Turns off all unused boundaries and ensures boundary condition.
    for (int i = 0 ; i < 6 ; ++i) {
       for (int j = 0 ; j < BC_ENUM_LENGHT && !ACTIVATOR[i] ; ++j)
-         BC[i][j] = dummy;
+	 BC[i][j] = dummy;
       BC[i][cpu_bc_min[i]] ();
    }
 

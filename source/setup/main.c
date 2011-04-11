@@ -32,7 +32,7 @@
 #include "setup/tag.h"
 #include "setup/plasma.h"
 
-///< Enum for memory consumption statistic.
+/// Enum for memory consumption statistic.
 enum {
    mMesh,
    mGhost,
@@ -43,7 +43,7 @@ int           memEstimateOnly;			///< Flag singnals if we are in \b estimate mod
 static double memLayout[3] = {0, 0, 0};		///< Estimated amount of memory consumed (OS overhead might be bigger by 1 - 10%).
 
 static meshDouble_t rho;			///< Global meshes.
-static meshVec_t E, H, J;
+static meshVec_t    E, H, J;
 
 // ---------------------------------------------------------------------------
 /// Sets fundamental parameters of the domain: sizes, BC and partitioning.
@@ -55,9 +55,11 @@ main_setupDomain (FILE *fp)
    int    tags[3]          = {TAG_UNITS, TAG_MESH, TAG_BOUNDARY};
    void (*func[3]) (FILE*) = {tag_units, tag_mesh, tag_boundary};
 
+   // Forces first three tags to be 'units', 'mesh', 'boundary', and processes
+   // them in this order.
    for (int i = 0 ; i < 3 ; ++i) {
       ENSURE (!feof (fp) && getTag (fp) == tags[i],
-                 "first tags must be [units]/[mesh]/[boundary].");
+              "first tags must be [units]/[mesh]/[boundary].");
       MPI_Barrier (MPI_COMM_WORLD);
       func[i] (fp);
    }
@@ -93,7 +95,8 @@ static char*
 main_memString (double size, char *buff)
 {
    *buff = 0;
-   double radix = (1 << 10), factor = radix*radix*radix*radix;			// Starts from terabytes.
+   double radix = (1 << 10),
+	  factor = radix*radix*radix*radix;			// Starts from terabytes.
    char symbol[5] = {'b', 'K', 'M', 'G', 'T'}, *slot = buff;			// Size prefixes.
    for (int digit = 4 ; digit >= 0 ; --digit, factor /= radix) {		// Computes all digits.
       if ((int) fmod (size/factor, radix) > 0)
@@ -142,7 +145,7 @@ main_clearFolders (void)
    ENSURE (system (NULL), "shell is not avaliable.");
    system ("rm -f .gaussSpot.cfg .EM_sources/TFSF/TFSF.cfg "
                  ".EM_sources/TFSF/openFaces.cfg ERROR.*");
-   system ("for f in ./binData/* ; do rm -f $f ; done");
+   system ("for f in ./binData/*.* ; do rm -f $f ; done");
 }
 
 // ---------------------------------------------------------------------------
@@ -207,32 +210,26 @@ main (int argc, char *argv[])
          case TAG_SCISSORS:		tag_scissors (fp);					break;
          case TAG_GRADIENT:		tag_gradient (fp);					break;
 
+      case TAG_EOF:		// End of file is reached, no tags found.
+	 break;
 
-         case TAG_EOF:		// End of file is reached, no tags found.
-         break;
+      case TAG_UNKNOWN_TAG:	// Unknown tag - terminating, setup is useless anyway now.
+	 DIE ("unknown tag '%s' (bad syntax?)", getLastTagName ());
 
-         case TAG_UNKNOWN_TAG:	// Unknown tag - terminating, setup is useless anyway now.
-            DIE ("unknown tag '%s' (bad syntax?)", getLastTagName ());
-
-         default:
-            DIE ("unregistered switch value '%d' (%s), update sources.",
-                 tag, getLastTagName ());
+      default:
+	 DIE ("unregistered switch value '%d' (%s), update sources.",
+	       tag, getLastTagName ());
       }
    }
    fclose (fp);
 
    main_memReport ();								// Reports the memory consuming.
 
-#ifndef MC_DISABLE_ANSII_ESCAPE_SEQUENCES
-   char *ansiEraseLine = "\033[2K", *ansiLineUp = "\033[A";
-#else
-   char *ansiEraseLine = "", *ansiLineUp = "";
-#endif
    if (!memEstimateOnly) {							// Reports memory usage and quits.
-      say ("Evaluating charge density...");				// Charge density (for visualization).
+      say ("Evaluating charge density...");					// Charge density (for visualization).
       plasma_rho (&rho);
 
-      say ("%s%sWriting tecplot data-point...", ansiLineUp, ansiEraseLine);
+      say ("Writing tecplot data-point...");
       if (!cpu_here)								// Master saves new units.
          units_save ();
 
@@ -241,13 +238,19 @@ main (int argc, char *argv[])
       tecIO_saveFields (Time, mcast_meshVec_RO (&E), mcast_meshVec_RO (&H));
       tecIO_saveCurrents (mcast_meshVec_RO (&J), mcast_meshDouble_RO (&rho));
 
-      say ("%s%sWriting start check-point...", ansiLineUp, ansiEraseLine);
+      say ("Writing start check-point...");
       sysIO_setRecordNum (0);							// Creates start checkpoint.
       sysIO_save (Time, mcast_meshVec_RO (&E), mcast_meshVec_RO (&H));
       plasma_save (IO_plasmaName (0, cpu_here));				// Saves plasma into checkpoint #0.
+#if defined(ACTIVATE_TRACER) && ACTIVATE_TRACER
+      FILE *fp = cfg_open ("binData/tracer.inf", "wt", __func__);
+      fprintf (fp, "%le \tτ (time step)\n",        tau);
+      fprintf (fp, "%d  \tnumber of trajectories", 0);
+      fclose (fp);
+#endif
    }
 
-   say ("%s%s\nBye :)", ansiLineUp, ansiEraseLine);
+   say ("All done.\nBye :)");
 
    return EXIT_SUCCESS;
 }

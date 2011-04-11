@@ -1,12 +1,12 @@
 /** \file shared.template.c
   * Template to generate 'dll.c' file used as 'distiller' backend.
   *
-  * The file is used as Python template to wrap generated C code and compile
-  * dynamically loaded filter.
+  * Generated C code is inserted here by Python frontend, the result is
+  * compiled using make, and executed.
   *
   * \warning Please remember that template uses percent character '%%' to mark
-  * placeholders for embedded data. If you want to have percent in the final
-  * C code, write it here as double '%%' sign.
+  *          placeholders for embedded data. If you need percent in the final
+  *          C code, write it here as double '%%%%' sign.
   *
   * Example:
   *    printf ("%%d %%le\n", i, x[i]);
@@ -19,8 +19,8 @@
 
 #include "type_marker.h"
 
-/// Instead of comparing 'x = y' I compare '|x - y| < EPS*(|x| + |y|)'.
-/// Comparison is used with 'qDivM' parameter.
+/// Instead of comparing 'x = y' I compare '|x - y| < EPS*(|x| + |y|)', this
+/// comparison is used to compare 'qDivM' parameters.
 const double EPS = 1e-5;
 
 static inline double

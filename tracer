@@ -1,0 +1,74 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+"""
+Frontend to mark particles in the record #000 for their trajectory to be saved
+in separate file for each timestep (high frequency information).
+"""
+
+from __future__ import with_statement
+
+import os
+import sys
+import re
+import subprocess
+import traceback
+
+from optparse import OptionParser
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "source/distiller"))
+
+def make (*targets):
+    """Takes filter and creates C source of the filtering backend."""
+    targets = targets or ['distiller']
+    if subprocess.call(["make", "-s"] + targets):
+        print "="*40
+        print "ERROR: failed to compile C core."
+        sys.exit(-1)
+
+# █████████████████████████████████████████████████████████████████████████████
+# █████████████████████████████████████████████████████████████████████████████
+
+# Command line interface: options, user choises.
+parser = OptionParser(usage="""'%prog -v' or '%prog file1.csv file2.csv ...'
+
+%prog -v
+---------
+    Exports all generated trajectories to 'output/tracer/*.vtk' files.
+
+%prog file1.csv file2.csv ...
+------------------------------
+    Marks particles in the start record (record #000, time = 0) with id taken
+    from csv files (using the 'marker_id' column).
+
+IMPORTANT: once the start record is updated, repeat the run starting from the
+updated state to take changes into account. That means setting 'continue'
+flag to '0' in 'run_mandor.cfg' and running './core.out' again.
+
+File 'tests/17_tracer/README' contains additional info.
+""")
+
+add_option = parser.add_option
+add_option("-v", "--make-vtk-files", dest="tracer2vtk", action="store_true",
+           help="export trajectories and exit")
+
+(options, args) = parser.parse_args()
+
+# Compiles backend(s).
+make()
+
+if options.tracer2vtk:
+    subprocess.call(["o/tracer2vtk.out"])
+    if args:
+        print "---------------------------------------------------------------"
+        print "Sorry, but with this option all '*.csv' files passed in command"
+        print "line are ignored; tool simply exports existing trajectories."
+    sys.exit(-1)
+
+if args:
+    subprocess.call(["o/mark_trajectory.out"] + args)
+    print "----------------------------------------------------------"
+    print "Please:"
+    print "  1) update 'run_mandor.cfg' (set 'continue' flag to 0)."
+    print "  2) rerun the simulation (for changes in the start record"
+    print "     to take effect)."

@@ -13,10 +13,10 @@
 #include "type_mesh.h"
 #include "type_marker.h"
 
-void      plasma_save (const char *name);
+void      plasma_save      (const char *name);
 void      plasma_newObject (void);
 marker_t* plasma_getObject (int count, long int *N);
-void      plasma_rho (meshDouble_p rho);
-marker_t* plasma_marker (void);
+void      plasma_rho       (meshDouble_p rho);
+marker_t* plasma_marker    (void);
 
 #endif

@@ -1,0 +1,4 @@
+Folder for raw (binary) data. 
+
+Diagnostics would convert this data into something usable by visualization
+softwave or user, and store it to the '../output' folder.

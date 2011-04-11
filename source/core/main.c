@@ -1,11 +1,11 @@
 /** \file main.c
   * Numeric core, runs the sumulation and saves binary data for analysis.
   *
-  * Engine has few setting you can set in Makefile (nicely commented macro-keys) and
-  * few parameters are read from config files at startup ('run_mandor.cfg' and
-  * 'run_probes.cfg') and from periodically during a run ('tmp/stop.flag').
+  * Engine has setting you can set in Makefile (few documented macro-keys) and
+  * few parameters are read from config files at startup ('run_mandor.cfg',
+  * 'run_probes.cfg') and at run-time, periodically ('tmp/stop.flag').
   *
-  * You can stop the code at run-time by changing file 'tmp/stop.flag' - see
+  * You can stop the code at run-time by changing file 'tmp/stop.flag' ─ see
   * main_throwStopFlag ().
   */
 
@@ -53,7 +53,7 @@ void tmp_update_gamma(int start, int finish) {
   for (int i = start; i < finish; i++) if (plasma[i].qDivM < 0) {
     marker_t *p = &plasma[i];
     const double gamma = sqrt(1.0 + p->vx*p->vx + p->vy*p->vy + p->vz*p->vz);
-    const j = (int)(100.0 * (gamma - 1.0) / (tmp_max_gamma - 1.0));
+    const int j = (int)(100.0 * (gamma - 1.0) / (tmp_max_gamma - 1.0));
     if (j < 100) tmp_gamma[j] -= p->rho;
   }
 }
@@ -66,7 +66,7 @@ void tmp_save_gamma(int record, int cpu) {
   ENSURE(fp, "Cannot open file '%s' for writing.", name);
 
   for (int i = 0; i < 100; i++) {
-    fprintf(fp, "%lg %lg\n", 0.511 * double(i) * (tmp_max_gamma - 1.0) / 100.0, tmp_gamma[i]);
+    fprintf(fp, "%lg %lg\n", 0.511 * (double)i * (tmp_max_gamma - 1.0) / 100.0, tmp_gamma[i]);
     tmp_gamma[i] = 0.0;
   }
 }
@@ -77,6 +77,7 @@ void tmp_save_gamma(int record, int cpu) {
 // Variables for non-blocking check of the stop requests/timeouts.
 static timeTick_t  stopFlag_startTime;		///< Simulation start time (to check timeouts).
 static double      stopFlag_saveTime = 0;	///< Simulation checkpoint saving time (to check timeouts).
+// \TODO: replace 2000 with MAX_CPUS, and ENSURE(cpu_total <= MAX_CPUS).
 static MPI_Request stopFlag_requests[2000];	///< Request for stop flag state transfer.
 
 /// Check-pointing steps and simulation length (in timesteps).
@@ -244,14 +245,14 @@ main_startUp (void)
 
    if (continueRun && point != 0) {
       fileMap_init (mc_fileMap_contn);
-      sysIO_setRecordNum  (-1);		// Continues check-pointing.
-      tecIO_setRecordNum  (-1);		// Continues tecplot output.
+      sysIO_setRecordNum (-1);		// Continues check-pointing.
+      tecIO_setRecordNum (-1);		// Continues tecplot output.
       spectr_continueDump ();		// Continues spectr output.
    } else {
       fileMap_init (mc_fileMap_start);
       sysIO_setRecordNum (1);		// Starts to write just after setup record.
       tecIO_setRecordNum (1);		// Starts to write just after setup record.
-      spectr_startDump   ();		// Starts new spectr output sequence.
+      spectr_startDump ();		// Starts new spectr output sequence.
       point = 0;
    }
 

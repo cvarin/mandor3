@@ -154,6 +154,10 @@ parameter_enterMPI (int argc, char *argv[], int continue_log)
    MPI_Comm_size (MPI_COMM_WORLD, &cpu_total);
    MPI_Comm_rank (MPI_COMM_WORLD, &cpu_here);
 
+   ENSURE (cpu_total < CPU_MAX, "CPU_MAX is too small, fix 'misc_parameters.h'"
+                                " (we need at least %d instead of %d)",
+				cpu_total + 1, CPU_MAX);
+
    int  name_lenght;
    char processorName[MPI_MAX_PROCESSOR_NAME];
    MPI_Get_processor_name (processorName, &name_lenght);

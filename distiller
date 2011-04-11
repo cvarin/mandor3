@@ -1,8 +1,13 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 """
-This utility creates special filter to select given subset of particles.
-It generates high-speed C executable, and runs it.
+USER:  this tool selects given subset of particles from saved data and saves it
+       to the 'output/markers/' folder.
+
+CODER: the tool compiles and executes 'o/distiller.out' by generating C-source,
+       pushing it into template, calling make 'o/distiller.out', and invoking
+       the resulting executable.
 """
 
 from __future__ import with_statement
@@ -24,7 +29,6 @@ from math     import *
 def src_file(*argc):
     """Returns path to the file as if it is located in the source folder."""
     return os.path.join(os.path.dirname(geometry.__file__), *argc)
-
 
 def load_filter(cfg, ignore_result=False):
     """Executes user's config file to generate C-source of filter."""
@@ -55,15 +59,84 @@ def load_filter(cfg, ignore_result=False):
 
 
 def generate_code (filter):
-    """Takes filter and creates C source of the filter."""
+    """Takes filter and creates C source of the filtering backend."""
     (const, stack, flag_var) = filter.C("good_marker")
     with open(src_file("shared.template.c"), "rt") as fp:
         template = fp.read()
     return template % {
-                "invariants" : "\n    ".join (const),
-                "tmp_vars"   : "\n        ".join (stack),
-                "final_test" : flag_var,
-            }
+	       "invariants" : "\n    ".join (const),
+               "tmp_vars"   : "\n        ".join (stack),
+               "final_test" : flag_var,
+           }
+
+def make (*targets):
+    """Takes filter and creates C source of the filtering backend."""
+    targets = targets or ['distiller']
+    if subprocess.call(["make", "-s"] + targets):
+        print "="*40
+        print "ERROR: failed to compile C core."
+        sys.exit(-1)
+
+def print_plasma_component_map():
+    '''Plasma components are indexed as appear, so we always need this help.'''
+    with open('output/markers/map.txt', 'rt') as fp:
+        print '='*50
+        print ' Indexing of "output/markers/*.csv" files'
+        print '-'*50
+        print '   File       q/M'
+        print '   ----  -------------'
+        for i, qDivM in enumerate(fp):
+	    print '   s%02d:  % .5e' % (i, float(qDivM))
+        print '='*50
+	print
+
+def file_ctime(filename, path=""):
+    filename = os.path.join(path, filename)
+    if os.path.isfile(filename):
+        return os.stat(filename).st_mtime
+
+def report_obsolete_files(delete_obsolete_files=False):
+    '''Shows files which were generated with obsolete filter.'''
+    basetime = max(file_ctime(src_file("dll.c")),
+                   file_ctime('output/markers/.do_filter'))
+    outdated = set()
+    good     = set()
+    rec = re.compile("r(\d+)(s\d+)?\.(csv|vtk)")
+    for f in os.listdir('output/markers'):
+        if rec.match(f) and file_ctime(f, path='output/markers') < basetime:
+	    outdated.add(int(rec.match(f).group(1)))
+	elif rec.match(f):
+	    good.add(int(rec.match(f).group(1)))
+
+    assert not good.intersection(outdated), 'bad detection algorythm'
+
+    if outdated:
+        # Header of the table.
+        print "Inconsistently filtered files:"
+        print "    (!) - file produced with outdated filter settings"
+        print "    (.) - no file for this record"
+        print "    (+) - good file (made with filter you have used right now)"
+        print
+        print ('%10s' % ''),
+        for i in range(10):
+	    print i,
+
+	# The table.
+        rec = 0
+        while outdated or good:
+	    if rec % 10 == 0:
+	        print
+	        print ('%03d - %03d ' % (rec, rec + 10)),
+	    if rec in outdated:
+	       print '!',
+	       outdated.remove(rec)
+	    elif rec in good:
+	       print '+',
+	       good.remove(rec)
+	    else:
+	       print '.',
+	    rec += 1
+	print
 
 # Command line interface: options, user choises.
 parser = OptionParser(usage="""%prog [options] config-file
@@ -90,6 +163,10 @@ add_option("-a", "--all-markers", dest="all_markers", action="store_true",
            help="ignore filter (save all markers)")
 add_option("-r", "--rec", dest="records", metavar="REC", type="string",
            help="checkpoints to scan, REC=[min]:[max][:step], e.g 2::5")
+add_option("-I", "--hide-index", dest="hide_index", action="store_true",
+           help="do not show mapping between filename and plasma component")
+add_option("-O", "--hide-obsolete", dest="hide_obsolete", action="store_true",
+           help="skip detection of outdated data")
 
 (options, args) = parser.parse_args()
 
@@ -101,8 +178,21 @@ if options.show_filter_man:
     print geometry.__doc__
     sys.exit()
 
+# Checks if user wants to override recordset.
+if options.records:
+    try:
+        (r0, r1, s) = re.match("(\d*):?(\d*):?(\d*)", options.records).group(1, 2, 3)
+        rec0 = str(0)          if not r0 else str(int(r0))
+        rec1 = str(2**31 - 1)  if not r1 else str(int(r1))
+        step = str(1)          if not s  else str(int(s))
+    except:
+        print "Bad recordset, use '-r start:end:step', no spaces around ':'"
+        sys.exit(-1)
+
 filter_file = 'distiller.cfg' if not args else args[0]
 (rec0, rec1, step, do_filter, filter) = load_filter(filter_file)
+if options.all_markers:		# Permits user to drop filter.
+    do_filter = "0"
 
 if options.dump_core:
     (const, stack, flag_var) = filter.C("good_marker")
@@ -114,12 +204,10 @@ if options.dump_core:
 code = generate_code(filter)
 
 # Updates code if necessary.
-with open(src_file("dll.c"), "rt") as fp:
-    old_code = fp.read()
-
+old_code = open(src_file("dll.c"), "rt").read()
 if old_code != code:
-  with open(src_file("dll.c"), "wt") as fp:
-      fp.write(code)
+    with open(src_file("dll.c"), "wt") as fp:
+        fp.write(code)
 
 if options.dump_dll:
     print file(src_file("dll.c"), "rt").read()
@@ -127,25 +215,23 @@ if options.dump_dll:
 if options.src_only:
     sys.exit()
 
-# Checks if user wants to override recordset.
-if options.records:
-    try:
-        (r0, r1, s) = re.match("(\d*):?(\d*):?(\d*)", options.records).group(1, 2, 3)
-        rec0 = str(0)          if not r0 else str(int(r0))
-        rec1 = str(2**31 - 1)  if not r1 else str(int(r1))
-        step = str(1)          if not s  else str(int(s))
-    except:
-        print "Bad record-set, use '-r start:end:step', no spaces around ':'"
-        sys.exit(-1)
+# Works with information of detector of outdated files.
+try:
+    old_do_filter = open("output/markers/.do_filter", "rt").read()
+except IOError:
+    old_do_filter = "-1234567"
+if old_do_filter != do_filter:
+    with open("output/markers/.do_filter", "wt") as fp:
+        fp.write('%s' % do_filter)
 
-# Checks if user want no filters (simple call to get everything in txt).
-if options.all_markers:
-    do_filter = "0"
-
-ret_value = subprocess.call(["make", "-s", "distiller"])
-if ret_value:
-    print "="*40
-    print "ERROR: failed to compile C core."
-    sys.exit(-1)
-
+# Compiles and executes the backend.
+make()
 subprocess.call(["o/distiller.out", rec0, rec1, step, do_filter])
+
+# Displays real indexing of plasma component.
+if not options.hide_index:
+    print_plasma_component_map()
+
+# Displays names of inconsistently filtered files.
+if not options.hide_obsolete:
+    report_obsolete_files()

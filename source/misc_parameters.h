@@ -27,6 +27,10 @@
 #ifndef MC_MISC_PARAMETERS_HEADER
 #define MC_MISC_PARAMETERS_HEADER
 
+/// Maximal theoretical number of the node (simular to INT_MAX).
+/// Used to scan files created by many nodes without boring tests, etc.
+#define CPU_MAX (10000)
+
 #include "frame.h"
 
 /// Enumerated boundary conditions (last element is used to specify array

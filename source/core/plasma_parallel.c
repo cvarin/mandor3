@@ -9,15 +9,15 @@
   * Interfaces:
   *   'comm_plasma_configure' analyzes domain decomposition and prepares
   *      list of gates used to send all particles to a new hosts. Should be
-  *      called after domain partitioning is finished.
+  *      called when domain partitioning is ready.
   *
   *   'comm_plasma_start' initiates exchange turn by posting MPI_Irecv for
   *      all incoming header messages. Should be called as soon as possible to
   *      maximize waiting period.
   *
-  *   'comm_plasma_send' scans shell markers (see plasma.h) and isends
+  *   'comm_plasma_send' scans shell markers (see 'plasma.h') and isends
   *      headers and data blocks to the neighbour nodes. Outgoing data is
-  *      stored in the same 'plasma' array, no additional buffers used.
+  *      stored in the same 'plasma' array, no additional buffer overheads.
   *
   *   'comm_plasma_test_inbox' checks if any header arrived and starts
   *      MPI_Irecv loading all incoming particles directly into the shell.
@@ -125,14 +125,14 @@ comm_plasma_configure (void)
                continue;
 
          gate_t g = { .x1 =  (r->min[0]*mc_have_x - MC_EPS)*h1,
-                        .y1 =  (r->min[1]*mc_have_y - MC_EPS)*h2,
-                        .z1 =  (r->min[2]*mc_have_z - MC_EPS)*h3,
-                        .x2 =  (r->max[0]*mc_have_x + MC_EPS)*h1,
-                        .y2 =  (r->max[1]*mc_have_y + MC_EPS)*h2,
-                        .z2 =  (r->max[2]*mc_have_z + MC_EPS)*h3,
-                        .dx = - r->wrap[0]*mc_have_x*h1,
-                        .dy = - r->wrap[1]*mc_have_y*h2,
-                        .dz = - r->wrap[2]*mc_have_z*h3 };
+                      .y1 =  (r->min[1]*mc_have_y - MC_EPS)*h2,
+                      .z1 =  (r->min[2]*mc_have_z - MC_EPS)*h3,
+                      .x2 =  (r->max[0]*mc_have_x + MC_EPS)*h1,
+                      .y2 =  (r->max[1]*mc_have_y + MC_EPS)*h2,
+                      .z2 =  (r->max[2]*mc_have_z + MC_EPS)*h3,
+                      .dx = - r->wrap[0]*mc_have_x*h1,
+                      .dy = - r->wrap[1]*mc_have_y*h2,
+                      .dz = - r->wrap[2]*mc_have_z*h3 };
 
          // Adds structure to the list.
          neib_t *n = neibs + cpu;
@@ -181,18 +181,19 @@ comm_plasma_send (void)
       for (int j = 0 ; j < neibs[i].gatesN ; ++j) {
          gate_t *g = neibs[i].gates + j;
          for (marker_t *p = plasma ; p < plasma + countShell ; ++p) {
-               if (mc_have_x*(p->x - g->x1)*(g->x2 - p->x) >= 0
-                && mc_have_y*(p->y - g->y1)*(g->y2 - p->y) >= 0
-                && mc_have_z*(p->z - g->z1)*(g->z2 - p->z) >= 0) {
+	    if (mc_have_x*(p->x - g->x1)*(g->x2 - p->x) >= 0
+	     && mc_have_y*(p->y - g->y1)*(g->y2 - p->y) >= 0
+             && mc_have_z*(p->z - g->z1)*(g->z2 - p->z) >= 0) {
 
-                  p->x += g->dx;
-                  p->y += g->dy;
-                  p->z += g->dz;
+	       // Optional periodic wrapping.
+	       p->x += g->dx;
+	       p->y += g->dy;
+	       p->z += g->dz;
 
-                  plasma[--countSend] = *p;
-                  *p = plasma[--countShell];
-                  --p;
-               }
+	       plasma[--countSend] = *p;
+	       *p = plasma[--countShell];
+	       --p;
+	    }
          }
       }
 
@@ -223,7 +224,7 @@ comm_plasma_test_inbox (void)
                        MPI_COMM_WORLD, &neibs[i].rq_recvData);
             countShell += neibs[i].recvN;
             ENSURE (countShell + 3 < countSend && countSend <= countCore,
-                    "no room for %d markers from cpu %d",
+                    "no room to receive %d markers from cpu %d",
                     neibs[i].recvN, neibs[i].cpu);
          }
       }

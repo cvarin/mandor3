@@ -226,7 +226,7 @@ log_close (void)
    // 'say' automatically flushes cached buffer, if necessary.
    say ("-------------- END OF LOG --------------");
    say ("  %d error(s), %d warning(s)",
-         warnings_posted/1000000, warnings_posted % 1000000);
+        warnings_posted/1000000, warnings_posted % 1000000);
 
    if (logfile)
       fclose (logfile);

@@ -12,8 +12,8 @@
 void
 tag_scissors (FILE *fp)
 {
-    const double micron = units (mc_micron);
 /*
+    const double micron = units (mc_micron);
     ENSURE (0, "I will implements scissoring on demand");
     // Reads bounding box.
     double x1 = cfg_readDouble (fp)*micron,
